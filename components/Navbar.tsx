@@ -5,6 +5,7 @@ import { Bars3Icon, ShoppingBagIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import MobileNavigation from "./MobileNavigation";
 import { navigation } from "@/constants";
+import Cart from "./Cart";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -12,6 +13,7 @@ function classNames(...classes: string[]) {
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
 
   return (
     <div className="bg-white sticky top-0 left-0 right-0 z-20">
@@ -139,7 +141,9 @@ const Navbar = () => {
 
                 {/* Cart */}
                 <div className="ml-4 flow-root lg:ml-6">
-                  <Link href="/" className="group -m-2 flex items-center p-2">
+                  <button 
+                  onClick={() => setCartOpen(true)}
+                  className="group -m-2 flex items-center p-2">
                     <ShoppingBagIcon
                       className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                       aria-hidden="true"
@@ -148,13 +152,15 @@ const Navbar = () => {
                       0
                     </span>
                     <span className="sr-only">items in cart, view bag</span>
-                  </Link>
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         </nav>
       </header>
+
+      <Cart cartOpen={cartOpen} setCartOpen={setCartOpen}/>
     </div>
   );
 };
