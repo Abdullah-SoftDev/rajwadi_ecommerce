@@ -135,9 +135,9 @@ const Navbar = () => {
               </Popover.Group>
 
               <div className="ml-auto flex items-center">
-                <button className="sm:ml-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gray-900 hover:bg-gray-700 focus:outline-none">
+                <Link href={"/signIn"}  className="sm:ml-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gray-900 hover:bg-gray-700 focus:outline-none">
                   Sign In
-                </button>
+                </Link>
 
                 {/* Cart */}
                 <div className="ml-4 flow-root lg:ml-6">
