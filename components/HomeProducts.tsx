@@ -33,8 +33,8 @@ const HomeProducts = () => {
       <h2 className="text-center text-3xl pb-4">Top Collections🔥</h2>
       <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
         {collections.map((collection, index) => (
-          <Link key={index} href={collection.href} className="block mb-8">
-            <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg shadow-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+          <Link key={index} href={collection.href}>
+            <div className="aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
               <div className="relative group">
                 <img
                   src={collection.imageSrc}
@@ -54,11 +54,11 @@ const HomeProducts = () => {
         ))}
       </div>
       <div className="text-center mt-8">
-      <button className="sm:ml-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gray-900 hover:bg-gray-700 focus:outline-none">
-                  Explore More Button
-                </button>
+        <button className="sm:ml-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gray-900 hover:bg-gray-700 focus:outline-none">
+          Explore More Button
+        </button>
       </div>
     </div>
   );
 };
-export default HomeProducts;
+export default HomeProducts;  
