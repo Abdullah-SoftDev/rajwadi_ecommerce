@@ -3,21 +3,24 @@ import Link from "next/link";
 import { Fragment } from "react";
 import LoginDrawer from "./LoginDrawer";
 import { navigation } from "@/constants";
+import { auth } from "@/firebase/firebaseConfig";
+import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
 
 function classNames(...classes: string[]) {
   return classes?.filter(Boolean)?.join(" ");
 }
 
 const ProfileDropdown = () => {
-  const userr = false;
+  const [user] = useAuthState(auth);
+  const [signOut] = useSignOut(auth);
   return (
     <div className="md:ml-4 ml-2 flex items-center">
-      {userr ? (
+      {user ? (
         <Menu as="div" className="relative flex-shrink-0">
           <Menu.Button className="bg-white rounded-full flex text-sm focus:outline-none">
             <img
               className="h-8 w-8 rounded-full"
-              src="https://chat.openai.com/_next/image?url=https%3A%2F%2Flh3.googleusercontent.com%2Fa%2FAAcHTtd9M6KBOGZjnk94PFAEIGX-t7nDfWROVK17Mm8-ZMI%3Ds96-c&w=48&q=75"
+              src={user?.photoURL ?? ""}
               alt=""
             />
           </Menu.Button>
@@ -40,7 +43,7 @@ const ProfileDropdown = () => {
                   )}
                 </Menu.Item>
               ))}
-              <Menu.Button className="px-4 py-2 text-sm text-gray-700 inline-flex w-full hover:bg-gray-100">
+              <Menu.Button onClick={async () => {await signOut()}} className="px-4 py-2 text-sm text-gray-700 inline-flex w-full hover:bg-gray-100">
                     SIGN OUT
               </Menu.Button>
             </Menu.Items>
