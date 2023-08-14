@@ -36,10 +36,8 @@ const Navbar = () => {
                     <Popover key={category.name} className="flex">
                       {({ open }) => (
                         <div className="relative flex">
-                          <Popover.Button
-                            onClick={() => {
-                              router.push(category.href);
-                            }}
+                          <Link
+                            href={category.href}
                             className={classNames(
                               open
                                 ? "border-indigo-600 text-indigo-600 outline-none"
@@ -48,7 +46,7 @@ const Navbar = () => {
                             )}
                           >
                             {category.name}
-                          </Popover.Button>
+                          </Link>
                         </div>
                       )}
                     </Popover>
