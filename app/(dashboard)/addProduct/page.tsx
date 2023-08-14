@@ -1,16 +1,29 @@
 "use client";
 import { useState } from 'react'
 import { Switch } from '@headlessui/react'
+import { Product } from '@/types/typescript.types';
+import { handelSubmitForm, handleInputChange, handleImageClick, handleImageUpload, handleSizeToggle, handleStockAvailableChange } from '@/repositories/productRepository';
 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
 }
 
+const availableSizes = ["S", "M", "L", "XL"];
+
 const Page = () => {
-    const [available, setIsAvailable] = useState(false)
-    const availableSizes = ["S", "M", "L", "XL"];
+    const [data, setData] = useState<Product>({
+        productName: "",
+        slug: "",
+        productDescription: "",
+        productImages: [],
+        price: "",
+        category: "",
+        sizes: [],
+        stockAvailable: false
+    })
+
     return (
-        <form className="space-y-8 mx-auto max-w-5xl px-4 py-14">
+        <form onSubmit={(e) => handelSubmitForm(e, data, setData)} className="space-y-8 mx-auto max-w-5xl px-4 py-14">
             {/* Headings */}
             <div>
                 <h3 className="text-lg leading-6 font-medium text-gray-900">
@@ -31,6 +44,8 @@ const Page = () => {
                     </label>
                     <div className="mt-1">
                         <input
+                            onChange={(e) => handleInputChange(e, setData)}
+                            value={data.productName}
                             type="text"
                             name="productName"
                             className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
@@ -46,6 +61,8 @@ const Page = () => {
                     </label>
                     <div className="mt-1">
                         <input
+                            onChange={(e) => handleInputChange(e, setData)}
+                            value={data.slug}
                             type="text"
                             name="slug"
                             className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
@@ -60,7 +77,9 @@ const Page = () => {
                         Description (Use comma(,) to separate description points.)
                     </label>
                     <textarea
-                        name="desc"
+                        onChange={(e) => handleInputChange(e, setData)}
+                        value={data.productDescription}
+                        name="productDescription"
                         rows={3}
                         className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md"
                     />
@@ -69,38 +88,57 @@ const Page = () => {
                 <div className="sm:col-span-6">
                     <label
                         htmlFor="fileUpload"
-                        className="block text-sm font-medium text-gray-700">
+                        className="block text-sm font-medium text-gray-700"
+                    >
                         Product Images
                     </label>
                     <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
-                        <div className="space-y-1 text-center">
-                            <svg
-                                className="mx-auto h-12 w-12 text-gray-400"
-                                stroke="currentColor"
-                                fill="none"
-                                viewBox="0 0 48 48"
-                                aria-hidden="true">
-                                <path
-                                    d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                                    strokeWidth={2}
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round" />
-                            </svg>
-                            <div className="flex text-sm text-gray-600">
-                                <label
-                                    htmlFor="fileUpload"
-                                    className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
-                                    <span>Upload a file</span>
-                                    <input
-                                        id="fileUpload"
-                                        name="fileUpload"
-                                        type="file"
-                                        className="sr-only"
-                                        multiple
-                                        accept="image/*" />
-                                </label>
+                        {data?.productImages?.length > 0 ? (
+                            <div className="space-y-1 text-center">
+                                {data?.productImages?.map((file, index) => (
+                                    <p
+                                        className="cursor-pointer"
+                                        key={index}
+                                        onClick={() => handleImageClick(index, setData)}
+                                    >
+                                        {file}
+                                    </p>
+                                ))}
                             </div>
-                        </div>
+                        ) : (
+                            <div className="space-y-1 text-center">
+                                <svg
+                                    className="mx-auto h-12 w-12 text-gray-400"
+                                    stroke="currentColor"
+                                    fill="none"
+                                    viewBox="0 0 48 48"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                                        strokeWidth={2}
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                </svg>
+                                <div className="flex text-sm text-gray-600">
+                                    <label
+                                        htmlFor="fileUpload"
+                                        className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
+                                    >
+                                        <span>Upload a file</span>
+                                        <input
+                                            id="fileUpload"
+                                            type="file"
+                                            className="sr-only"
+                                            multiple
+                                            accept="image/*"
+                                            onChange={(e) => handleImageUpload(e, setData)}
+                                        />
+                                    </label>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
 
@@ -121,6 +159,8 @@ const Page = () => {
                     </label>
                     <div className="mt-1">
                         <input
+                            onChange={(e) => handleInputChange(e, setData)}
+                            value={data.price}
                             type="number"
                             name="price"
                             autoComplete="family-name"
@@ -137,12 +177,16 @@ const Page = () => {
                     </label>
                     <div className="mt-1">
                         <select
+                            onChange={(e) => handleInputChange(e, setData)}
+                            value={data.category}
                             name="category"
                             className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
-                            <option value="">Select Category</option>
-                            <option value="IWATCH ULTRA">IWATCH</option>
-                            <option value="AIRPOD">AIRPOD</option>
-                            <option value="T-SHIRTS">TSHIRTS</option>
+                            <option value="Bride and Groom">Bride and Groom</option>
+                            <option value="Saree">Saree</option>
+                            <option value="Lehenga Choli">Lehenga Choli</option>
+                            <option value="Salwar Kameez">Salwar Kameez</option>
+                            <option value="Mens">Mens</option>
+                            <option value="Kids">Kids</option>
                         </select>
                     </div>
                 </div>
@@ -158,7 +202,8 @@ const Page = () => {
                             <button
                                 key={size}
                                 type="button"
-                                className={`inline-flex items-center justify-center h-8 w-8 rounded-full border`}
+                                className={`inline-flex items-center justify-center h-8 w-8 rounded-full border ${data?.sizes?.includes(size) ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-600'}`}
+                                onClick={() => handleSizeToggle(size, setData)}
                             >
                                 {size}
                             </button>
@@ -170,10 +215,10 @@ const Page = () => {
             <Switch.Group as="div" className="flex gap-x-4 sm:col-span-2">
                 <div className="flex h-6 items-center">
                     <Switch
-                        checked={available}
-                        onChange={setIsAvailable}
+                        checked={data.stockAvailable}
+                        onChange={(checked) => handleStockAvailableChange(checked, setData)}
                         className={classNames(
-                            available ? 'bg-indigo-600' : 'bg-gray-200',
+                            data.stockAvailable ? 'bg-indigo-600' : 'bg-gray-200',
                             'flex w-8 flex-none cursor-pointer rounded-full p-px ring-1 ring-inset ring-gray-900/5 transition-colors duration-200 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
                         )}
                     >
@@ -181,14 +226,14 @@ const Page = () => {
                         <span
                             aria-hidden="true"
                             className={classNames(
-                                available ? 'translate-x-3.5' : 'translate-x-0',
+                                data.stockAvailable ? 'translate-x-3.5' : 'translate-x-0',
                                 'h-4 w-4 transform rounded-full bg-white shadow-sm ring-1 ring-gray-900/5 transition duration-200 ease-in-out'
                             )}
                         />
                     </Switch>
                 </div>
                 <Switch.Label className="text-md leading-6 text-gray-600">
-                    By selecting this, you agree that product is available in stocks.
+                    By selecting this, you agree that the product is available in stocks.
                 </Switch.Label>
             </Switch.Group>
             {/* Buttons */}
