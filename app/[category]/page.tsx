@@ -6,7 +6,7 @@ const Page = async ({ params }: { params: { category: string } }) => {
   const productsList = await getProducts(category);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-6 min-h-screen">
+    <div className="mx-auto max-w-6xl px-4 py-6">
       <div className="md:flex md:items-center md:justify-between py-5">
         <h2 className="text-center text-3xl capitalize">
           Explore Our {category} products
@@ -14,7 +14,7 @@ const Page = async ({ params }: { params: { category: string } }) => {
       </div>
 
       {productsList.length === 0 ? (
-        <div className="h-80 flex">
+        <div className="h-96 flex">
           <h2 className="text-xl text-red-500 m-auto">
             No products available at the moment.
           </h2>
