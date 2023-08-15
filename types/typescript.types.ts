@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase/firestore";
+
 export type MobileNavigationProps = {
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -12,9 +14,10 @@ export type MobileNavigationProps = {
     productName: string;
     slug: string;
     productDescription: string;
-    productImages: string[];
-    price: string;
+    productImages: (string | File)[];
+    price: string | number;
     category: string;
     sizes: string[];
     stockAvailable: boolean;
+    createdAt?: Timestamp;
 }
