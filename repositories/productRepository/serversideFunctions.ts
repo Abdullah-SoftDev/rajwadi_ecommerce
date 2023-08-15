@@ -1,6 +1,6 @@
 import { db } from "@/firebase/firebaseConfig";
 import { Product } from "@/types/typescript.types";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 
 export const getProducts = async (category: string) => {
     const productsRef = collection(db, 'products');
@@ -9,5 +9,12 @@ export const getProducts = async (category: string) => {
         doc.data() as Product
     );
     return products;
+};
+
+export const getProduct = async (slug: string) => {
+    const productRef = doc(db, "products", slug);
+    const docSnapshot = await getDoc(productRef);
+    const productData = docSnapshot.data() as Product;
+    return productData;
 };
   

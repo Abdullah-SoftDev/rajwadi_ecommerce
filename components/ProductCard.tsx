@@ -2,9 +2,9 @@ import { Product } from "@/types/typescript.types"
 import Link from "next/link"
 
 const ProductCard = ({product}:{product:Product}) => {
-    const { productImages, productName, price } = product;
+    const { productImages, productName, price, category, slug } = product;
     return (
-        <Link href={"/"} className="block mb-8">
+        <Link href={`/${category}/${slug}`} className="block mb-8">
             <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg shadow-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
                 <div className="group">
                     <img
