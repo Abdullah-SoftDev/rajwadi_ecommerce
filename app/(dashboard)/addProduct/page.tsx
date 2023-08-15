@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { Switch } from '@headlessui/react'
 import { Product } from '@/types/typescript.types';
-import { handelSubmitForm, handleInputChange, handleImageClick, handleImageUpload, handleSizeToggle, handleStockAvailableChange, handleSubmitImage, cancelForm } from '@/repositories/productRepository';
+import { handelSubmitForm, handleInputChange, handleImageClick, handleImageUpload, handleSizeToggle, handleStockAvailableChange, handleSubmitImage, cancelForm } from '@/repositories/productRepository/clientsideFunctions';
 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
