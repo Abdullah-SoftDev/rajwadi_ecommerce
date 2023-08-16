@@ -13,6 +13,7 @@ function classNames(...classes: string[]) {
 const ProfileDropdown = () => {
   const [user] = useAuthState(auth);
   const [signOut] = useSignOut(auth);
+  // console.log("facebookUser",user)
   return (
     <div className="md:ml-4 ml-2 flex items-center">
       {user ? (

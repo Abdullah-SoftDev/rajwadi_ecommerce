@@ -1,40 +1,44 @@
 import { Drawer } from "vaul";
-import { useSignInWithGoogle } from "react-firebase-hooks/auth";
+import { useSignInWithFacebook, useSignInWithGoogle } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/firebaseConfig";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const LoginDrawer = () => {
   const [signInWithGoogle, googleUser, googleLoading, googleError] = useSignInWithGoogle(auth);
+  const [signInWithFacebook, facebookUser, facebookLoading, facebookError] = useSignInWithFacebook(auth);
+
   const handleGoogleSignIn = () => {
-      signInWithGoogle();
+    signInWithGoogle();
   };
 
-  if (googleError) {
+  const handleFacebookSignIn = () => {
+    signInWithFacebook();
+  };
+
+  if (googleError || facebookError) {
     toast.error(
-      googleError?.message
+      (googleError || facebookError)?.message
     );
   }
 
-  if (googleUser) {
+  if (googleUser || facebookUser) {
     return null;
   }
 
-  console.log(googleUser)
-
   return (
     <>
-    <ToastContainer
-      position="top-right"
-      autoClose={1000}
-      hideProgressBar={false}
-      newestOnTop={false}
-      closeOnClick
-      rtl={false}
-      pauseOnFocusLoss
-      draggable
-      pauseOnHover
-      theme="light" />
+      <ToastContainer
+        position="top-right"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light" />
       <Drawer.Root shouldScaleBackground>
         <Drawer.Trigger asChild>
           <button className="sm:ml-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gray-900 hover:bg-gray-700 focus:outline-none">
@@ -81,22 +85,33 @@ const LoginDrawer = () => {
                   <img
                     src="https://www.svgrepo.com/show/347118/loader-4.svg"
                     className="w-6 h-6 animate-spin"
-                    alt="" />}
+                    alt="" />
+                }
               </button>
               <button
-                className={`w-full max-w-xl text-center py-3 my-3 border flex space-x-2 items-center justify-center border-slate-200 rounded-lg text-slate-700 hover:border-slate-400 hover:text-slate-900 hover:shadow transition duration-150`}
+                onClick={handleFacebookSignIn}
+                className={`w-full max-w-xl text-center py-3 my-3 border flex space-x-2 items-center justify-center border-slate-200 rounded-lg text-slate-700 hover:border-slate-400 hover:text-slate-900 hover:shadow transition duration-150 ${facebookLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+                disabled={facebookLoading}
               >
-                <img
-                  src="https://www.svgrepo.com/show/448224/facebook.svg"
-                  className="w-8 h-8"
-                  alt="" />
-                <span>Login with Facebook</span>
+                {!facebookLoading ? <>
+                  <img
+                    src="https://www.svgrepo.com/show/448224/facebook.svg"
+                    className="w-6 h-6"
+                    alt="" />
+                  <span>Login with Facebook</span>
+                </>
+                  :
+                  <img
+                    src="https://www.svgrepo.com/show/347118/loader-4.svg"
+                    className="w-6 h-6 animate-spin"
+                    alt="" />
+                }
               </button>
             </div>
           </Drawer.Content>
         </Drawer.Portal>
       </Drawer.Root>
-      </>
+    </>
   );
 };
 
