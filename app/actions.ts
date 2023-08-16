@@ -1,5 +1,9 @@
 'use server'
 
+import { db } from "@/firebase/firebaseConfig";
+import { Product } from "@/types/typescript.types";
+import { serverTimestamp, Timestamp, setDoc, doc } from "firebase/firestore";
+
 export async function checkServiceability(pincode: string) {
     try {
         const response = await fetch('http://localhost:3000/api/pincodes');
@@ -30,3 +34,22 @@ export async function checkServiceability(pincode: string) {
 //     console.log(downloadURLs)
 //     return downloadURLs;
 // };
+
+
+export const handelSubmitForm = async (data: Product) => {
+    const { productName, slug, productDescription, productImages, price, category, sizes, stockAvailable } = data;
+    const newData: Product = {
+        productName: productName.trim(),
+        slug,
+        productDescription,
+        price: Number(price),
+        category: category.toLowerCase(),
+        productImages,
+        sizes,
+        stockAvailable,
+        createdAt: serverTimestamp() as Timestamp,
+    }
+
+    await setDoc(doc(db, "products", `${newData.slug}`), newData);
+    console.log(newData)
+}

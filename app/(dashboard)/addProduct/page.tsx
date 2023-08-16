@@ -2,7 +2,8 @@
 import { useState } from 'react'
 import { Switch } from '@headlessui/react'
 import { Product } from '@/types/typescript.types';
-import { handelSubmitForm, handleInputChange, handleImageClick, handleImageUpload, handleSizeToggle, handleStockAvailableChange, handleSubmitImage, cancelForm } from '@/repositories/productRepository/clientsideFunctions';
+import { handleInputChange, handleImageClick, handleImageUpload, handleSizeToggle, handleStockAvailableChange, handleSubmitImage, cancelForm } from '@/repositories/productRepository/clientsideFunctions';
+import { handelSubmitForm } from '@/app/actions';
 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
@@ -22,12 +23,39 @@ const Page = () => {
         stockAvailable: false
     })
 
-    const [isPublishing, setIsPublishing] = useState<boolean>(false);
+    const { productName, slug, productDescription, productImages, price, category, sizes } = data;
+
     const [isImgUpLoading, setIsImgUpLoading] = useState<boolean>(false);
     const [imguploaded, setIsImgUploaded] = useState<boolean>(false);
 
+    const submitForm = async () => {
+        if (!productName || !slug || !productDescription || productImages.length === 0 || !price || !category || sizes.length === 0) {
+            alert("Please fill all required fields.");
+            return;
+        }
+
+        if (!imguploaded) {
+            alert("Please upload images before submitting.");
+            return;
+        }
+        await handelSubmitForm(data);
+        setData({
+            productName: "",
+            slug: "",
+            productDescription: "",
+            productImages: [],
+            price: "",
+            category: "",
+            sizes: [],
+            stockAvailable: false,
+        });
+        setIsImgUploaded(false);
+    }
+
     return (
-        <form onSubmit={(e) => handelSubmitForm(e, data, setData, setIsPublishing, setIsImgUploaded, imguploaded)} className="space-y-8 mx-auto max-w-5xl px-4 py-14">
+        <form
+            action={submitForm}
+            className="space-y-8 mx-auto max-w-5xl px-4 py-14">
             {/* Headings */}
             <div>
                 <h3 className="text-lg leading-6 font-medium text-gray-900">
@@ -260,8 +288,8 @@ const Page = () => {
                 </button>
                 <button
                     type="submit"
-                    className={`ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${isPublishing ? "opacity-50 cursor-not-allowed disabled:opacity-50 disabled:cursor-not-allowed" : ""}`} disabled={isPublishing}>
-                    {isPublishing ? "Publishing..." : "Publish"}
+                    className='ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'>
+                    Publish
                 </button>
             </div>
         </form>

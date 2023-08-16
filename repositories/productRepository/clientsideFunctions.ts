@@ -1,8 +1,8 @@
-import { db, storage } from "@/firebase/firebaseConfig";
+import { storage } from "@/firebase/firebaseConfig";
 import { Product } from "@/types/typescript.types";
-import { doc, serverTimestamp, setDoc, Timestamp } from "firebase/firestore";
+import { Timestamp } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { ChangeEvent, FormEvent } from "react";
+import { ChangeEvent } from "react";
 
 export const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>, setData: Function) => {
     const { name, value } = e.target;
@@ -97,65 +97,6 @@ export const handleSizeToggle = (selectedSize: string, setData: Function) => {
             : [...prevData.sizes, selectedSize],
     }));
 };
-
-export const handelSubmitForm = async (
-    e: FormEvent<HTMLFormElement>,
-    data: Product,
-    setData: Function,
-    setIsPublishing: Function,
-    setIsImgUploaded: Function,
-    imguploaded: boolean,
-) => {
-    e.preventDefault();
-    setIsPublishing(true);
-
-    const { productName, slug, productDescription, productImages, price, category, sizes, stockAvailable } = data;
-
-    if (!productName || !slug || !productDescription || productImages.length === 0 || !price || !category || sizes.length === 0) {
-        alert("Please fill all required fields.");
-        setIsPublishing(false);
-        return;
-    }
-
-    if (!imguploaded) {
-        alert("Please upload images before submitting.");
-        setIsPublishing(false);
-        return;
-    }
-
-    try {
-        const newData: Product = {
-            productName: productName.trim(),
-            slug,
-            productDescription,
-            price: Number(price),
-            category: category.toLowerCase(),
-            productImages,
-            sizes,
-            stockAvailable,
-            createdAt: serverTimestamp() as Timestamp,
-        }
-
-        await setDoc(doc(db, "products", `${newData.slug}`), newData);
-        console.log(newData)
-
-        setData({
-            productName: "",
-            slug: "",
-            productDescription: "",
-            productImages: [],
-            price: "",
-            category: "",
-            sizes: [],
-            stockAvailable: false,
-        });
-    } catch (error) {
-        console.error('Error submitting form:', error);
-    } finally {
-        setIsPublishing(false);
-        setIsImgUploaded(false);
-    }
-}
 
 export const cancelForm = (setData: Function) => {
     setData({
