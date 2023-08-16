@@ -9,7 +9,7 @@ export default async function Page({ params }: { params: { slug: string, categor
     const { slug, category } = params;
     const product = await getProduct(slug)
     const { productName, productDescription, price, productImages, sizes } = product;
-    const descArray = productDescription.split(', ');
+    const descArray = productDescription.split(',');
 
     return (
         <div className="mx-auto max-w-6xl px-4 pt-6">
@@ -49,7 +49,7 @@ export default async function Page({ params }: { params: { slug: string, categor
                     </div>
                 </div>
             </div>
-            <RecommendedProductSlider />
+            <RecommendedProductSlider slug={slug} category={category}/>
         </div>
     )
 }

@@ -17,4 +17,14 @@ export const getProduct = async (slug: string) => {
     const productData = docSnapshot.data() as Product;
     return productData;
 };
+
+export const getRecommendedProducts = async (category: string, slug:string) => {
+    const productsRef = collection(db, 'products');
+    const querySnapshot = await getDocs(query(productsRef, where('category', '==', category)));
+    const products: Product[] = querySnapshot.docs.map((doc) => 
+        doc.data() as Product
+    );
+    const filteredProducts = products.filter((product) => product.slug !== slug);
+    return filteredProducts;
+};
   
