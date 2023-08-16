@@ -4,6 +4,7 @@ import BuyNowButton from "./components/BuyNowButton";
 import ImageGallery from "./components/ImageGallery";
 import RecommendedProductSlider from "./components/RecommendedProductSlider";
 import ServiceForm from "./components/ServiceForm";
+import SizePicker from "./components/SizePicker";
 
 export default async function Page({ params }: { params: { slug: string, category: string } }) {
     const { slug, category } = params;
@@ -41,6 +42,7 @@ export default async function Page({ params }: { params: { slug: string, categor
                                 }
                             </ul>
                         </div>
+                        <SizePicker sizes={sizes} />
                         <ServiceForm />
                         <div className="mt-8 space-x-5 flex sm:flex-col1 items-center">
                             <AddToCartButton />
