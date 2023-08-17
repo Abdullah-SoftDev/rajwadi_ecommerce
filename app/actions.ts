@@ -3,7 +3,7 @@
 import { db } from "@/firebase/firebaseConfig";
 import { Product } from "@/types/typescript.types";
 import { User } from "firebase/auth";
-import { serverTimestamp, Timestamp, setDoc, doc } from "firebase/firestore";
+import { serverTimestamp, Timestamp, setDoc, doc, deleteDoc } from "firebase/firestore";
 
 export async function checkServiceability(pincode: string) {
     try {
@@ -66,4 +66,9 @@ export const addToCart = async (productName: string, productDescription: string,
         createdAt: serverTimestamp(),
     });
     console.log("Add product done ✅")
+}
+
+export const removeFromCart = async (slug: string, userData: User | null) => {
+    await deleteDoc(doc(db, `users/${userData?.uid}/cart/${slug}`));
+    console.log("Remove product done ✅")
 }
