@@ -42,16 +42,11 @@ export default async function Page({ params }: { params: { slug: string, categor
                                 }
                             </ul>
                         </div>
-                        <SizePicker sizes={sizes} />
-                        <ServiceForm />
-                        <div className="mt-8 space-x-5 flex sm:flex-col1 items-center">
-                            <AddToCartButton product={product}/>
-                            <BuyNowButton />
-                        </div>
+                        <SizePicker sizes={sizes} product={product} />
                     </div>
                 </div>
             </div>
-            <RecommendedProductSlider slug={slug} category={category}/>
+            <RecommendedProductSlider slug={slug} category={category} />
         </div>
     )
 }

@@ -28,25 +28,26 @@ const Cart = ({ cartOpen, setCartOpen }: CartProps) => {
 
   const [cartData, loading] = useCollectionData(cartQuery);
 
-  const handelRemoveFromCart = async (slug: string) => {
+  const handelRemoveFromCart = async (id: string) => {
     if (!user) {
       alert('Login first');
       return;
     }
-    await deleteDoc(doc(db, `users/${user?.uid}/cart/${slug}`));
+    await deleteDoc(doc(db, `users/${user?.uid}/cart/${id}`));
   }
 
-  const handelIncrementQty = async (slug: string) => {
+  const handelIncrementQty = async (id: string) => {
     if (userData) {
-      await incrementQty(userData, slug);
+      await incrementQty(userData, id);
     }
   }
 
-  const handelDecrementQty = async (slug: string) => {
+  const handelDecrementQty = async (id: string) => {
     if (userData) {
-      await decrementQty(userData, slug);
+      await decrementQty(userData, id);
     }
   }
+
 
   return (
     <Transition.Root show={cartOpen} as={Fragment}>
@@ -124,11 +125,11 @@ const Cart = ({ cartOpen, setCartOpen }: CartProps) => {
                                         </h3>
                                         <p className="ml-4">₹{product.price}</p>
                                       </div>
-                                      <p className="mt-1 text-sm text-gray-500">{product.category}</p>
+                                      <p className="mt-1 text-sm text-gray-500">Size: {product.selectedSize}</p>
                                     </div>
                                     <div className="flex flex-1 items-end justify-between text-sm">
                                       <div className="flex items-center">
-                                      <form action={() => handelDecrementQty(product.slug)}>
+                                      <form action={() => handelDecrementQty(product.id)}>
                                         <button
                                           type="submit"
                                           className="p-1 border border-gray-300 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -152,7 +153,7 @@ const Cart = ({ cartOpen, setCartOpen }: CartProps) => {
 
                                         <p className="mx-2 text-black">{product?.quantity}</p>
 
-                                        <form action={() => handelIncrementQty(product.slug)}>
+                                        <form action={() => handelIncrementQty(product.id)}>
                                           <button
                                             type="submit"
                                             className="p-1 border border-gray-300 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -177,7 +178,7 @@ const Cart = ({ cartOpen, setCartOpen }: CartProps) => {
 
                                       <div className="flex">
                                         <button
-                                          onClick={() => handelRemoveFromCart(product.slug)}
+                                          onClick={() => handelRemoveFromCart(product.id)}
                                           type="button"
                                           className="font-medium text-indigo-600 hover:text-indigo-500"
                                         >

@@ -8,7 +8,7 @@ export const fetchUserData = async (user: User, setUserData: Function) => {
         const userDocSnapshot = await getDoc(userDocRef);
 
         if (userDocSnapshot.exists()) {
-            const userData:User = userDocSnapshot.data() as User;
+            const userData: User = userDocSnapshot.data() as User;
             setUserData(userData);
         } else {
             console.log("User document does not exist.");
