@@ -3,7 +3,7 @@
 import { db } from "@/firebase/firebaseConfig";
 import { Product } from "@/types/typescript.types";
 import { User } from "firebase/auth";
-import { serverTimestamp, Timestamp, setDoc, doc, deleteDoc, collection, getDocs, query, where, getDoc, updateDoc } from "firebase/firestore";
+import { serverTimestamp, Timestamp, setDoc, doc, deleteDoc, collection, getDocs, query, where, getDoc, updateDoc, increment } from "firebase/firestore";
 
 export async function checkServiceability(pincode: string) {
     try {
@@ -49,14 +49,14 @@ export const handelSubmitForm = async (data: Product) => {
         sizes,
         stockAvailable,
         createdAt: serverTimestamp() as Timestamp,
-        quantity:1
+        quantity: 1
     }
 
     await setDoc(doc(db, "products", `${newData.slug}`), newData);
     console.log(newData)
 }
 
-export const addToCart = async (productName: string, productDescription: string, price: string | number, productImages: (string | File)[], slug: string, category: string, userData: User | null, quantity:number) => {
+export const addToCart = async (productName: string, productDescription: string, price: string | number, productImages: (string | File)[], slug: string, category: string, userData: User | null, quantity: number) => {
     await setDoc(doc(db, `users/${userData?.uid}/cart/${slug}`), {
         productName: productName,
         slug: slug,
@@ -65,7 +65,7 @@ export const addToCart = async (productName: string, productDescription: string,
         category: category,
         productImages: productImages,
         createdAt: serverTimestamp(),
-        quantity:quantity
+        quantity: quantity
     });
     console.log("Add product done ✅")
 }
@@ -75,31 +75,29 @@ export const removeFromCart = async (slug: string, userData: User | null) => {
     console.log("Remove product done ✅")
 }
 
-export const incrementQty = async (userData:User, slug:string) => {
+export const incrementQty = async (userData: User, slug: string) => {
     const cartRef = doc(db, `users/${userData?.uid}/cart/${slug}`);
     const cartSnapshot = await getDoc(cartRef);
     if (cartSnapshot.exists()) {
         await updateDoc(cartRef, {
-          quantity: cartSnapshot.data().quantity + 1
+            quantity: increment(1),
         });
-      }
-    console.log("Increase qty 😍",slug)
+    }
+    console.log("Increase qty 😍", slug)
 }
 
-export const decrementQty = async (userData:User, slug:string) => {
+export const decrementQty = async (userData: User, slug: string) => {
     const cartRef = doc(db, `users/${userData?.uid}/cart/${slug}`);
     const cartSnapshot = await getDoc(cartRef);
     if (cartSnapshot.exists()) {
         const currentQuantity = cartSnapshot.data().quantity;
         if (currentQuantity > 1) {
-            // Decrement quantity by 1
             await updateDoc(cartRef, {
-              quantity: currentQuantity - 1,
+                quantity: increment(-1),
             });
-          } else {
-            // Delete the item if quantity becomes 1
+        } else {
             await deleteDoc(cartRef);
-          }
-      }
-    console.log("Decrease qty 😍",slug)
+        }
+    }
+    console.log("Decrease qty 😍", slug)
 }
