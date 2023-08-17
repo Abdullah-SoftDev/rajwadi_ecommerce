@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { CartProps } from "@/types/typescript.types";
@@ -7,9 +7,20 @@ import { auth, db } from "@/firebase/firebaseConfig";
 import { query, collection, orderBy, deleteDoc, doc } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import { incrementQty } from "@/app/actions";
+import { fetchUserData } from "@/repositories/userRepository/clientsideFunctions";
+import { User } from "firebase/auth";
 
 const Cart = ({ cartOpen, setCartOpen }: CartProps) => {
   const [user] = useAuthState(auth);
+  const [userData, setUserData] = useState<User | null>(null);
+
+  useEffect(() => {
+      if (user) {
+          fetchUserData(user, setUserData);
+      }
+  }, [user]);
+  
   const cartQuery = query(
     collection(db, `users/${user?.uid}/cart`),
     orderBy('createdAt')
@@ -23,6 +34,12 @@ const Cart = ({ cartOpen, setCartOpen }: CartProps) => {
       return;
     }
     await deleteDoc(doc(db, `users/${user?.uid}/cart/${slug}`));
+  }
+
+  const handelIncrementQty = async (slug: string) => {
+    if (userData) {
+      await incrementQty(userData, slug);
+    }
   }
 
   return (
@@ -128,26 +145,27 @@ const Cart = ({ cartOpen, setCartOpen }: CartProps) => {
 
                                         <p className="mx-2 text-black">{product?.quantity}</p>
 
-                                        <button
-                                          // onClick={() => handleIncrementQuantity(product.slug)}
-                                          type="button"
-                                          className="p-1 border border-gray-300 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                                        >
-                                          <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke="currentColor"
-                                            className="h-4 w-4"
+                                        <form action={() => handelIncrementQty(product.slug)}>
+                                          <button
+                                            type="submit"
+                                            className="p-1 border border-gray-300 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                           >
-                                            <path
-                                              strokeLinecap="round"
-                                              strokeLinejoin="round"
-                                              strokeWidth={2}
-                                              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                                            />
-                                          </svg>
-                                        </button>
+                                            <svg
+                                              xmlns="http://www.w3.org/2000/svg"
+                                              fill="none"
+                                              viewBox="0 0 24 24"
+                                              stroke="currentColor"
+                                              className="h-4 w-4"
+                                            >
+                                              <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                                              />
+                                            </svg>
+                                          </button>
+                                        </form>
                                       </div>
 
                                       <div className="flex">
@@ -162,7 +180,6 @@ const Cart = ({ cartOpen, setCartOpen }: CartProps) => {
                                     </div>
                                   </div>
                                 </li>
-
                               ))}
                             </ul>
                           </div>

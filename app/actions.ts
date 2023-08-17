@@ -3,7 +3,7 @@
 import { db } from "@/firebase/firebaseConfig";
 import { Product } from "@/types/typescript.types";
 import { User } from "firebase/auth";
-import { serverTimestamp, Timestamp, setDoc, doc, deleteDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { serverTimestamp, Timestamp, setDoc, doc, deleteDoc, collection, getDocs, query, where, getDoc, updateDoc } from "firebase/firestore";
 
 export async function checkServiceability(pincode: string) {
     try {
@@ -73,4 +73,15 @@ export const addToCart = async (productName: string, productDescription: string,
 export const removeFromCart = async (slug: string, userData: User | null) => {
     await deleteDoc(doc(db, `users/${userData?.uid}/cart/${slug}`));
     console.log("Remove product done ✅")
+}
+
+export const incrementQty = async (userData:User, slug:string) => {
+    const cartRef = doc(db, `users/${userData?.uid}/cart/${slug}`);
+    const cartSnapshot = await getDoc(cartRef);
+    if (cartSnapshot.exists()) {
+        await updateDoc(cartRef, {
+          quantity: cartSnapshot.data().quantity + 1
+        });
+      }
+    console.log("Increase qty 😍",slug)
 }
