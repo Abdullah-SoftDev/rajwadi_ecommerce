@@ -1,29 +1,45 @@
+'use client'
 import { Drawer } from "vaul";
 import { useSignInWithFacebook, useSignInWithGoogle } from "react-firebase-hooks/auth";
-import { auth } from "@/firebase/firebaseConfig";
+import { auth, db } from "@/firebase/firebaseConfig";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { doc, setDoc } from "firebase/firestore";
+import { SyntheticEvent } from "react";
 
 const LoginDrawer = () => {
-  const [signInWithGoogle, googleUser, googleLoading, googleError] = useSignInWithGoogle(auth);
-  const [signInWithFacebook, facebookUser, facebookLoading, facebookError] = useSignInWithFacebook(auth);
 
-  const handleGoogleSignIn = () => {
-    signInWithGoogle();
+  const [signInWithGoogle, googleUser, loading1, googleError] = useSignInWithGoogle(auth);
+  const [signInWithFacebook, facebookUser, loading2, facebookError] = useSignInWithFacebook(auth);
+
+  // Create user document in Firestore on google authentication
+  const handleGoogleSignIn = async (event: SyntheticEvent) => {
+    event.preventDefault();
+
+    const result = await signInWithGoogle();
+    const user = result?.user;
+
+    if (user) {
+      const docRef = doc(db, `users/${user.uid}`);
+      await setDoc(docRef, JSON.parse(JSON.stringify(user)));
+    }
   };
 
-  const handleFacebookSignIn = () => {
-    signInWithFacebook();
+  // Create user document in Firestore on firebase authentication
+  const handleFacebookSignIn = async (event: SyntheticEvent) => {
+    event.preventDefault();
+
+    const result = await signInWithFacebook();
+    const user = result?.user;
+
+    if (user) {
+      const docRef = doc(db, `users/${user.uid}`);
+      await setDoc(docRef, JSON.parse(JSON.stringify(user)));
+    }
   };
 
   if (googleError || facebookError) {
-    toast.error(
-      (googleError || facebookError)?.message
-    );
-  }
-
-  if (googleUser || facebookUser) {
-    return null;
+    toast.error((googleError || facebookError)?.message)
   }
 
   return (
@@ -70,11 +86,12 @@ const LoginDrawer = () => {
                 </button>
               </form>
               <button
+                type="button"
                 onClick={handleGoogleSignIn}
-                className={`w-full text-center py-3 my-3 border flex space-x-2 items-center justify-center border-slate-200 rounded-lg text-slate-700 hover:border-slate-400 hover:text-slate-900 hover:shadow transition duration-150 ${googleLoading ? "opacity-50 cursor-not-allowed" : ""}`}
-                disabled={googleLoading}
+                className={`w-full text-center py-3 my-3 border flex space-x-2 items-center justify-center border-slate-200 rounded-lg text-slate-700 hover:border-slate-400 hover:text-slate-900 hover:shadow transition duration-150 ${loading1 ? "opacity-50 cursor-not-allowed" : ""}`}
+                disabled={loading1}
               >
-                {!googleLoading ? <>
+                {!loading1 ? <>
                   <img
                     src="https://www.svgrepo.com/show/355037/google.svg"
                     className="w-6 h-6"
@@ -90,10 +107,10 @@ const LoginDrawer = () => {
               </button>
               <button
                 onClick={handleFacebookSignIn}
-                className={`w-full max-w-xl text-center py-3 my-3 border flex space-x-2 items-center justify-center border-slate-200 rounded-lg text-slate-700 hover:border-slate-400 hover:text-slate-900 hover:shadow transition duration-150 ${facebookLoading ? "opacity-50 cursor-not-allowed" : ""}`}
-                disabled={facebookLoading}
+                className={`w-full max-w-xl text-center py-3 my-3 border flex space-x-2 items-center justify-center border-slate-200 rounded-lg text-slate-700 hover:border-slate-400 hover:text-slate-900 hover:shadow transition duration-150 ${loading2 ? "opacity-50 cursor-not-allowed" : ""}`}
+                disabled={loading2}
               >
-                {!facebookLoading ? <>
+                {!loading2 ? <>
                   <img
                     src="https://www.svgrepo.com/show/448224/facebook.svg"
                     className="w-6 h-6"
