@@ -3,7 +3,7 @@
 import { db } from "@/firebase/firebaseConfig";
 import { Product } from "@/types/typescript.types";
 import { User } from "firebase/auth";
-import { serverTimestamp, Timestamp, setDoc, doc, deleteDoc } from "firebase/firestore";
+import { serverTimestamp, Timestamp, setDoc, doc, deleteDoc, collection, getDocs, query, where } from "firebase/firestore";
 
 export async function checkServiceability(pincode: string) {
     try {

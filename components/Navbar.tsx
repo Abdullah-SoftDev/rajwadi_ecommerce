@@ -7,6 +7,10 @@ import { navigation } from "@/constants";
 import Cart from "./Cart";
 import { useRouter } from "next/navigation";
 import ProfileDropdown from "./ProfileDropdown";
+import { auth, db } from "@/firebase/firebaseConfig";
+import { collection } from "firebase/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -14,8 +18,12 @@ function classNames(...classes: string[]) {
 
 const Navbar = () => {
   const [cartOpen, setCartOpen] = useState(false);
-  const router = useRouter();
+  const [user] = useAuthState(auth);
+  const [cartData, loading] = useCollectionData(
+    collection(db, `users/${user?.uid}/cart`)
+  );
 
+  const cartLength = cartData?.length || 0;
   return (
     <div className="bg-white sticky top-0 left-0 right-0 z-20">
       <header className="relative bg-white">
@@ -65,7 +73,7 @@ const Navbar = () => {
                     aria-hidden="true"
                   />
                   <span className="absolute animate-pulse top-0 right-1 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-semibold">
-                    0
+                    {cartLength}
                   </span>
                 </div>
               </div>

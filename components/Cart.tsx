@@ -3,36 +3,28 @@ import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { CartProps } from "@/types/typescript.types";
 import Link from "next/link";
-
-const products = [
-  {
-    id: 1,
-    name: "Throwback Hip Bag",
-    href: "/",
-    color: "Salmon",
-    price: "$90.00",
-    quantity: 1,
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
-    imageAlt:
-      "Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
-  },
-  {
-    id: 2,
-    name: "Medium Stuff Satchel",
-    href: "/",
-    color: "Blue",
-    price: "$32.00",
-    quantity: 1,
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
-    imageAlt:
-      "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
-  },
-  // More products...
-];
+import { auth, db } from "@/firebase/firebaseConfig";
+import { query, collection, orderBy, deleteDoc, doc } from "firebase/firestore";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
 const Cart = ({ cartOpen, setCartOpen }: CartProps) => {
+  const [user] = useAuthState(auth);
+  const cartQuery = query(
+    collection(db, `users/${user?.uid}/cart`),
+    orderBy('createdAt')
+  );
+
+  const [cartData, loading] = useCollectionData(cartQuery);
+
+  const handelRemoveFromCart = async (slug: string) => {
+    if (!user) {
+      alert('Login first');
+      return;
+    }
+    await deleteDoc(doc(db, `users/${user?.uid}/cart/${slug}`));
+  }
+
   return (
     <Transition.Root show={cartOpen} as={Fragment}>
       <Dialog as="div" className="relative z-30" onClose={setCartOpen}>
@@ -64,7 +56,7 @@ const Cart = ({ cartOpen, setCartOpen }: CartProps) => {
                   <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
                     <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
                       <div className="flex items-start justify-between">
-                        <Dialog.Title className="text-lg font-medium text-gray-900">
+                        <Dialog.Title className="text-xl font-medium text-gray-900">
                           Shopping cart
                         </Dialog.Title>
                         <div className="ml-3 flex h-7 items-center">
@@ -80,56 +72,102 @@ const Cart = ({ cartOpen, setCartOpen }: CartProps) => {
                         </div>
                       </div>
 
-                      <div className="mt-8">
-                        <div className="flow-root">
-                          <ul
-                            role="list"
-                            className="-my-6 divide-y divide-gray-200"
-                          >
-                            {products.map((product) => (
-                              <li key={product.id} className="flex py-6">
-                                <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                  <img
-                                    src={product.imageSrc}
-                                    alt={product.imageAlt}
-                                    className="h-full w-full object-cover object-center"
-                                  />
-                                </div>
-
-                                <div className="ml-4 flex flex-1 flex-col">
-                                  <div>
-                                    <div className="flex justify-between text-base font-medium text-gray-900">
-                                      <h3>
-                                        <Link href={product.href}>
-                                          {product.name}
-                                        </Link>
-                                      </h3>
-                                      <p className="ml-4">{product.price}</p>
-                                    </div>
-                                    <p className="mt-1 text-sm text-gray-500">
-                                      {product.color}
-                                    </p>
+                      {(cartData?.length === 0) ?
+                        <h2 className="text-xl text-red-500 m-auto py-4">
+                          No products available at the moment.
+                        </h2>
+                        :
+                        <div className="mt-8">
+                          <div className="flow-root">
+                            <ul
+                              role="list"
+                              className="-my-6 divide-y divide-gray-200"
+                            >
+                              {cartData?.map((product, index) => (
+                                <li key={index} className="flex py-6">
+                                  <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                                    <img
+                                      src={product.productImages[0]}
+                                      alt={product.productName}
+                                      className="h-full w-full object-cover object-center"
+                                    />
                                   </div>
-                                  <div className="flex flex-1 items-end justify-between text-sm">
-                                    <p className="text-gray-500">
-                                      Qty {product.quantity}
-                                    </p>
 
-                                    <div className="flex">
-                                      <button
-                                        type="button"
-                                        className="font-medium text-indigo-600 hover:text-indigo-500"
-                                      >
-                                        Remove
-                                      </button>
+                                  <div className="ml-4 flex flex-1 flex-col">
+                                    <div>
+                                      <div className="flex justify-between text-base font-medium text-gray-900">
+                                        <h3>
+                                          <p>{product.productName}</p>
+                                        </h3>
+                                        <p className="ml-4">₹{product.price}</p>
+                                      </div>
+                                      <p className="mt-1 text-sm text-gray-500">{product.category}</p>
+                                    </div>
+                                    <div className="flex flex-1 items-end justify-between text-sm">
+                                      <div className="flex items-center">
+                                        <button
+                                          // onClick={() => handleDecrementQuantity(product.slug)}
+                                          type="button"
+                                          className="p-1 border border-gray-300 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                        >
+                                          <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                            className="h-4 w-4"
+                                          >
+                                            <path
+                                              strokeLinecap="round"
+                                              strokeLinejoin="round"
+                                              strokeWidth={2}
+                                              d="M20 12H4"
+                                            />
+                                          </svg>
+                                        </button>
+
+                                        <p className="mx-2 text-black">0</p>
+
+                                        <button
+                                          // onClick={() => handleIncrementQuantity(product.slug)}
+                                          type="button"
+                                          className="p-1 border border-gray-300 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                        >
+                                          <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                            className="h-4 w-4"
+                                          >
+                                            <path
+                                              strokeLinecap="round"
+                                              strokeLinejoin="round"
+                                              strokeWidth={2}
+                                              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                                            />
+                                          </svg>
+                                        </button>
+                                      </div>
+
+                                      <div className="flex">
+                                        <button
+                                          onClick={() => handelRemoveFromCart(product.slug)}
+                                          type="button"
+                                          className="font-medium text-indigo-600 hover:text-indigo-500"
+                                        >
+                                          Remove
+                                        </button>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                              </li>
-                            ))}
-                          </ul>
+                                </li>
+
+                              ))}
+                            </ul>
+                          </div>
                         </div>
-                      </div>
+                      }
                     </div>
 
                     <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
@@ -162,6 +200,7 @@ const Cart = ({ cartOpen, setCartOpen }: CartProps) => {
                         </p>
                       </div>
                     </div>
+
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
@@ -172,4 +211,5 @@ const Cart = ({ cartOpen, setCartOpen }: CartProps) => {
     </Transition.Root>
   );
 };
+
 export default Cart;
