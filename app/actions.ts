@@ -2,6 +2,7 @@
 
 import { db } from "@/firebase/firebaseConfig";
 import { Product } from "@/types/typescript.types";
+import { User } from "firebase/auth";
 import { serverTimestamp, Timestamp, setDoc, doc } from "firebase/firestore";
 
 export async function checkServiceability(pincode: string) {
@@ -52,4 +53,17 @@ export const handelSubmitForm = async (data: Product) => {
 
     await setDoc(doc(db, "products", `${newData.slug}`), newData);
     console.log(newData)
+}
+
+export const addToCart = async (productName: string, productDescription: string, price: string | number, productImages: (string | File)[], slug: string, category: string, userData: User | null) => {
+    await setDoc(doc(db, `users/${userData?.uid}/cart/${slug}`), {
+        productName: productName,
+        slug: slug,
+        productDescription: productDescription,
+        price: price,
+        category: category,
+        productImages: productImages,
+        createdAt: serverTimestamp(),
+    });
+    console.log("Add product done ✅")
 }

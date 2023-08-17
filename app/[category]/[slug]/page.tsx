@@ -45,7 +45,7 @@ export default async function Page({ params }: { params: { slug: string, categor
                         <SizePicker sizes={sizes} />
                         <ServiceForm />
                         <div className="mt-8 space-x-5 flex sm:flex-col1 items-center">
-                            <AddToCartButton />
+                            <AddToCartButton product={product}/>
                             <BuyNowButton />
                         </div>
                     </div>
