@@ -20,4 +20,5 @@ export type MobileNavigationProps = {
     sizes: string[];
     stockAvailable: boolean;
     createdAt?: Timestamp;
+    quantity?: number
 }

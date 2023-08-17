@@ -12,7 +12,7 @@ import { useDocument } from "react-firebase-hooks/firestore";
 
 
 const AddToCartButton = ({ product }: { product: Product }) => {
-    const { productName, productDescription, price, productImages, slug, category } = product;
+    const { productName, productDescription, price, productImages, slug, category, quantity } = product;
     const [user] = useAuthState(auth);
     const [cartItemDoc] = useDocument(doc(db, `users/${user?.uid}/cart/${slug}`));
 
@@ -29,7 +29,7 @@ const AddToCartButton = ({ product }: { product: Product }) => {
             alert('Login first');
             return;
         }
-        await addToCart(productName, productDescription, price, productImages, slug, category, userData);
+        await addToCart(productName, productDescription, price, productImages, slug, category, userData, quantity!);
     }
     const handelRemoveToCart = async () => {
         if (!user) {

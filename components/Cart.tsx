@@ -126,7 +126,7 @@ const Cart = ({ cartOpen, setCartOpen }: CartProps) => {
                                           </svg>
                                         </button>
 
-                                        <p className="mx-2 text-black">0</p>
+                                        <p className="mx-2 text-black">{product?.quantity}</p>
 
                                         <button
                                           // onClick={() => handleIncrementQuantity(product.slug)}

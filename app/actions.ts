@@ -49,13 +49,14 @@ export const handelSubmitForm = async (data: Product) => {
         sizes,
         stockAvailable,
         createdAt: serverTimestamp() as Timestamp,
+        quantity:1
     }
 
     await setDoc(doc(db, "products", `${newData.slug}`), newData);
     console.log(newData)
 }
 
-export const addToCart = async (productName: string, productDescription: string, price: string | number, productImages: (string | File)[], slug: string, category: string, userData: User | null) => {
+export const addToCart = async (productName: string, productDescription: string, price: string | number, productImages: (string | File)[], slug: string, category: string, userData: User | null, quantity:number) => {
     await setDoc(doc(db, `users/${userData?.uid}/cart/${slug}`), {
         productName: productName,
         slug: slug,
@@ -64,6 +65,7 @@ export const addToCart = async (productName: string, productDescription: string,
         category: category,
         productImages: productImages,
         createdAt: serverTimestamp(),
+        quantity:quantity
     });
     console.log("Add product done ✅")
 }
