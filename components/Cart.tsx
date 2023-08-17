@@ -7,7 +7,7 @@ import { auth, db } from "@/firebase/firebaseConfig";
 import { query, collection, orderBy, deleteDoc, doc } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { incrementQty } from "@/app/actions";
+import { decrementQty, incrementQty } from "@/app/actions";
 import { fetchUserData } from "@/repositories/userRepository/clientsideFunctions";
 import { User } from "firebase/auth";
 
@@ -39,6 +39,12 @@ const Cart = ({ cartOpen, setCartOpen }: CartProps) => {
   const handelIncrementQty = async (slug: string) => {
     if (userData) {
       await incrementQty(userData, slug);
+    }
+  }
+
+  const handelDecrementQty = async (slug: string) => {
+    if (userData) {
+      await decrementQty(userData, slug);
     }
   }
 
@@ -122,9 +128,9 @@ const Cart = ({ cartOpen, setCartOpen }: CartProps) => {
                                     </div>
                                     <div className="flex flex-1 items-end justify-between text-sm">
                                       <div className="flex items-center">
+                                      <form action={() => handelDecrementQty(product.slug)}>
                                         <button
-                                          // onClick={() => handleDecrementQuantity(product.slug)}
-                                          type="button"
+                                          type="submit"
                                           className="p-1 border border-gray-300 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                         >
                                           <svg
@@ -142,6 +148,7 @@ const Cart = ({ cartOpen, setCartOpen }: CartProps) => {
                                             />
                                           </svg>
                                         </button>
+                                        </form>
 
                                         <p className="mx-2 text-black">{product?.quantity}</p>
 

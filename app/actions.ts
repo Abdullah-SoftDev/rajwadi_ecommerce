@@ -85,3 +85,21 @@ export const incrementQty = async (userData:User, slug:string) => {
       }
     console.log("Increase qty 😍",slug)
 }
+
+export const decrementQty = async (userData:User, slug:string) => {
+    const cartRef = doc(db, `users/${userData?.uid}/cart/${slug}`);
+    const cartSnapshot = await getDoc(cartRef);
+    if (cartSnapshot.exists()) {
+        const currentQuantity = cartSnapshot.data().quantity;
+        if (currentQuantity > 1) {
+            // Decrement quantity by 1
+            await updateDoc(cartRef, {
+              quantity: currentQuantity - 1,
+            });
+          } else {
+            // Delete the item if quantity becomes 1
+            await deleteDoc(cartRef);
+          }
+      }
+    console.log("Decrease qty 😍",slug)
+}
