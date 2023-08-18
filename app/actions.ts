@@ -1,9 +1,10 @@
 'use server'
 
-import { db } from "@/firebase/firebaseConfig";
+import { db, storage } from "@/firebase/firebaseConfig";
 import { Product } from "@/types/typescript.types";
 import { User } from "firebase/auth";
 import { serverTimestamp, Timestamp, setDoc, doc, deleteDoc, collection, getDocs, getDoc, updateDoc, increment } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL, uploadString } from "firebase/storage";
 
 export async function checkServiceability(pincode: string) {
     try {
@@ -16,26 +17,17 @@ export async function checkServiceability(pincode: string) {
     }
 }
 
-// export const handleSubmitImage = async (data: Product) => {
-//     const storageRef = ref(storage, `images/${Timestamp.now().seconds}/`);
-//     const downloadURLs: string[] = [];
-//     for (const item of data?.productImages) {
-//         if (!(typeof item === 'string')) {
-//             const file = item as File;
-//             const filePath = `${storageRef.fullPath}/${file.name}`;
-
-//             await uploadBytes(ref(storage, filePath), item);
-
-//             const fileRef = ref(storage, filePath);
-//             const downloadURL = await getDownloadURL(fileRef);
-
-//             downloadURLs.push(downloadURL);
-//         }
-//     }
-//     console.log(downloadURLs)
-//     return downloadURLs;
-// };
-
+export const handleSubmitBannerImage = async (image: string) => {
+    const storageRef = ref(storage, `BannerImages/${Timestamp.now().seconds}/${Math.random().toString(36).substring(7)}`);
+    await uploadString(storageRef, image, 'data_url');
+    const downloadURL = await getDownloadURL(storageRef);
+    const newId = doc(collection(db, 'ids')).id;
+    const cartRef = doc(db, `bannerImages/${newId}`);
+    await setDoc(cartRef, {
+        id: newId,
+        bannerUrl: downloadURL
+    });
+};
 
 export const handelSubmitForm = async (data: Product) => {
     const { productName, slug, productDescription, productImages, price, category, sizes, stockAvailable } = data;
