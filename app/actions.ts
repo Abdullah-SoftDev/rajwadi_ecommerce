@@ -4,7 +4,7 @@ import { db, storage } from "@/firebase/firebaseConfig";
 import { Product } from "@/types/typescript.types";
 import { User } from "firebase/auth";
 import { serverTimestamp, Timestamp, setDoc, doc, deleteDoc, collection, getDocs, getDoc, updateDoc, increment } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL, uploadString } from "firebase/storage";
+import { ref, getDownloadURL, uploadString } from "firebase/storage";
 
 export async function checkServiceability(pincode: string) {
     try {

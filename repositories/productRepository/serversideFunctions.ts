@@ -1,5 +1,5 @@
 import { db } from "@/firebase/firebaseConfig";
-import { Product } from "@/types/typescript.types";
+import { BannerImage, Product } from "@/types/typescript.types";
 import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 
 export const getProducts = async (category: string) => {
@@ -26,5 +26,13 @@ export const getRecommendedProducts = async (category: string, slug:string) => {
     );
     const filteredProducts = products.filter((product) => product.slug !== slug);
     return filteredProducts;
-};
-  
+}
+
+export const getBannerImages = async () => {
+    const productsRef = collection(db, 'bannerImages');
+    const querySnapshot = await getDocs(query(productsRef));
+    const bannerImages: BannerImage[] = querySnapshot.docs.map((doc) => 
+        doc.data() as BannerImage
+    );
+    return bannerImages;
+}

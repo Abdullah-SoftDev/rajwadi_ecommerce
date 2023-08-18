@@ -22,3 +22,8 @@ export type MobileNavigationProps = {
     createdAt?: Timestamp;
     quantity?: number
 }
+
+export type BannerImage = {
+  id:string,
+  bannerUrl:string
+}
