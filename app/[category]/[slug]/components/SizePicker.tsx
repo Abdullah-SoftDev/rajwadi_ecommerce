@@ -34,7 +34,7 @@ export default function SizePicker({ sizes, product }: { sizes: string[], produc
             <ServiceForm />
             <div className="mt-8 space-x-5 flex sm:flex-col1 items-center">
                 <AddToCartButton product={product} selectedSize={selectedSize} />
-                <BuyNowButton />
+                <BuyNowButton product={product}/>
             </div>
         </>
     )

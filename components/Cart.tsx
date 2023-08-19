@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { CartProps, Product } from "@/types/typescript.types";
+import { CartProps } from "@/types/typescript.types";
 import { auth, db } from "@/firebase/firebaseConfig";
 import { query, collection, orderBy, deleteDoc, doc } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -9,6 +9,7 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import { decrementQty, incrementQty } from "@/app/actions";
 import { fetchUserData } from "@/repositories/userRepository/clientsideFunctions";
 import { User } from "firebase/auth";
+import { createCheckout } from "@/lib";
 
 const Cart = ({ cartOpen, setCartOpen }: CartProps) => {
   const [user] = useAuthState(auth);
@@ -20,7 +21,7 @@ const Cart = ({ cartOpen, setCartOpen }: CartProps) => {
     }
   }, [user]);
 
-  const cartQuery = query(collection(db, `users/${user?.uid}/cart`),orderBy("createdAt"));
+  const cartQuery = query(collection(db, `users/${user?.uid}/cart`), orderBy("createdAt"));
   const [cartData, loading] = useCollectionData(cartQuery);
 
   const handelRemoveFromCart = async (id: string) => {
@@ -46,6 +47,16 @@ const Cart = ({ cartOpen, setCartOpen }: CartProps) => {
   const totalSum = cartData?.reduce((accumulator, item) => {
     return accumulator + item.price * item.quantity;
   }, 0);
+
+  const handleBuyNowClick = () => {
+    if(!user){
+      alert("Login first")
+      return
+    }
+      createCheckout(user, {
+          cartData: cartData,
+      });
+}
 
   return (
     <Transition.Root show={cartOpen} as={Fragment}>
@@ -217,7 +228,10 @@ const Cart = ({ cartOpen, setCartOpen }: CartProps) => {
                           Shipping and taxes calculated at checkout.
                         </p>
                         <div className="mt-6">
-                          <button className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">
+                          <button
+                            type="button"
+                            onClick={handleBuyNowClick}
+                            className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">
                             Checkout
                           </button>
                         </div>

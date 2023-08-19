@@ -27,3 +27,16 @@ export type BannerImage = {
   id:string,
   bannerUrl:string
 }
+
+export type CartItem = {
+  id:string,
+  productName: string;
+  slug: string;
+  productDescription: string;
+  productImages: string[];
+  price: number;
+  category: string;
+  size: string;
+  createdAt?: Timestamp;
+  quantity: number
+}

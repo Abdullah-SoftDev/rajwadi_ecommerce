@@ -1,20 +1,26 @@
 'use client'
+import { auth } from "@/firebase/firebaseConfig";
+import { createCheckout } from "@/lib";
+import { Product } from "@/types/typescript.types";
+import { useAuthState } from "react-firebase-hooks/auth";
 
-const BuyNowButton = () => {
-    const user = false;
-    const createCheckout = async () => {
+const BuyNowButton = ({ product }: { product: Product }) => {
+    const [user] = useAuthState(auth);
+    const handleBuyNowClick = () => {
         if (!user) {
-            alert('Please login first.');
-            return;
+            alert('Login first')
+            return
         }
-        console.log("Buy Now Button")
+            createCheckout(user, {
+                cartData: [product],
+            });
     };
 
     return (
         <>
             <button
                 type="button"
-                onClick={createCheckout}
+                onClick={handleBuyNowClick}
                 className="flex-none bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500">
                 Buy Now
             </button>
