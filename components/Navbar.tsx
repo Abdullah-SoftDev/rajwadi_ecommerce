@@ -5,7 +5,6 @@ import { ShoppingBagIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { navigation } from "@/constants";
 import Cart from "./Cart";
-import { useRouter } from "next/navigation";
 import ProfileDropdown from "./ProfileDropdown";
 import { auth, db } from "@/firebase/firebaseConfig";
 import { collection } from "firebase/firestore";
@@ -34,8 +33,8 @@ const Navbar = () => {
           <div className="border-b border-gray-200">
             <div className="flex h-16 items-center">
               {/* Logo */}
-              <Link className="text-red-500" href="/">
-                Abdullah
+              <Link className="text-black-900 text-lg italic" href="/">
+                Navkar Selection
               </Link>
               {/* Navlinks menus */}
               <Popover.Group className="hidden lg:ml-8 lg:block lg:self-stretch">
@@ -58,6 +57,7 @@ const Navbar = () => {
                         </div>
                       )}
                     </Popover>
+                    
                   ))}
                 </div>
               </Popover.Group>

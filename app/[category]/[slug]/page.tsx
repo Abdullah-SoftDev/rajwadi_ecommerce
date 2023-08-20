@@ -1,9 +1,6 @@
 import { getProduct } from "@/repositories/productRepository/serversideFunctions";
-import AddToCartButton from "./components/AddToCartButton";
-import BuyNowButton from "./components/BuyNowButton";
 import ImageGallery from "./components/ImageGallery";
 import RecommendedProductSlider from "./components/RecommendedProductSlider";
-import ServiceForm from "./components/ServiceForm";
 import SizePicker from "./components/SizePicker";
 
 export default async function Page({ params }: { params: { slug: string, category: string } }) {

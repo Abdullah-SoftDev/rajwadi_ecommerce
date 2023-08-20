@@ -223,12 +223,12 @@ const Page = () => {
                             value={data.category}
                             name="category"
                             className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
-                            <option value="Bride and Groom">Bride and Groom</option>
-                            <option value="Saree">Saree</option>
-                            <option value="Lehenga Choli">Lehenga Choli</option>
-                            <option value="Salwar Kameez">Salwar Kameez</option>
-                            <option value="Mens">Mens</option>
-                            <option value="Kids">Kids</option>
+                            <option value="bride-and-groom">Bride and Groom</option>
+                            <option value="saree">Saree</option>
+                            <option value="lehenga-choli">Lehenga Choli</option>
+                            <option value="salwar-kameez">Salwar Kameez</option>
+                            <option value="mens">Mens</option>
+                            <option value="kids">Kids</option>
                         </select>
                     </div>
                 </div>

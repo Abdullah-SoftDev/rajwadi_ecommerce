@@ -5,6 +5,7 @@ import LoginDrawer from "./LoginDrawer";
 import { navigation } from "@/constants";
 import { auth } from "@/firebase/firebaseConfig";
 import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
+import { useRouter } from "next/navigation";
 
 function classNames(...classes: string[]) {
   return classes?.filter(Boolean)?.join(" ");
@@ -12,8 +13,9 @@ function classNames(...classes: string[]) {
 
 const ProfileDropdown = () => {
   const [user] = useAuthState(auth);
+  const router = useRouter();
   const [signOut] = useSignOut(auth);
-  // console.log("facebookUser",user)
+
   return (
     <div className="md:ml-4 ml-2 flex items-center">
       {user ? (
@@ -45,8 +47,11 @@ const ProfileDropdown = () => {
                 </Menu.Item>
               ))}
               <Menu.Button onClick={async () => {await signOut()}} className="px-4 py-2 text-sm text-gray-700 inline-flex w-full hover:bg-gray-100">
-                    SIGN OUT
+                    Sign Out
               </Menu.Button>
+            {user?.uid === 'MVgX7AM8hORNjN9yd7YSXMNwZtV2' && <Menu.Button onClick={() => {router.push("/recentOrders")}}  className="px-4 py-2 text-sm text-gray-700 inline-flex w-full hover:bg-gray-100">
+                    DashBoard
+              </Menu.Button>}
             </Menu.Items>
           </Transition>
         </Menu>
