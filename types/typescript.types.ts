@@ -36,7 +36,7 @@ export type CartItem = {
   productImages: string[];
   price: number;
   category: string;
-  size: string;
+  selectedSize: string;
   createdAt?: Timestamp;
   quantity: number
 }

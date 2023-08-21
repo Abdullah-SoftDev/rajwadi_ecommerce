@@ -17,14 +17,17 @@ export const POST = async (request: Request) => {
                     images: [item.productImages[0]],
                 },
             },
-            quantity: 1,
+            quantity: item.quantity,
         }));
-        
+
         const checkoutSession = await stripe.checkout.sessions.create({
             line_items: lineItems,
             metadata: {
                 userId: uid,
                 images: JSON.stringify(userCartdata.map((item) => item.productImages)),
+                productName: JSON.stringify(userCartdata.map((item) => item.productName)),
+                quantity: JSON.stringify(userCartdata.map((item) => item.quantity)),
+                selectedSize: JSON.stringify(userCartdata.map((item) => item.selectedSize)),
             },
             mode: "payment",
             success_url: `http://localhost:3000/success`,
@@ -32,11 +35,6 @@ export const POST = async (request: Request) => {
         });
         return NextResponse.json({ url: checkoutSession.url });
     } catch (err) {
-        return NextResponse.json(
-            {
-                error: (err as Error).message,
-            },
-            { status: 500 }
-        );
+        return NextResponse.json({ error: (err as Error).message }, { status: 500 })
     }
 }
