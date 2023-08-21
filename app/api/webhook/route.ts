@@ -2,7 +2,8 @@ import type Stripe from "stripe";
 import { stripe } from "@/lib/stripe";
 import { headers } from 'next/headers';
 import { db } from "@/firebase/firebaseConfig";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, serverTimestamp } from "firebase/firestore";
+import { useCollection } from "react-firebase-hooks/firestore";
 
 export async function POST(req: Request) {
     const body = await req.text();
@@ -57,6 +58,13 @@ export async function POST(req: Request) {
             name,
             orderItems,
         });
+
+        // Clear the Cart   ---------- TODO
+        // const cartsRef = collection(db, `users/${userId}/cart`);
+        // const [cartSnapshots] = useCollection(cartsRef);
+        // cartSnapshots?.docs.forEach(async (doc) => {
+        //     await deleteDoc(doc.ref);
+        // });
     }
 
     return new Response(null, { status: 200 })

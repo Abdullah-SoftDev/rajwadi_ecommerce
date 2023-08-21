@@ -1,5 +1,5 @@
 import { db } from "@/firebase/firebaseConfig";
-import { BannerImage, Product } from "@/types/typescript.types";
+import { BannerImage, Order, Product } from "@/types/typescript.types";
 import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 
 export const getProducts = async (category: string) => {
@@ -36,3 +36,12 @@ export const getBannerImages = async () => {
     );
     return bannerImages;
 }
+
+export const getMyOrders = async (uid: string) => {
+    const orderRef = collection(db, 'orders');
+    const querySnapshot = await getDocs(query(orderRef, where('userId', '==', uid)));
+    const orders: Order[] = querySnapshot.docs.map((doc) => 
+        doc.data() as Order
+    );
+    return orders;
+};

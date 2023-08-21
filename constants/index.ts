@@ -23,8 +23,4 @@ export const navigation = [
     name: "KIDS",
     href: "/kids",
   },
-  {
-    name: "MY ORDERS",
-    href: "/my-orders",
-  }
 ];

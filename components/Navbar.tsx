@@ -57,8 +57,24 @@ const Navbar = () => {
                         </div>
                       )}
                     </Popover>
-                    
                   ))}
+                  <Popover className="flex">
+                    {({ open }) => (
+                      <div className="relative flex">
+                        <Link
+                          href={`/myOrders?uid=${user?.uid}`}
+                          className={classNames(
+                            open
+                              ? "border-indigo-600 text-indigo-600 outline-none"
+                              : "border-transparent text-gray-700 hover:text-gray-800",
+                            "relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out outline-none"
+                          )}
+                        >
+                          MY ORDERS
+                        </Link>
+                      </div>
+                    )}
+                  </Popover>
                 </div>
               </Popover.Group>
               {/* Profile Dropdown and ShoppingCart Button */}

@@ -46,6 +46,14 @@ const ProfileDropdown = () => {
                   )}
                 </Menu.Item>
               ))}
+              <Menu.Item>
+                  {({ active }) => (
+                    <Link                           href={`/myOrders?uid=${user?.uid}`}
+                    className={classNames(active ? "bg-gray-100" : "", "px-4 py-2 text-sm text-gray-700 lg:hidden inline-flex w-full")}>
+                      MY ORDERS
+                    </Link>
+                  )}
+                </Menu.Item>
               <Menu.Button onClick={async () => {await signOut()}} className="px-4 py-2 text-sm text-gray-700 inline-flex w-full hover:bg-gray-100">
                     Sign Out
               </Menu.Button>
