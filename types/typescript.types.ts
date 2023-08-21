@@ -42,10 +42,13 @@ export type CartItem = {
 }
 
 export type OrderItem = {
+  category: string;
+  price: number;
   productImage: string[];
   productName: string;
   quantity: number;
   selectedSize: string;
+  slug: string;
 };
 
 export type Order = {

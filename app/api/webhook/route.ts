@@ -24,10 +24,13 @@ export async function POST(req: Request) {
 
     if (event.type === 'checkout.session.completed') {
         // Assuming you have session and metadata variables defined
-        const images = JSON.parse(session?.metadata?.images || "[]");
-        const productNames = JSON.parse(session?.metadata?.productName || "[]");
-        const quantities = JSON.parse(session?.metadata?.quantity || "[]");
-        const selectedSizes = JSON.parse(session?.metadata?.selectedSize || "[]");
+        const images = JSON.parse(session?.metadata?.images!);
+        const productNames = JSON.parse(session?.metadata?.productName!);
+        const quantities = JSON.parse(session?.metadata?.quantity!);
+        const selectedSizes = JSON.parse(session?.metadata?.selectedSize!);
+        const price = JSON.parse(session?.metadata?.price!);
+        const category = JSON.parse(session?.metadata?.category!);
+        const slug = JSON.parse(session?.metadata?.slug!);
 
         // Additional fields
         const userId = session?.metadata?.userId;
@@ -44,6 +47,9 @@ export async function POST(req: Request) {
                 productName: productNames[index],
                 quantity: quantities[index],
                 selectedSize: selectedSizes[index],
+                price: price[index],
+                category: category[index],
+                slug: slug[index],
             };
         })
 
