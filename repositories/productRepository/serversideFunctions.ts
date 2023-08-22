@@ -45,3 +45,12 @@ export const getMyOrders = async (uid: string) => {
     );
     return orders;
 };
+
+export const getRecentOrders = async () => {
+    const productsRef = collection(db, 'orders');
+    const querySnapshot = await getDocs(query(productsRef));
+    const recentOrders: Order[] = querySnapshot.docs.map((doc) => 
+        doc.data() as Order
+    );
+    return recentOrders;
+}
