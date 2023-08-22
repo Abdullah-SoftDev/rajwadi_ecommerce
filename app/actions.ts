@@ -115,3 +115,17 @@ export const decrementQty = async (userData: User, id: string) => {
         }
     }
 }
+
+export const submitCreateFormImages = async (data: Product) => {
+    const storageRef = ref(storage, `images/${Timestamp.now().seconds}/`);
+    const downloadURLs: string[] = [];
+
+    for (const item of data.productImages) {
+        const filePath = `image_${Date.now()}.png`; // Generate unique file path
+        const imageRef = ref(storageRef, filePath); // Create a reference for each image
+        await uploadString(imageRef, item, 'data_url');
+        const downloadURL = await getDownloadURL(imageRef);
+        downloadURLs.push(downloadURL);
+    }
+    return downloadURLs;
+};

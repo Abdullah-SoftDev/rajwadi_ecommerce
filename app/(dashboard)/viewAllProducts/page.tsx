@@ -50,7 +50,9 @@ const Page = async () => {
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{product.price}</td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{(product.stockAvailable) ? "True" : "False"}</td>
                     <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 lg:pr-8">
-                      <Link href="/" className="text-indigo-600 hover:text-indigo-900">
+                      <Link
+                        href={`/updateProduct/${product.slug}`}
+                        className="text-indigo-600 hover:text-indigo-900">
                         Edit
                       </Link>
                     </td>

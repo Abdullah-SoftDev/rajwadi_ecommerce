@@ -14,7 +14,7 @@ export type Product = {
   productName: string;
   slug: string;
   productDescription: string;
-  productImages: (string | File)[];
+  productImages: string[];
   price: string | number;
   category: string;
   sizes: string[];
@@ -61,3 +61,11 @@ export type Order = {
   paymentId: string;
   userId: string;
 };
+
+export type UploadImageProps = {
+  imguploaded: boolean;
+  data: Product;
+  setData: React.Dispatch<React.SetStateAction<Product>>;
+  setIsImgUploaded: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
