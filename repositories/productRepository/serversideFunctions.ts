@@ -1,6 +1,6 @@
 import { db } from "@/firebase/firebaseConfig";
 import { BannerImage, Order, Product } from "@/types/typescript.types";
-import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, orderBy, query, where } from "firebase/firestore";
 
 export const getProducts = async (category: string) => {
     const productsRef = collection(db, 'products');
@@ -46,11 +46,13 @@ export const getMyOrders = async (uid: string) => {
     return orders;
 };
 
+
 export const getRecentOrders = async () => {
-    const productsRef = collection(db, 'orders');
-    const querySnapshot = await getDocs(query(productsRef));
-    const recentOrders: Order[] = querySnapshot.docs.map((doc) => 
-        doc.data() as Order
+    const ordersRef = collection(db, 'orders');
+    const q = query(ordersRef, orderBy("createdAt", "desc"));
+    const querySnapshot = await getDocs(q);
+    const recentOrders = querySnapshot.docs.map((doc) => 
+        doc.data() 
     );
     return recentOrders;
-}
+};
