@@ -1,14 +1,9 @@
-const people = [
-  { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
-  { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
-  { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
-  { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
-  { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
-  { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
-  // More people...
-]
+import { viewAllProducts } from "@/repositories/productRepository/serversideFunctions";
+import Link from "next/link";
 
-const Page = () => {
+const Page = async () => {
+  const productsList = await viewAllProducts();
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-6">
       <div className="sm:flex sm:items-center">
@@ -29,16 +24,16 @@ const Page = () => {
                     scope="col"
                     className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 lg:pl-8"
                   >
-                    Name
+                    Product Name
                   </th>
                   <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                    Title
+                    Category
                   </th>
                   <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                    Email
+                    Price
                   </th>
                   <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                    Role
+                    Stock Available
                   </th>
                   <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6 lg:pr-8">
                     <span className="sr-only">Edit</span>
@@ -46,18 +41,18 @@ const Page = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {people.map((person) => (
-                  <tr key={person.email}>
+                {productsList.map((product, index) => (
+                  <tr key={index}>
                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8">
-                      {person.name}
+                      {product.productName}
                     </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.title}</td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.email}</td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.role}</td>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{product.category}</td>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{product.price}</td>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{(product.stockAvailable) ? "True" : "False"}</td>
                     <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 lg:pr-8">
-                      <a href="#" className="text-indigo-600 hover:text-indigo-900">
-                        Edit<span className="sr-only">, {person.name}</span>
-                      </a>
+                      <Link href="/" className="text-indigo-600 hover:text-indigo-900">
+                        Edit
+                      </Link>
                     </td>
                   </tr>
                 ))}

@@ -56,3 +56,12 @@ export const getRecentOrders = async () => {
     );
     return recentOrders;
 };
+
+export const viewAllProducts = async () => {
+    const productsRef = collection(db, 'products');
+    const querySnapshot = await getDocs(query(productsRef));
+    const products: Product[] = querySnapshot.docs.map((doc) => 
+        doc.data() as Product
+    );
+    return products;
+};
