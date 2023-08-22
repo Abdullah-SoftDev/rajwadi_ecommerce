@@ -69,3 +69,14 @@ export type UploadImageProps = {
   setIsImgUploaded: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+export type UpdateProduct = {
+  productName: string;
+  productDescription: string;
+  productImages: string[];
+  price: string | number;
+  category: string;
+  sizes: string[];
+  stockAvailable: boolean;
+  createdAt?: Timestamp;
+  quantity?: number
+}
