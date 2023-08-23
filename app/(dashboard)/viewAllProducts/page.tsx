@@ -1,5 +1,6 @@
 import { viewAllProducts } from "@/repositories/productRepository/serversideFunctions";
 import Link from "next/link";
+import DeleteProductButton from "./components/DeleteProductButton";
 
 const Page = async () => {
   const productsList = await viewAllProducts();
@@ -41,24 +42,30 @@ const Page = async () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {productsList.map((product, index) => (
-                  <tr key={index}>
-                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8">
-                      {product.productName}
-                    </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{product.category}</td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{product.price}</td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{(product.stockAvailable) ? "True" : "False"}</td>
-                    <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 lg:pr-8">
-                      <Link
-                        href={`/updateProduct/${product.slug}`}
-                        className="text-indigo-600 hover:text-indigo-900">
-                        Edit
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
+  {productsList.map((product, index) => {
+    const { productName, category, price, stockAvailable, slug } = product;
+
+    return (
+      <tr key={index}>
+        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8">
+          {productName}
+        </td>
+        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{category}</td>
+        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{price}</td>
+        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{stockAvailable ? "True" : "False"}</td>
+        <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 lg:pr-8">
+          <Link href={`/updateProduct/${slug}`} className="text-indigo-600 hover:text-indigo-900">
+            Edit
+          </Link>
+        </td>
+        <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 lg:pr-8">
+          <DeleteProductButton slug={slug}/>
+        </td>
+      </tr>
+    );
+  })}
+</tbody>
+
             </table>
           </div>
         </div>
