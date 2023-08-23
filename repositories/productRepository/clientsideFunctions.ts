@@ -1,4 +1,6 @@
+import { db } from "@/firebase/firebaseConfig";
 import { Product } from "@/types/typescript.types";
+import { collection, query, where, getDocs } from "firebase/firestore";
 import { ChangeEvent } from "react";
 
 export const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>, setData: Function) => {

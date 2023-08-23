@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import Footer from '@/components/Footer'
 import TopLoaderBar from '@/components/TopLoaderBar'
+import Searchbar from '@/components/Searchbar'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,6 +23,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <TopLoaderBar/>
         <Navbar />
+        <Searchbar />
         {children}
         <Footer />
       </body>

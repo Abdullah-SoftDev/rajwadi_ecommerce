@@ -3,7 +3,7 @@
 import { db, storage } from "@/firebase/firebaseConfig";
 import { Product, UpdateProduct } from "@/types/typescript.types";
 import { User } from "firebase/auth";
-import { serverTimestamp, Timestamp, setDoc, doc, deleteDoc, collection, getDocs, getDoc, updateDoc, increment } from "firebase/firestore";
+import { serverTimestamp, Timestamp, setDoc, doc, deleteDoc, collection, getDocs, getDoc, updateDoc, increment, query, where } from "firebase/firestore";
 import { ref, getDownloadURL, uploadString } from "firebase/storage";
 
 export async function checkServiceability(pincode: string) {
@@ -143,3 +143,15 @@ export const submitUpdateFormImages = async (data: UpdateProduct) => {
     }
     return downloadURLs;
 };
+
+export async function performSearch(searchQuery: string) {
+    if (searchQuery) {
+        const cleanedSearchQuery = searchQuery.trim().replace(/\s+/g, ' ');
+        const lowerCaseSearchQuery = cleanedSearchQuery.toLowerCase();
+        const productsRef = collection(db, 'products');
+        const q = query(productsRef, where('category', '>=', lowerCaseSearchQuery));
+        const querySnapshot = await getDocs(q);
+        const results: Product[] = querySnapshot.docs.map(doc => doc.data() as Product);
+        return results;
+    }
+}

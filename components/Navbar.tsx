@@ -10,6 +10,7 @@ import { auth, db } from "@/firebase/firebaseConfig";
 import { collection } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
+import Searchbar from "./Searchbar";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
