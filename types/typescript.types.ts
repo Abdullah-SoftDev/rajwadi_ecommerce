@@ -44,7 +44,7 @@ export type CartItem = {
 export type OrderItem = {
   category: string;
   price: number;
-  productImage: string[];
+  productImages: string[];
   productName: string;
   quantity: number;
   selectedSize: string;
@@ -59,6 +59,21 @@ export type Order = {
   name: string;
   orderItems: OrderItem[];
   paymentId: string;
+  userId: string;
+};
+
+export type OnlineOrder = {
+  address: string;
+  amount: number;
+  city: string;
+  createdAt?: Timestamp;
+  email: string;
+  name: string;
+  orderId: string;
+  orderItems: OrderItem[];
+  phonenumber: string;
+  pincode: string;
+  state: string;
   userId: string;
 };
 

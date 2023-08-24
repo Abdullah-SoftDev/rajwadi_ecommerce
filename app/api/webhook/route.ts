@@ -43,7 +43,7 @@ export async function POST(req: Request) {
         // Create an array of items for the order
         const orderItems = images.map((image: string, index: number) => {
             return {
-                productImage: image,
+                productImages: image,
                 productName: productNames[index],
                 quantity: quantities[index],
                 selectedSize: selectedSizes[index],

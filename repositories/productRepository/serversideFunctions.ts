@@ -1,14 +1,14 @@
 import { db } from "@/firebase/firebaseConfig";
-import { BannerImage, Order, Product } from "@/types/typescript.types";
+import { BannerImage, OnlineOrder, Order, Product } from "@/types/typescript.types";
 import { collection, doc, getDoc, getDocs, orderBy, query, where } from "firebase/firestore";
 
 export const getProducts = async (category: string) => {
     const productsRef = collection(db, 'products');
-    const querySnapshot = await getDocs(query(productsRef, 
+    const querySnapshot = await getDocs(query(productsRef,
         where('category', '==', category),
         orderBy('createdAt'),
     ));
-    const products: Product[] = querySnapshot.docs.map((doc) => 
+    const products: Product[] = querySnapshot.docs.map((doc) =>
         doc.data() as Product
     );
     return products;
@@ -34,7 +34,7 @@ export const getProducts = async (category: string) => {
 //     );
 
 //     return products;
-    
+
 // };
 
 
@@ -65,12 +65,27 @@ export const getBannerImages = async () => {
     return bannerImages;
 }
 
-export const getMyOrders = async (uid: string) => {
+export const getMyOnlineOrders = async (uid: string) => {
     const orderRef = collection(db, 'orders');
     const querySnapshot = await getDocs(query(orderRef, where('userId', '==', uid)));
-    const orders: Order[] = querySnapshot.docs.map((doc) =>
-        doc.data() as Order
-    );
+    
+    const orders: Order[] = querySnapshot.docs.map((doc) => ({
+        type: 'online',
+        ...(doc.data() as Order),
+    }));
+    
+    return orders;
+};
+
+export const getMyOfflineOrders = async (uid: string) => {
+    const orderRef = collection(db, 'offlineOrders');
+    const querySnapshot = await getDocs(query(orderRef, where('userId', '==', uid)));
+    
+    const orders: OnlineOrder[] = querySnapshot.docs.map((doc) => ({
+        type: 'offline',
+        ...(doc.data() as OnlineOrder),
+    }));
+    
     return orders;
 };
 

@@ -1,5 +1,5 @@
-import { getMyOrders } from "@/repositories/productRepository/serversideFunctions";
-import { Order, OrderItem } from "@/types/typescript.types";
+import { getMyOnlineOrders, getMyOfflineOrders } from "@/repositories/productRepository/serversideFunctions";
+import { OnlineOrder, Order, OrderItem } from "@/types/typescript.types";
 import Link from "next/link";
 
 type Props = {
@@ -8,7 +8,23 @@ type Props = {
 
 const Page = async ({ searchParams }: Props) => {
     const { uid } = searchParams;
-    const ordersList = await getMyOrders(uid);
+    const ordersListOnline = await getMyOnlineOrders(uid);
+    const ordersListOffline = await getMyOfflineOrders(uid);
+
+    const allOrders: (Order | OnlineOrder)[] = [...ordersListOnline, ...ordersListOffline];
+
+    // Sort the combined array by createdAt timestamp in descending order
+    allOrders.sort((a, b) => {
+        const timestampA = a.createdAt || { seconds: 0, nanoseconds: 0 };
+        const timestampB = b.createdAt || { seconds: 0, nanoseconds: 0 };
+    
+        if (timestampA.seconds === timestampB.seconds) {
+            return timestampB.nanoseconds - timestampA.nanoseconds;
+        }
+    
+        return timestampB.seconds - timestampA.seconds;
+    });
+    
 
     return (
         <div className="mx-auto max-w-5xl px-2 py-14 min-h-screen">
@@ -20,9 +36,9 @@ const Page = async ({ searchParams }: Props) => {
             </div>
 
             <div className="mt-16">
-                {ordersList ?
+                {allOrders ?
                     <div className="space-y-20">
-                        {ordersList?.map((order: Order, index: number) => (
+                        {allOrders.map((order: Order | OnlineOrder, index: number) => (
                             <div key={index}>
                                 <div className="bg-gray-50 rounded-lg py-6 px-4 sm:px-6 sm:flex sm:items-center sm:justify-between sm:space-x-6 lg:space-x-8">
                                     <dl className="divide-y divide-gray-200 space-y-6 text-sm text-gray-600 flex-auto sm:divide-y-0 sm:space-y-0 sm:grid sm:grid-cols-3 sm:gap-x-6 lg:w-1/2 lg:flex-none lg:gap-x-8">
@@ -34,8 +50,12 @@ const Page = async ({ searchParams }: Props) => {
 
                                         </div>
                                         <div className="flex justify-between pt-6 sm:block sm:pt-0">
-                                            <dt className="font-medium text-gray-900">Order ID</dt>
-                                            <dd className="sm:mt-1">{order.paymentId}</dd>
+                                            <dt className="font-medium text-gray-900">
+                                                {('orderId' in order) ? 'Order ID' : 'Payment ID'}
+                                            </dt>
+                                            <dd className="sm:mt-1">
+                                                {('orderId' in order) ? order.orderId : order.paymentId}
+                                            </dd>
                                         </div>
 
                                     </dl>
@@ -67,32 +87,33 @@ const Page = async ({ searchParams }: Props) => {
                                         </tr>
                                     </thead>
                                     <tbody className="border-b border-gray-200 divide-y divide-gray-200 text-sm sm:border-t">
-                                        {order.orderItems?.map((product: OrderItem, index) => (
+                                        {order.orderItems.map((product: OrderItem, index: number) => (
                                             <tr key={index}>
                                                 <td className="py-6 pr-8">
                                                     <div className="flex items-center">
                                                         <img
-                                                            src={product.productImage[0]}
-                                                            alt={product.productName}
+                                                            src={product?.productImages?.[0]}
+                                                            alt={product?.productName}
                                                             className="w-16 h-16 object-center object-cover rounded mr-6"
                                                         />
                                                         <div>
-                                                            <div className="font-medium text-gray-900">{product.productName}</div>
-                                                            <div className="mt-1 sm:hidden">{product.price}</div>
+                                                            <div className="font-medium text-gray-900">{product?.productName}</div>
+                                                            <div className="mt-1 sm:hidden">₹ {product?.price}</div>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td className="hidden py-6 pr-8 sm:table-cell">₹ {product.price}</td>
-                                                <td className="hidden py-6 pr-8 sm:table-cell">{product.quantity}</td>
-                                                <td className="hidden py-6 pr-8 sm:table-cell">{product.selectedSize}</td>
+                                                <td className="hidden py-6 pr-8 sm:table-cell">₹ {product?.price}</td>
+                                                <td className="hidden py-6 pr-8 sm:table-cell">{product?.quantity}</td>
+                                                <td className="hidden py-6 pr-8 sm:table-cell">{product?.selectedSize}</td>
                                                 <td className="py-6 font-medium text-right whitespace-nowrap">
-                                                    <Link href={`/${product.category}/${product.slug}`} className="text-indigo-600">
+                                                    <Link href={`/${product?.category}/${product?.slug}`} className="text-indigo-600">
                                                         View<span className="hidden lg:inline"> Product</span>
                                                     </Link>
                                                 </td>
                                             </tr>
                                         ))}
                                     </tbody>
+
                                 </table>
                             </div>
                         ))}
