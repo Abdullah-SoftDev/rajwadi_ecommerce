@@ -53,7 +53,8 @@ export async function POST(req: Request) {
             };
         })
 
-        // Store data in Firestore
+        /// Store data in Firestore
+        /// write in users/{userId}/orders/{orderId}
         await addDoc(collection(db, "orders"), {
             userId,
             paymentId,

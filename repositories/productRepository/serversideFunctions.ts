@@ -4,12 +4,40 @@ import { collection, doc, getDoc, getDocs, orderBy, query, where } from "firebas
 
 export const getProducts = async (category: string) => {
     const productsRef = collection(db, 'products');
-    const querySnapshot = await getDocs(query(productsRef, where('category', '==', category)));
+    const querySnapshot = await getDocs(query(productsRef, 
+        where('category', '==', category),
+        orderBy('createdAt'),
+    ));
     const products: Product[] = querySnapshot.docs.map((doc) => 
         doc.data() as Product
     );
     return products;
 };
+
+// const PAGE_SIZE = 1; // Adjust the page size as needed
+// const startAfterDoc = 3; // Adjust the page size as needed
+
+// export const getProducts = async (category: string) => {
+//     const productsRef = collection(db, 'products');
+
+//     let queryRef = query(productsRef,
+//             where('category', '==', category),
+//             orderBy('createdAt'),
+//             startAfter(startAfterDoc),
+//             limit(PAGE_SIZE)
+//         );
+
+//     const querySnapshot = await getDocs(queryRef);
+
+//     const products: Product[] = querySnapshot.docs.map((doc) =>
+//         doc.data() as Product
+//     );
+
+//     return products;
+    
+// };
+
+
 
 export const getProduct = async (slug: string) => {
     const productRef = doc(db, "products", slug);
@@ -18,10 +46,10 @@ export const getProduct = async (slug: string) => {
     return productData;
 };
 
-export const getRecommendedProducts = async (category: string, slug:string) => {
+export const getRecommendedProducts = async (category: string, slug: string) => {
     const productsRef = collection(db, 'products');
     const querySnapshot = await getDocs(query(productsRef, where('category', '==', category)));
-    const products: Product[] = querySnapshot.docs.map((doc) => 
+    const products: Product[] = querySnapshot.docs.map((doc) =>
         doc.data() as Product
     );
     const filteredProducts = products.filter((product) => product.slug !== slug);
@@ -31,7 +59,7 @@ export const getRecommendedProducts = async (category: string, slug:string) => {
 export const getBannerImages = async () => {
     const productsRef = collection(db, 'bannerImages');
     const querySnapshot = await getDocs(query(productsRef));
-    const bannerImages: BannerImage[] = querySnapshot.docs.map((doc) => 
+    const bannerImages: BannerImage[] = querySnapshot.docs.map((doc) =>
         doc.data() as BannerImage
     );
     return bannerImages;
@@ -40,7 +68,7 @@ export const getBannerImages = async () => {
 export const getMyOrders = async (uid: string) => {
     const orderRef = collection(db, 'orders');
     const querySnapshot = await getDocs(query(orderRef, where('userId', '==', uid)));
-    const orders: Order[] = querySnapshot.docs.map((doc) => 
+    const orders: Order[] = querySnapshot.docs.map((doc) =>
         doc.data() as Order
     );
     return orders;
@@ -51,8 +79,8 @@ export const getRecentOrders = async () => {
     const ordersRef = collection(db, 'orders');
     const q = query(ordersRef, orderBy("createdAt", "desc"));
     const querySnapshot = await getDocs(q);
-    const recentOrders = querySnapshot.docs.map((doc) => 
-        doc.data() 
+    const recentOrders = querySnapshot.docs.map((doc) =>
+        doc.data()
     );
     return recentOrders;
 };
@@ -60,7 +88,7 @@ export const getRecentOrders = async () => {
 export const viewAllProducts = async () => {
     const productsRef = collection(db, 'products');
     const querySnapshot = await getDocs(query(productsRef));
-    const products: Product[] = querySnapshot.docs.map((doc) => 
+    const products: Product[] = querySnapshot.docs.map((doc) =>
         doc.data() as Product
     );
     return products;

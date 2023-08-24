@@ -2,7 +2,6 @@ import Link from "next/link";
 import React from "react";
 const names = [
     { name: "AddProduct", path: "/addProduct" },
-    { name: "ProductsDelivered", path: "/ourCustomers" },
     { name: "RecentOrders", path: "/recentOrders" },
     { name: "VeiwAllProducts", path: "/viewAllProducts" },
     { name: "BannerImages", path: "/addBannerImages" },
