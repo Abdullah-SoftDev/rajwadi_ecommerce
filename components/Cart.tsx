@@ -10,6 +10,7 @@ import { decrementQty, incrementQty } from "@/app/actions";
 import { fetchUserData } from "@/repositories/userRepository/clientsideFunctions";
 import { User } from "firebase/auth";
 import { createCheckout } from "@/lib";
+import Link from "next/link";
 
 const Cart = ({ cartOpen, setCartOpen }: CartProps) => {
   const [user] = useAuthState(auth);
@@ -49,14 +50,14 @@ const Cart = ({ cartOpen, setCartOpen }: CartProps) => {
   }, 0);
 
   const handleBuyNowClick = () => {
-    if(!user){
+    if (!user) {
       alert("Login first")
       return
     }
-      createCheckout(user, {
-          cartData: cartData,
-      });
-}
+    createCheckout(user, {
+      cartData: cartData,
+    });
+  }
 
   return (
     <Transition.Root show={cartOpen} as={Fragment}>
@@ -227,21 +228,26 @@ const Cart = ({ cartOpen, setCartOpen }: CartProps) => {
                         <p className="mt-0.5 text-sm text-gray-500">
                           Shipping and taxes calculated at checkout.
                         </p>
-                        <div className="mt-6">
+                        <div className="mt-6 flex justify-between">
                           <button
                             type="button"
                             onClick={handleBuyNowClick}
                             className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">
                             Checkout
                           </button>
+                          <Link
+                            href={"/checkout"}
+                            onClick={() => setCartOpen(false)}
+                            className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">
+                            Cash on Delivery
+                          </Link>
                         </div>
                         <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                           <p>
-                            or
                             <button
                               type="button"
                               className="font-medium text-indigo-600 hover:text-indigo-500"
-                              onClick={() => setCartOpen(true)}
+                              onClick={() => setCartOpen(false)}
                             >
                               Continue Shopping
                               <span aria-hidden="true"> &rarr;</span>

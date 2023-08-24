@@ -54,7 +54,7 @@ export type OrderItem = {
 export type Order = {
   amount: number;
   createdAt?: Timestamp;
-  currency: string;
+  currency?: string;
   email: string;
   name: string;
   orderItems: OrderItem[];
@@ -79,4 +79,11 @@ export type UpdateProduct = {
   stockAvailable: boolean;
   createdAt?: Timestamp;
   quantity?: number
+}
+
+export type CheckoutFormProps = {
+  email: string,
+  name: string,
+  phonenumber: string,
+  address: string,
 }
