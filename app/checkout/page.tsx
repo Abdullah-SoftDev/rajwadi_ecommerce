@@ -36,7 +36,7 @@ export default function Page() {
             setCity('');
             setState('');
         }
-    };
+    }
 
 
     return (
