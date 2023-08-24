@@ -1,7 +1,14 @@
 'use client'
 
+import { auth, db } from "@/firebase/firebaseConfig";
 import { CheckoutFormProps } from "@/types/typescript.types";
+import { addDoc, collection, deleteDoc, doc, orderBy, query, serverTimestamp } from "firebase/firestore";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react"
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { v4 as uuidv4 } from 'uuid';
+
 
 export default function Page() {
     const [checkoutForm, setCheckoutForm] = useState<CheckoutFormProps>({
@@ -14,18 +21,56 @@ export default function Page() {
     const [pincode, setPincode] = useState('');
     const [city, setCity] = useState('');
     const [state, setState] = useState('');
+    const [user] = useAuthState(auth);
+    const router = useRouter()
+
+    const cartQuery = query(collection(db, `users/${user?.uid}/cart`), orderBy("createdAt"));
+  const [cartData, loading] = useCollectionData(cartQuery);
+
+    const totalSum = cartData?.reduce((accumulator, item) => {
+        return accumulator + item.price * item.quantity;
+    }, 0);
+
 
     const handelInputCheckout = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setCheckoutForm({ ...checkoutForm, [name]: value });
     }
 
-    const handelCheckoutSubmit = (e: FormEvent) => {
+    const handelCheckoutSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        console.log(checkoutForm)
+
+        await addDoc(collection(db, "offlineOrders"), {
+            email: checkoutForm.email,
+            name: checkoutForm.name,
+            phonenumber: checkoutForm.phonenumber,
+            address: checkoutForm.address,
+            pincode,
+            city,
+            state,
+            userId: user?.uid,
+            orderId: uuidv4(),
+            amount: totalSum,
+            createdAt: serverTimestamp(),
+            orderItems: cartData,
+        });
+
+        router.push("/success")
+
+        setCheckoutForm({
+            email: "",
+            name: "",
+            phonenumber: "",
+            address: "",
+        })
+        setPincode("")
+        setCity("")
+        setState("")
     }
 
-    const handlePincodeChange = async () => {
+    const handlePincodeChange = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+
         if (pincode.length === 6) {
             const response = await fetch(`https://api.postalpincode.in/pincode/${pincode}`);
             const data = await response.json();
