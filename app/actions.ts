@@ -1,10 +1,12 @@
 'use server'
 
 import { db, storage } from "@/firebase/firebaseConfig";
-import { Product, UpdateProduct } from "@/types/typescript.types";
+import { CheckoutFormProps, Order, Product, UpdateProduct } from "@/types/typescript.types";
 import { User } from "firebase/auth";
-import { serverTimestamp, Timestamp, setDoc, doc, deleteDoc, collection, getDocs, getDoc, updateDoc, increment, query, where } from "firebase/firestore";
+import { serverTimestamp, Timestamp, setDoc, doc, deleteDoc, collection, getDocs, getDoc, updateDoc, increment, query, where, writeBatch } from "firebase/firestore";
 import { ref, getDownloadURL, uploadString } from "firebase/storage";
+import { v4 as uuidv4 } from 'uuid';
+
 
 export async function checkServiceability(pincode: string) {
     try {
@@ -154,4 +156,34 @@ export async function performSearch(searchQuery: string) {
         const results: Product[] = querySnapshot.docs.map(doc => doc.data() as Product);
         return results;
     }
+}
+
+export async function handelOfflineCheckoutSubmit(checkoutForm:CheckoutFormProps,pincode:string, city:String, state:string,user:User,totalSum:Number,cartData:any,cartSnapshots:any){
+    const batch = writeBatch(db);
+    const orderData = {
+        email: checkoutForm.email,
+        name: checkoutForm.name,
+        phonenumber: checkoutForm.phonenumber,
+        address: checkoutForm.address,
+        pincode,
+        city,
+        state,
+        userId: user?.uid,
+        orderId: uuidv4(),
+        amount: totalSum,
+        createdAt: serverTimestamp(),
+        orderItems: cartData,
+    };
+
+    const newOrderDocRef = doc(collection(db, 'offlineOrders'));
+    batch.set(newOrderDocRef, orderData);
+
+    if (cartSnapshots && user) {
+        cartSnapshots.docs.forEach((docSnapshot:any) => {
+            const cartDocRef = doc(db, `users/${user.uid}/cart`, docSnapshot.id);
+            batch.delete(cartDocRef);
+        });
+    }
+
+    await batch.commit();
 }

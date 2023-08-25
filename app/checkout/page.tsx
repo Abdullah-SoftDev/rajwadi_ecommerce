@@ -2,12 +2,12 @@
 
 import { auth, db } from "@/firebase/firebaseConfig";
 import { CheckoutFormProps } from "@/types/typescript.types";
-import { addDoc, collection, deleteDoc, doc, orderBy, query, serverTimestamp } from "firebase/firestore";
+import { collection, orderBy, query } from "firebase/firestore";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, FormEvent, useState } from "react"
+import { ChangeEvent, useState } from "react"
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useCollectionData } from "react-firebase-hooks/firestore";
-import { v4 as uuidv4 } from 'uuid';
+import { useCollection, useCollectionData } from "react-firebase-hooks/firestore";
+import { handelOfflineCheckoutSubmit } from "../actions";
 
 
 export default function Page() {
@@ -25,47 +25,32 @@ export default function Page() {
     const router = useRouter()
 
     const cartQuery = query(collection(db, `users/${user?.uid}/cart`), orderBy("createdAt"));
-  const [cartData, loading] = useCollectionData(cartQuery);
+    const [cartData, loading] = useCollectionData(cartQuery);
+
+    const cartsRef = collection(db, `users/${user?.uid}/cart`);
+    const [cartSnapshots, loading2] = useCollection(cartsRef);
+
+    const handelCheckoutSubmit = async () => {
+        await handelOfflineCheckoutSubmit(checkoutForm, pincode, city, state, user!, totalSum!, cartData, cartSnapshots);
+        router.push('/success');
+        setCheckoutForm({
+            email: '',
+            name: '',
+            phonenumber: '',
+            address: '',
+        });
+        setPincode('');
+        setCity('');
+        setState('');
+    };
 
     const totalSum = cartData?.reduce((accumulator, item) => {
         return accumulator + item.price * item.quantity;
     }, 0);
 
-
     const handelInputCheckout = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setCheckoutForm({ ...checkoutForm, [name]: value });
-    }
-
-    const handelCheckoutSubmit = async (e: FormEvent) => {
-        e.preventDefault();
-
-        await addDoc(collection(db, "offlineOrders"), {
-            email: checkoutForm.email,
-            name: checkoutForm.name,
-            phonenumber: checkoutForm.phonenumber,
-            address: checkoutForm.address,
-            pincode,
-            city,
-            state,
-            userId: user?.uid,
-            orderId: uuidv4(),
-            amount: totalSum,
-            createdAt: serverTimestamp(),
-            orderItems: cartData,
-        });
-
-        router.push("/success")
-
-        setCheckoutForm({
-            email: "",
-            name: "",
-            phonenumber: "",
-            address: "",
-        })
-        setPincode("")
-        setCity("")
-        setState("")
     }
 
     const handlePincodeChange = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -83,10 +68,9 @@ export default function Page() {
         }
     }
 
-
     return (
         <div className="max-w-4xl mx-auto pt-16 pb-24 px-4 sm:px-6 lg:px-8">
-            <form onSubmit={handelCheckoutSubmit} className="lg:grid lg:grid-cols-1 lg:gap-x-12 xl:gap-x-16">
+            <form action={handelCheckoutSubmit} className="lg:grid lg:grid-cols-1 lg:gap-x-12 xl:gap-x-16">
                 <div>
                     <div>
                         <h2 className="text-lg font-medium text-gray-900">Contact information</h2>
