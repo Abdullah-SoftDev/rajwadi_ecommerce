@@ -12,7 +12,7 @@ const BuyNowButton = ({ product }: { product: TProduct }) => {
             return
         }
             createCheckout(user, {
-                cartData: [product],
+                cartData: [product] as TProduct[],
             });
     };
 

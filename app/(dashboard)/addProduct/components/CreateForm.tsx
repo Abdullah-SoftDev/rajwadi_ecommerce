@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { Switch } from '@headlessui/react'
 import { TProduct } from '@/types/typescript.types';
-import { handleInputChange, handleSizeToggle, handleStockAvailableChange, cancelForm } from '@/repositories/productRepository/clientsideFunctions';
+import { handleInputChange, handleSizeToggle, handleStockAvailableChange, handelCancelForm } from '@/repositories/productRepository/clientsideFunctions';
 import { handelSubmitForm } from '@/app/actions';
 import UploadImage from './UploadImage';
 
@@ -208,7 +208,7 @@ const Page = () => {
             <div className="flex justify-center">
                 <button
                     type="button"
-                    onClick={() => { cancelForm(setData) }}
+                    onClick={() => { handelCancelForm(setData) }}
                     className="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                     Cancel
                 </button>

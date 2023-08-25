@@ -1,6 +1,6 @@
 import { db } from "@/firebase/firebaseConfig";
 import { TBannerImage, TOfflineOrder, TOnlineOrder, TProduct } from "@/types/typescript.types";
-import { collection, doc, getDoc, getDocs, limit, orderBy, query, startAfter, startAt, where } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, orderBy, query, where } from "firebase/firestore";
 
 export const getProducts = async (category: string) => {
     const productsRef = collection(db, 'products');
@@ -13,7 +13,6 @@ export const getProducts = async (category: string) => {
     );
     return products;
 };
-
 
 export const getProduct = async (slug: string) => {
     const productRef = doc(db, "products", slug);

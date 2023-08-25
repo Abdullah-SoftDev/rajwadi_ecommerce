@@ -1,6 +1,4 @@
-import { db } from "@/firebase/firebaseConfig";
 import { TProduct } from "@/types/typescript.types";
-import { collection, query, where, getDocs } from "firebase/firestore";
 import { ChangeEvent } from "react";
 
 export const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>, setData: Function) => {
@@ -83,7 +81,7 @@ export const handleSizeToggle = (selectedSize: string, setData: Function) => {
     }));
 };
 
-export const cancelForm = (setData: Function) => {
+export const handelCancelForm = (setData: Function) => {
     setData({
         productName: "",
         slug: "",
