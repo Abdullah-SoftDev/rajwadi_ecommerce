@@ -1,6 +1,6 @@
 import { db } from "@/firebase/firebaseConfig";
 import { BannerImage, OnlineOrder, Order, Product } from "@/types/typescript.types";
-import { collection, doc, getDoc, getDocs, orderBy, query, where } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, limit, orderBy, query, startAfter, startAt, where } from "firebase/firestore";
 
 export const getProducts = async (category: string) => {
     const productsRef = collection(db, 'products');
@@ -13,30 +13,6 @@ export const getProducts = async (category: string) => {
     );
     return products;
 };
-
-// const PAGE_SIZE = 1; // Adjust the page size as needed
-// const startAfterDoc = 3; // Adjust the page size as needed
-
-// export const getProducts = async (category: string) => {
-//     const productsRef = collection(db, 'products');
-
-//     let queryRef = query(productsRef,
-//             where('category', '==', category),
-//             orderBy('createdAt'),
-//             startAfter(startAfterDoc),
-//             limit(PAGE_SIZE)
-//         );
-
-//     const querySnapshot = await getDocs(queryRef);
-
-//     const products: Product[] = querySnapshot.docs.map((doc) =>
-//         doc.data() as Product
-//     );
-
-//     return products;
-
-// };
-
 
 
 export const getProduct = async (slug: string) => {
@@ -68,27 +44,26 @@ export const getBannerImages = async () => {
 export const getMyOnlineOrders = async (uid: string) => {
     const orderRef = collection(db, 'orders');
     const querySnapshot = await getDocs(query(orderRef, where('userId', '==', uid)));
-    
+
     const orders: Order[] = querySnapshot.docs.map((doc) => ({
         type: 'online',
         ...(doc.data() as Order),
     }));
-    
+
     return orders;
 };
 
 export const getMyOfflineOrders = async (uid: string) => {
     const orderRef = collection(db, 'offlineOrders');
     const querySnapshot = await getDocs(query(orderRef, where('userId', '==', uid)));
-    
+
     const orders: OnlineOrder[] = querySnapshot.docs.map((doc) => ({
         type: 'offline',
         ...(doc.data() as OnlineOrder),
     }));
-    
+
     return orders;
 };
-
 
 export const getRecentOrders = async () => {
     const ordersRef = collection(db, 'orders');
