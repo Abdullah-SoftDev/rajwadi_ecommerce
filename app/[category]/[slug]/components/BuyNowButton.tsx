@@ -1,20 +1,35 @@
 'use client'
 import { auth } from "@/firebase/firebaseConfig";
 import { createCheckout } from "@/lib";
-import { TProduct } from "@/types/typescript.types";
+import { TCartData, TProduct } from "@/types/typescript.types";
+import { Timestamp, serverTimestamp } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-const BuyNowButton = ({ product }: { product: TProduct }) => {
+const BuyNowButton = ({ product, selectedSize }: { product: TProduct, selectedSize: string }) => {
     const [user] = useAuthState(auth);
     const handleBuyNowClick = () => {
         if (!user) {
-            alert('Login first')
-            return
+            alert('Login first');
+            return;
         }
-            createCheckout(user, {
-                cartData: [product] as TProduct[],
-            });
+
+        const cartItem: TCartData = {
+            category: product.category,
+            createdAt: serverTimestamp() as Timestamp,
+            productName: product.productName,
+            productDescription: product.productDescription,
+            price: Number(product.price),
+            productImages: product.productImages,
+            slug: product.slug,
+            quantity: Number(product.quantity),
+            selectedSize: selectedSize,
+        };
+
+        createCheckout(user, {
+            cartData: [cartItem],
+        });
     };
+
 
     return (
         <>

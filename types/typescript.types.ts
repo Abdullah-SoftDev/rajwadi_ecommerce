@@ -96,3 +96,16 @@ export type TCheckoutForm = {
   phonenumber: string,
   address: string,
 }
+
+export type TCartData = {
+  id?: string,
+  createdAt?: Timestamp;
+  productName: string;
+  productDescription: string;
+  price: number;
+  productImages: string[];
+  slug: string;
+  category: string;
+  quantity: number;
+  selectedSize: string;
+}

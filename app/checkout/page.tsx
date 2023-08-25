@@ -2,12 +2,12 @@
 
 import { auth, db } from "@/firebase/firebaseConfig";
 import { TCheckoutForm } from "@/types/typescript.types";
-import { collection, orderBy, query } from "firebase/firestore";
+import { collection, doc, orderBy, query, serverTimestamp, writeBatch } from "firebase/firestore";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, FormEvent, useState } from "react"
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollection, useCollectionData } from "react-firebase-hooks/firestore";
-import { handelOfflineCheckoutSubmit } from "../actions";
+import { v4 as uuidv4 } from 'uuid';
 
 
 export default function Page() {
@@ -29,20 +29,6 @@ export default function Page() {
 
     const cartsRef = collection(db, `users/${user?.uid}/cart`);
     const [cartSnapshots, loading2] = useCollection(cartsRef);
-
-    const handelCheckoutSubmit = async () => {
-        await handelOfflineCheckoutSubmit(checkoutForm, pincode, city, state, user!, totalSum!, cartData, cartSnapshots);
-        router.push('/success');
-        setCheckoutForm({
-            email: '',
-            name: '',
-            phonenumber: '',
-            address: '',
-        });
-        setPincode('');
-        setCity('');
-        setState('');
-    };
 
     const totalSum = cartData?.reduce((accumulator, item) => {
         return accumulator + item.price * item.quantity;
@@ -67,6 +53,47 @@ export default function Page() {
             setState('');
         }
     }
+
+    const handelCheckoutSubmit = async () => {
+        const batch = writeBatch(db);
+        const orderData = {
+            email: checkoutForm.email,
+            name: checkoutForm.name,
+            phonenumber: checkoutForm.phonenumber,
+            address: checkoutForm.address,
+            pincode,
+            city,
+            state,
+            userId: user?.uid,
+            orderId: uuidv4(),
+            amount: totalSum,
+            createdAt: serverTimestamp(),
+            orderItems: cartData,
+        };
+    
+    
+        const newOrderDocRef = doc(collection(db, 'offlineOrders'));
+        batch.set(newOrderDocRef, orderData);
+    
+        if (cartSnapshots && user) {
+            cartSnapshots.docs.forEach((docSnapshot:any) => {
+                const cartDocRef = doc(db, `users/${user.uid}/cart`, docSnapshot.id);
+                batch.delete(cartDocRef);
+            });
+        }
+    
+        await batch.commit();
+        router.push('/success');
+        setCheckoutForm({
+            email: '',
+            name: '',
+            phonenumber: '',
+            address: '',
+        });
+        setPincode('');
+        setCity('');
+        setState('');
+    };
 
     return (
         <div className="max-w-4xl mx-auto pt-16 pb-24 px-4 sm:px-6 lg:px-8">

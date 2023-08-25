@@ -1,7 +1,7 @@
 'use server'
 
 import { db, storage } from "@/firebase/firebaseConfig";
-import { TCheckoutForm, TOnlineOrder, TProduct, TUpdateProduct } from "@/types/typescript.types";
+import { TCartData, TCheckoutForm, TOnlineOrder, TProduct, TUpdateProduct } from "@/types/typescript.types";
 import { User } from "firebase/auth";
 import { serverTimestamp, Timestamp, setDoc, doc, deleteDoc, collection, getDocs, getDoc, updateDoc, increment, query, where, writeBatch, orderBy, limit, startAfter } from "firebase/firestore";
 import { ref, getDownloadURL, uploadString } from "firebase/storage";
@@ -51,8 +51,19 @@ export const handelSubmitForm = async (data: TProduct) => {
 }
 
 export const addToCart = async (
-    productName: string, productDescription: string, price: string | number, productImages: (string | File)[], slug: string, category: string, userData: User | null, quantity: number, selectedSize: string
+    cartData: TCartData,
+    userData: User
 ) => {
+    const {
+        productName,
+        slug,
+        productDescription,
+        price,
+        category,
+        productImages,
+        quantity,
+        selectedSize,
+    } = cartData;
     // Check if the user's cart already contains the same product with the selected size.
     const cartQuerySnapshot = await getDocs(
         collection(db, `users/${userData?.uid}/cart`)
@@ -157,34 +168,3 @@ export async function performSearch(searchQuery: string) {
         return results;
     }
 }
-
-export async function handelOfflineCheckoutSubmit(checkoutForm:TCheckoutForm,pincode:string, city:String, state:string,user:User,totalSum:Number,cartData:any,cartSnapshots:any){
-    const batch = writeBatch(db);
-    const orderData = {
-        email: checkoutForm.email,
-        name: checkoutForm.name,
-        phonenumber: checkoutForm.phonenumber,
-        address: checkoutForm.address,
-        pincode,
-        city,
-        state,
-        userId: user?.uid,
-        orderId: uuidv4(),
-        amount: totalSum,
-        createdAt: serverTimestamp(),
-        orderItems: cartData,
-    };
-
-    const newOrderDocRef = doc(collection(db, 'offlineOrders'));
-    batch.set(newOrderDocRef, orderData);
-
-    if (cartSnapshots && user) {
-        cartSnapshots.docs.forEach((docSnapshot:any) => {
-            const cartDocRef = doc(db, `users/${user.uid}/cart`, docSnapshot.id);
-            batch.delete(cartDocRef);
-        });
-    }
-
-    await batch.commit();
-}
-

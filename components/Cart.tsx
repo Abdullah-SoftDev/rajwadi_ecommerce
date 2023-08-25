@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { TCart } from "@/types/typescript.types";
+import { TCart, TCartData } from "@/types/typescript.types";
 import { auth, db } from "@/firebase/firebaseConfig";
 import { query, collection, orderBy, deleteDoc, doc } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -23,7 +23,10 @@ const Cart = ({ cartOpen, setCartOpen }: TCart) => {
   }, [user]);
 
   const cartQuery = query(collection(db, `users/${user?.uid}/cart`), orderBy("createdAt"));
-  const [cartData, loading] = useCollectionData(cartQuery);
+
+  const [cartDataFromQuery, loading] = useCollectionData(cartQuery);
+  const cartData = cartDataFromQuery as TCartData[]
+
 
   const handelRemoveFromCart = async (id: string) => {
     if (!user) {
@@ -45,7 +48,7 @@ const Cart = ({ cartOpen, setCartOpen }: TCart) => {
     }
   };
 
-  const totalSum = cartData?.reduce((accumulator, item) => {
+  const totalSum: number = cartData?.reduce((accumulator, item) => {
     return accumulator + item.price * item.quantity;
   }, 0);
 
@@ -143,7 +146,7 @@ const Cart = ({ cartOpen, setCartOpen }: TCart) => {
                                       <div className="flex items-center">
                                         <form
                                           action={() =>
-                                            handelDecrementQty(product.id)
+                                            handelDecrementQty(product.id!)
                                           }
                                         >
                                           <button
@@ -173,7 +176,7 @@ const Cart = ({ cartOpen, setCartOpen }: TCart) => {
 
                                         <form
                                           action={() =>
-                                            handelIncrementQty(product.id)
+                                            handelIncrementQty(product.id!)
                                           }
                                         >
                                           <button
@@ -201,7 +204,7 @@ const Cart = ({ cartOpen, setCartOpen }: TCart) => {
                                       <div className="flex">
                                         <button
                                           onClick={() =>
-                                            handelRemoveFromCart(product.id)
+                                            handelRemoveFromCart(product.id!)
                                           }
                                           type="button"
                                           className="font-medium text-indigo-600 hover:text-indigo-500"
