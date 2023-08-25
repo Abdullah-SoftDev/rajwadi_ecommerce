@@ -1,7 +1,7 @@
-import { Product } from '@/types/typescript.types'
+import { TProduct } from '@/types/typescript.types'
 import Link from 'next/link';
 
-const RecommendProductCard = ({ product }: { product: Product }) => {
+const RecommendProductCard = ({ product }: { product: TProduct }) => {
     const { productImages, productName, price, category, slug } = product;
     return (
         <Link href={`/${category}/${slug}`} className="block mb-8">

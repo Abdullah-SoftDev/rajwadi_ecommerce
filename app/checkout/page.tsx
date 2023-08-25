@@ -1,7 +1,7 @@
 'use client'
 
 import { auth, db } from "@/firebase/firebaseConfig";
-import { CheckoutFormProps } from "@/types/typescript.types";
+import { TCheckoutForm } from "@/types/typescript.types";
 import { collection, orderBy, query } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react"
@@ -11,7 +11,7 @@ import { handelOfflineCheckoutSubmit } from "../actions";
 
 
 export default function Page() {
-    const [checkoutForm, setCheckoutForm] = useState<CheckoutFormProps>({
+    const [checkoutForm, setCheckoutForm] = useState<TCheckoutForm>({
         email: "",
         name: "",
         phonenumber: "",

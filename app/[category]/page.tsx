@@ -1,6 +1,6 @@
 // import { getProducts } from "@/repositories/productRepository/serversideFunctions";
 import { db } from "@/firebase/firebaseConfig";
-import { Product } from "@/types/typescript.types";
+import { TProduct } from "@/types/typescript.types";
 import { collection, getDocs, query, where, orderBy, limit } from "firebase/firestore";
 import InfiniteScrollTesting from "./components/InfiniteScrollTesting";
 
@@ -13,8 +13,8 @@ const Page = async ({ params }: { params: { category: string } }) => {
       where('category', '==', category),
       orderBy('createdAt'), limit(1)
     ));
-    const products: Product[] = querySnapshot.docs.map((doc) =>
-      doc.data() as Product
+    const products: TProduct[] = querySnapshot.docs.map((doc) =>
+      doc.data() as TProduct
     );
     return products;
   };

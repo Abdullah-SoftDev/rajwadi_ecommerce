@@ -3,13 +3,13 @@
 import { addToCart } from "@/app/actions";
 import { auth } from "@/firebase/firebaseConfig";
 import { fetchUserData } from "@/repositories/userRepository/clientsideFunctions";
-import { Product } from "@/types/typescript.types";
+import { TProduct } from "@/types/typescript.types";
 import { User } from "firebase/auth";
 import { useState, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 
-const AddToCartButton = ({ product, selectedSize }: { product: Product, selectedSize: string }) => {
+const AddToCartButton = ({ product, selectedSize }: { product: TProduct, selectedSize: string }) => {
     const { productName, productDescription, price, productImages, slug, category, quantity } = product;
     const [user] = useAuthState(auth);
 

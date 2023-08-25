@@ -1,11 +1,11 @@
 'use client'
 import ProductCard from "@/components/ProductCard"
 import { db } from "@/firebase/firebaseConfig"
-import { Product } from "@/types/typescript.types"
+import { TProduct } from "@/types/typescript.types"
 import { query, orderBy, collection, startAfter, getDocs, where, Timestamp, limit } from "firebase/firestore"
 import { useState } from "react"
 
-const InfiniteScrollTesting = ({ productsList, category }: { productsList: Product[], category: string }) => {
+const InfiniteScrollTesting = ({ productsList, category }: { productsList: TProduct[], category: string }) => {
     const [data, setdata] = useState(productsList)
     const [loading, setLoading] = useState(false)
     const [postEnd, setPostEnd] = useState(false)
@@ -21,8 +21,8 @@ const InfiniteScrollTesting = ({ productsList, category }: { productsList: Produ
             limit(1),
             startAfter(cursor)
         ));
-        const products: Product[] = q.docs.map((doc) =>
-            doc.data() as Product
+        const products: TProduct[] = q.docs.map((doc) =>
+            doc.data() as TProduct
         );
         setdata(data.concat(products));
         setLoading(false)

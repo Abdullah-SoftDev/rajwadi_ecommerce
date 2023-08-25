@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from "react";
-import { Product } from "@/types/typescript.types";
+import { TProduct } from "@/types/typescript.types";
 import ProductCard from "@/components/ProductCard";
 import NotFound from "@/components/NotFound";
 import { performSearch } from "@/app/actions";
@@ -12,7 +12,7 @@ type Props = {
 
 const Page = ({ searchParams }: Props) => {
   const searchQuery = searchParams?.search_query;
-  const [searchResults, setSearchResults] = useState<Product[]>([]);
+  const [searchResults, setSearchResults] = useState<TProduct[]>([]);
 
   const fetchSearchResultsData = async () => {
     if (searchQuery) {

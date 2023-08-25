@@ -1,10 +1,10 @@
 'use client'
 import { auth } from "@/firebase/firebaseConfig";
 import { createCheckout } from "@/lib";
-import { Product } from "@/types/typescript.types";
+import { TProduct } from "@/types/typescript.types";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-const BuyNowButton = ({ product }: { product: Product }) => {
+const BuyNowButton = ({ product }: { product: TProduct }) => {
     const [user] = useAuthState(auth);
     const handleBuyNowClick = () => {
         if (!user) {

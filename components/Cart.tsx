@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { CartProps } from "@/types/typescript.types";
+import { TCart } from "@/types/typescript.types";
 import { auth, db } from "@/firebase/firebaseConfig";
 import { query, collection, orderBy, deleteDoc, doc } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -12,7 +12,7 @@ import { User } from "firebase/auth";
 import { createCheckout } from "@/lib";
 import Link from "next/link";
 
-const Cart = ({ cartOpen, setCartOpen }: CartProps) => {
+const Cart = ({ cartOpen, setCartOpen }: TCart) => {
   const [user] = useAuthState(auth);
   const [userData, setUserData] = useState<User | null>(null);
 

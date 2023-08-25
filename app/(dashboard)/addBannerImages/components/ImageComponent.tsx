@@ -1,7 +1,7 @@
-import { BannerImage } from "@/types/typescript.types";
+import { TBannerImage } from "@/types/typescript.types";
 import DeleteButton from "./DeleteButton";
 
-const ImageComponent = ({ file }: { file: BannerImage }) => {
+const ImageComponent = ({ file }: { file: TBannerImage }) => {
     const { bannerUrl, id } = file;
     return (
         <li key={id} className="relative">

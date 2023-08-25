@@ -36,7 +36,6 @@ export async function POST(req: Request) {
         const userId = session?.metadata?.userId;
         const paymentId = session.id;
         const amount = session?.amount_total! / 100;
-        const currency = session?.currency;
         const email = session?.customer_details?.email;
         const name = session?.customer_details?.name;
 
@@ -60,7 +59,6 @@ export async function POST(req: Request) {
             paymentId,
             amount,
             createdAt: serverTimestamp(),
-            currency,
             email,
             name,
             orderItems,

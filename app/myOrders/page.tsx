@@ -1,5 +1,5 @@
 import { getMyOnlineOrders, getMyOfflineOrders } from "@/repositories/productRepository/serversideFunctions";
-import { OnlineOrder, Order, OrderItem } from "@/types/typescript.types";
+import { TOfflineOrder, TOnlineOrder, TOrderItem } from "@/types/typescript.types";
 import Link from "next/link";
 
 type Props = {
@@ -11,7 +11,7 @@ const Page = async ({ searchParams }: Props) => {
     const ordersListOnline = await getMyOnlineOrders(uid);
     const ordersListOffline = await getMyOfflineOrders(uid);
 
-    const allOrders: (Order | OnlineOrder)[] = [...ordersListOnline, ...ordersListOffline];
+    const allOrders: (TOnlineOrder | TOfflineOrder)[] = [...ordersListOnline, ...ordersListOffline];
 
     // Sort the combined array by createdAt timestamp in descending order
     allOrders.sort((a, b) => {
@@ -38,7 +38,7 @@ const Page = async ({ searchParams }: Props) => {
             <div className="mt-16">
                 {allOrders ?
                     <div className="space-y-20">
-                        {allOrders.map((order: Order | OnlineOrder, index: number) => (
+                        {allOrders.map((order: TOnlineOrder | TOfflineOrder, index: number) => (
                             <div key={index}>
                                 <div className="bg-gray-50 rounded-lg py-6 px-4 sm:px-6 sm:flex sm:items-center sm:justify-between sm:space-x-6 lg:space-x-8">
                                     <dl className="divide-y divide-gray-200 space-y-6 text-sm text-gray-600 flex-auto sm:divide-y-0 sm:space-y-0 sm:grid sm:grid-cols-3 sm:gap-x-6 lg:w-1/2 lg:flex-none lg:gap-x-8">
@@ -87,7 +87,7 @@ const Page = async ({ searchParams }: Props) => {
                                         </tr>
                                     </thead>
                                     <tbody className="border-b border-gray-200 divide-y divide-gray-200 text-sm sm:border-t">
-                                        {order.orderItems.map((product: OrderItem, index: number) => (
+                                        {order.orderItems.map((product: TOrderItem, index: number) => (
                                             <tr key={index}>
                                                 <td className="py-6 pr-8">
                                                     <div className="flex items-center">

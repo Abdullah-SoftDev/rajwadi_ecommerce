@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { CartItem } from "@/types/typescript.types";
+import { TCartItem } from "@/types/typescript.types";
 import { stripe } from "@/lib/stripe";
 
 export const POST = async (request: Request) => {
-    const body: { userCartdata: CartItem[]; uid: string } = await request.json();
+    const body: { userCartdata: TCartItem[]; uid: string } = await request.json();
     const { userCartdata, uid } = body;
 
     try {

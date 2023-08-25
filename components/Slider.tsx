@@ -4,9 +4,9 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
-import { BannerImage } from "@/types/typescript.types";
+import { TBannerImage } from "@/types/typescript.types";
 
-const Slider = ({ bannerImageList }: { bannerImageList: BannerImage[] }) => {
+const Slider = ({ bannerImageList }: { bannerImageList: TBannerImage[] }) => {
     return (
         <Swiper
             spaceBetween={30}

@@ -1,16 +1,16 @@
 import { submitCreateFormImages } from "@/app/actions";
 import { handleImageClick, handleImageUpload } from "@/repositories/productRepository/clientsideFunctions";
-import { Product, UploadImageProps } from "@/types/typescript.types";
+import {  TProduct, TUploadImage } from "@/types/typescript.types";
 import { useState } from "react";
 
-const UploadImage = ({ imguploaded, data, setData, setIsImgUploaded }: UploadImageProps) => {
+const UploadImage = ({ imguploaded, data, setData, setIsImgUploaded }: TUploadImage) => {
   const [isImgUpLoading, setIsImgUpLoading] = useState<boolean>(false);
 
   const handelSubmitImage = async () => {
     if (data.productImages.length === 0) return;
     setIsImgUpLoading(true);
     const downloadURLs = await submitCreateFormImages(data)
-    setData((prevData: Product) => ({
+    setData((prevData: TProduct) => ({
       ...prevData,
       productImages: downloadURLs,
     }));

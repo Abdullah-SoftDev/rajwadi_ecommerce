@@ -1,7 +1,7 @@
 "use client";
 import { useState } from 'react'
 import { Switch } from '@headlessui/react'
-import { Product, UpdateProduct } from '@/types/typescript.types';
+import { TProduct, TUpdateProduct } from '@/types/typescript.types';
 import { handleInputChange, handleSizeToggle, handleStockAvailableChange, handleImageClick, handleImageUpload } from '@/repositories/productRepository/clientsideFunctions';
 import Link from 'next/link';
 import { submitUpdateFormImages } from '@/app/actions';
@@ -15,8 +15,8 @@ function classNames(...classes: string[]) {
 
 const availableSizes = ["S", "M", "L", "XL"];
 
-const UpdateForm = ({ product }: { product: Product }) => {
-    const [data, setData] = useState<UpdateProduct>({
+const UpdateForm = ({ product }: { product: TProduct }) => {
+    const [data, setData] = useState<TUpdateProduct>({
         productName: product.productName || "",
         productDescription: product.productDescription || "",
         productImages: product.productImages || [],
@@ -44,7 +44,7 @@ const UpdateForm = ({ product }: { product: Product }) => {
         }
         setIsImgUpLoading(true);
         const downloadURLs = await submitUpdateFormImages(data)
-        setData((prevData: UpdateProduct) => ({
+        setData((prevData: TUpdateProduct) => ({
             ...prevData,
             productImages: downloadURLs,
         }));

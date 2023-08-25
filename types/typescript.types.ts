@@ -1,16 +1,11 @@
 import { Timestamp } from "firebase/firestore";
 
-export type MobileNavigationProps = {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-export type CartProps = {
+export type TCart = {
   cartOpen: boolean;
   setCartOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export type Product = {
+export type TProduct = {
   productName: string;
   slug: string;
   productDescription: string;
@@ -23,12 +18,12 @@ export type Product = {
   quantity?: number
 }
 
-export type BannerImage = {
+export type TBannerImage = {
   id: string,
   bannerUrl: string
 }
 
-export type CartItem = {
+export type TCartItem = {
   id: string,
   productName: string;
   slug: string;
@@ -41,7 +36,7 @@ export type CartItem = {
   quantity: number
 }
 
-export type OrderItem = {
+export type TOrderItem = {
   category: string;
   price: number;
   productImages: string[];
@@ -51,18 +46,17 @@ export type OrderItem = {
   slug: string;
 };
 
-export type Order = {
+export type TOnlineOrder = {
   amount: number;
   createdAt?: Timestamp;
-  currency?: string;
   email: string;
   name: string;
-  orderItems: OrderItem[];
+  orderItems: TOrderItem[];
   paymentId: string;
   userId: string;
 };
 
-export type OnlineOrder = {
+export type TOfflineOrder = {
   address: string;
   amount: number;
   city: string;
@@ -70,21 +64,21 @@ export type OnlineOrder = {
   email: string;
   name: string;
   orderId: string;
-  orderItems: OrderItem[];
+  orderItems: TOrderItem[];
   phonenumber: string;
   pincode: string;
   state: string;
   userId: string;
 };
 
-export type UploadImageProps = {
+export type TUploadImage = {
   imguploaded: boolean;
-  data: Product;
-  setData: React.Dispatch<React.SetStateAction<Product>>;
+  data: TProduct;
+  setData: React.Dispatch<React.SetStateAction<TProduct>>;
   setIsImgUploaded: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export type UpdateProduct = {
+export type TUpdateProduct = {
   productName: string;
   productDescription: string;
   productImages: string[];
@@ -96,7 +90,7 @@ export type UpdateProduct = {
   quantity?: number
 }
 
-export type CheckoutFormProps = {
+export type TCheckoutForm = {
   email: string,
   name: string,
   phonenumber: string,

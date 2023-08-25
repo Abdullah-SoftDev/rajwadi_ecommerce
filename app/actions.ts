@@ -1,7 +1,7 @@
 'use server'
 
 import { db, storage } from "@/firebase/firebaseConfig";
-import { CheckoutFormProps, Order, Product, UpdateProduct } from "@/types/typescript.types";
+import { TCheckoutForm, TOnlineOrder, TProduct, TUpdateProduct } from "@/types/typescript.types";
 import { User } from "firebase/auth";
 import { serverTimestamp, Timestamp, setDoc, doc, deleteDoc, collection, getDocs, getDoc, updateDoc, increment, query, where, writeBatch, orderBy, limit, startAfter } from "firebase/firestore";
 import { ref, getDownloadURL, uploadString } from "firebase/storage";
@@ -31,9 +31,9 @@ export const handleSubmitBannerImage = async (image: string) => {
     });
 };
 
-export const handelSubmitForm = async (data: Product) => {
+export const handelSubmitForm = async (data: TProduct) => {
     const { productName, slug, productDescription, productImages, price, category, sizes, stockAvailable } = data;
-    const newData: Product = {
+    const newData: TProduct = {
         productName: productName.trim(),
         slug,
         productDescription,
@@ -118,7 +118,7 @@ export const decrementQty = async (userData: User, id: string) => {
     }
 }
 
-export const submitCreateFormImages = async (data: Product) => {
+export const submitCreateFormImages = async (data: TProduct) => {
     const storageRef = ref(storage, `images/${Timestamp.now().seconds}/`);
     const downloadURLs: string[] = [];
 
@@ -132,7 +132,7 @@ export const submitCreateFormImages = async (data: Product) => {
     return downloadURLs;
 };
 
-export const submitUpdateFormImages = async (data: UpdateProduct) => {
+export const submitUpdateFormImages = async (data: TUpdateProduct) => {
     const storageRef = ref(storage, `images/${Timestamp.now().seconds}/`);
     const downloadURLs: string[] = [];
 
@@ -153,12 +153,12 @@ export async function performSearch(searchQuery: string) {
         const productsRef = collection(db, 'products');
         const q = query(productsRef, where('category', '>=', lowerCaseSearchQuery));
         const querySnapshot = await getDocs(q);
-        const results: Product[] = querySnapshot.docs.map(doc => doc.data() as Product);
+        const results: TProduct[] = querySnapshot.docs.map(doc => doc.data() as TProduct);
         return results;
     }
 }
 
-export async function handelOfflineCheckoutSubmit(checkoutForm:CheckoutFormProps,pincode:string, city:String, state:string,user:User,totalSum:Number,cartData:any,cartSnapshots:any){
+export async function handelOfflineCheckoutSubmit(checkoutForm:TCheckoutForm,pincode:string, city:String, state:string,user:User,totalSum:Number,cartData:any,cartSnapshots:any){
     const batch = writeBatch(db);
     const orderData = {
         email: checkoutForm.email,

@@ -1,7 +1,7 @@
 "use client";
 import { useState } from 'react'
 import { Switch } from '@headlessui/react'
-import { Product } from '@/types/typescript.types';
+import { TProduct } from '@/types/typescript.types';
 import { handleInputChange, handleSizeToggle, handleStockAvailableChange, cancelForm } from '@/repositories/productRepository/clientsideFunctions';
 import { handelSubmitForm } from '@/app/actions';
 import UploadImage from './UploadImage';
@@ -13,7 +13,7 @@ function classNames(...classes: string[]) {
 const availableSizes = ["S", "M", "L", "XL"];
 
 const Page = () => {
-    const [data, setData] = useState<Product>({
+    const [data, setData] = useState<TProduct>({
         productName: "",
         slug: "",
         productDescription: "",

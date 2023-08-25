@@ -1,5 +1,5 @@
 import { db } from "@/firebase/firebaseConfig";
-import { Product } from "@/types/typescript.types";
+import { TProduct } from "@/types/typescript.types";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { ChangeEvent } from "react";
 
@@ -7,13 +7,13 @@ export const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectEl
     const { name, value } = e.target;
     if (name === "productName") {
         const slug = value?.toLowerCase()?.replaceAll(' ', '-');
-        setData((prevData: Product) => ({
+        setData((prevData: TProduct) => ({
             ...prevData,
             [name]: value,
             slug,
         }));
     } else {
-        setData((prevData: Product) => ({
+        setData((prevData: TProduct) => ({
             ...prevData,
             [name]: value,
         }));
@@ -32,7 +32,7 @@ export const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>, setDat
         }
 
         try {
-            setData((prevData: Product) => ({
+            setData((prevData: TProduct) => ({
                 ...prevData,
                 productImages: imageDataURLs,
             }));
@@ -57,7 +57,7 @@ const readImageFile = (reader: FileReader, file: File): Promise<string> => {
 };
 
 export const handleImageClick = (index: number, setData: Function) => {
-    setData((prevData: Product) => {
+    setData((prevData: TProduct) => {
         const updatedImages = [...prevData.productImages];
         updatedImages?.splice(index, 1);
         return {
@@ -68,14 +68,14 @@ export const handleImageClick = (index: number, setData: Function) => {
 };
 
 export const handleStockAvailableChange = (checked: boolean, setData: Function) => {
-    setData((prevData: Product) => ({
+    setData((prevData: TProduct) => ({
         ...prevData,
         stockAvailable: checked,
     }));
 };
 
 export const handleSizeToggle = (selectedSize: string, setData: Function) => {
-    setData((prevData: Product) => ({
+    setData((prevData: TProduct) => ({
         ...prevData,
         sizes: prevData?.sizes?.includes(selectedSize)
             ? prevData?.sizes?.filter(size => size !== selectedSize)
