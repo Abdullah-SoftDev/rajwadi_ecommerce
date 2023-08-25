@@ -1,8 +1,24 @@
-import ProductCard from "@/components/ProductCard";
-import { getProducts } from "@/repositories/productRepository/serversideFunctions";
+// import { getProducts } from "@/repositories/productRepository/serversideFunctions";
+import { db } from "@/firebase/firebaseConfig";
+import { Product } from "@/types/typescript.types";
+import { collection, getDocs, query, where, orderBy, limit } from "firebase/firestore";
+import InfiniteScrollTesting from "./components/InfiniteScrollTesting";
 
 const Page = async ({ params }: { params: { category: string } }) => {
   const { category } = params;
+
+  const getProducts = async (category: string) => {
+    const productsRef = collection(db, 'products');
+    const querySnapshot = await getDocs(query(productsRef,
+      where('category', '==', category),
+      orderBy('createdAt'), limit(1)
+    ));
+    const products: Product[] = querySnapshot.docs.map((doc) =>
+      doc.data() as Product
+    );
+    return products;
+  };
+
   const productsList = await getProducts(category);
 
   return (
@@ -20,11 +36,7 @@ const Page = async ({ params }: { params: { category: string } }) => {
           </h2>
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-          {productsList.map((product, index) => (
-            <ProductCard key={index} product={product} />
-          ))}
-        </div>
+        <InfiniteScrollTesting productsList={productsList} category={category}/>
       )}
     </div>
   );

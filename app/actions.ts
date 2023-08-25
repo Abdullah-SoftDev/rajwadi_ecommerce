@@ -3,7 +3,7 @@
 import { db, storage } from "@/firebase/firebaseConfig";
 import { CheckoutFormProps, Order, Product, UpdateProduct } from "@/types/typescript.types";
 import { User } from "firebase/auth";
-import { serverTimestamp, Timestamp, setDoc, doc, deleteDoc, collection, getDocs, getDoc, updateDoc, increment, query, where, writeBatch } from "firebase/firestore";
+import { serverTimestamp, Timestamp, setDoc, doc, deleteDoc, collection, getDocs, getDoc, updateDoc, increment, query, where, writeBatch, orderBy, limit, startAfter } from "firebase/firestore";
 import { ref, getDownloadURL, uploadString } from "firebase/storage";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -187,3 +187,4 @@ export async function handelOfflineCheckoutSubmit(checkoutForm:CheckoutFormProps
 
     await batch.commit();
 }
+
