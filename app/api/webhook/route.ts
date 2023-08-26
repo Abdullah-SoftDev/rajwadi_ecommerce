@@ -2,7 +2,8 @@ import type Stripe from "stripe";
 import { stripe } from "@/lib/stripe";
 import { headers } from 'next/headers';
 import { db } from "@/firebase/firebaseConfig";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { collection, doc, getDocs, serverTimestamp, writeBatch } from "firebase/firestore";
+import { TOrderItem } from "@/types/typescript.types";
 
 export async function POST(req: Request) {
     const body = await req.text();
@@ -51,9 +52,11 @@ export async function POST(req: Request) {
             };
         })
 
-        /// Store data in Firestore
-        /// write in users/{userId}/orders/{orderId}
-        await addDoc(collection(db, "orders"), {
+        const batch = writeBatch(db);
+
+        // Add the addDoc operation to the batch
+        const orderRef = doc(collection(db, "orders"));
+        batch.set(orderRef, {
             userId,
             paymentId,
             amount,
@@ -63,12 +66,14 @@ export async function POST(req: Request) {
             orderItems,
         });
 
-        // Clear the Cart   ---------- TODO
-        // const cartsRef = collection(db, `users/${userId}/cart`);
-        // const [cartSnapshots] = useCollection(cartsRef);
-        // cartSnapshots?.docs.forEach(async (doc) => {
-        //     await deleteDoc(doc.ref);
-        // });
+        // Add the deleteDoc operations to the batch
+        const cartsRef = collection(db, `users/${userId}/cart`);
+        const querySnapshot = await getDocs(cartsRef);
+        querySnapshot.forEach((doc) => {
+            batch.delete(doc.ref);
+        });
+
+        await batch.commit();
     }
 
     return new Response(null, { status: 200 })
