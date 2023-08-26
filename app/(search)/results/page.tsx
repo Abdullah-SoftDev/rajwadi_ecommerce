@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { TProduct } from "@/types/typescript.types";
 import ProductCard from "@/components/ProductCard";
 import NotFound from "@/components/NotFound";
-import { performSearch } from "@/app/actions";
+import { handelSearch } from "@/app/actions";
 
 type Props = {
   searchParams: { search_query: string };
@@ -16,7 +16,7 @@ const Page = ({ searchParams }: Props) => {
 
   const fetchSearchResultsData = async () => {
     if (searchQuery) {
-      const results = await performSearch(searchQuery);
+      const results = await handelSearch(searchQuery);
       setSearchResults(results!);
     }
   };

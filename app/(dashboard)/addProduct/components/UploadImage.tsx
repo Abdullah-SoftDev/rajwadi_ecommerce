@@ -1,4 +1,4 @@
-import { submitCreateFormImages } from "@/app/actions";
+import { handelSubmitProductFormImgs } from "@/app/actions";
 import { handleImageClick, handleImageUpload } from "@/repositories/productRepository/clientsideFunctions";
 import {  TProduct, TUploadImage } from "@/types/typescript.types";
 import { useState } from "react";
@@ -6,10 +6,10 @@ import { useState } from "react";
 const UploadImage = ({ imguploaded, data, setData, setIsImgUploaded }: TUploadImage) => {
   const [isImgUpLoading, setIsImgUpLoading] = useState<boolean>(false);
 
-  const handelSubmitImage = async () => {
+  const submitImage = async () => {
     if (data.productImages.length === 0) return;
     setIsImgUpLoading(true);
-    const downloadURLs = await submitCreateFormImages(data)
+    const downloadURLs = await handelSubmitProductFormImgs(data)
     setData((prevData: TProduct) => ({
       ...prevData,
       productImages: downloadURLs,
@@ -90,7 +90,7 @@ const UploadImage = ({ imguploaded, data, setData, setIsImgUploaded }: TUploadIm
 
           <div className="sm:col-span-6">
             <button
-              onClick={handelSubmitImage}
+              onClick={submitImage}
               type="button"
               className={`flex items-center justify-center w-full py-3 rounded-md bg-rose-500 px-3 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-rose-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600 ${isImgUpLoading ? "opacity-50 cursor-not-allowed disabled:opacity-50 disabled:cursor-not-allowed" : ""}`}
               disabled={isImgUpLoading}

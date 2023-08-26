@@ -1,8 +1,7 @@
 'use client'
 import NextTopLoader from 'nextjs-toploader';
 
-export default function TopLoaderBar() {
-
+const TopLoaderBar = () => {
     return <>
         <NextTopLoader color="#FF0000"
             initialPosition={0.08}
@@ -14,3 +13,5 @@ export default function TopLoaderBar() {
             speed={200} />
     </>
 }
+
+export default TopLoaderBar

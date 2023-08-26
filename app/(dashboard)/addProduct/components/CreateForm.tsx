@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Switch } from '@headlessui/react'
 import { TProduct } from '@/types/typescript.types';
 import { handleInputChange, handleSizeToggle, handleStockAvailableChange, handelCancelForm } from '@/repositories/productRepository/clientsideFunctions';
-import { handelSubmitForm } from '@/app/actions';
+import { handelSubmitProductForm } from '@/app/actions';
 import UploadImage from './UploadImage';
 
 function classNames(...classes: string[]) {
@@ -38,7 +38,7 @@ const Page = () => {
             alert("Please upload images before submitting.");
             return;
         }
-        await handelSubmitForm(data);
+        await handelSubmitProductForm(data);
         setData({
             productName: "",
             slug: "",

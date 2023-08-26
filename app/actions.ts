@@ -1,23 +1,10 @@
 'use server'
 
 import { db, storage } from "@/firebase/firebaseConfig";
-import { TCartData, TCheckoutForm, TOnlineOrder, TProduct, TUpdateProduct } from "@/types/typescript.types";
+import { TCartData, TProduct, TUpdateProduct } from "@/types/typescript.types";
 import { User } from "firebase/auth";
-import { serverTimestamp, Timestamp, setDoc, doc, deleteDoc, collection, getDocs, getDoc, updateDoc, increment, query, where, writeBatch, orderBy, limit, startAfter } from "firebase/firestore";
+import { serverTimestamp, Timestamp, setDoc, doc, deleteDoc, collection, getDocs, getDoc, updateDoc, increment, query, where } from "firebase/firestore";
 import { ref, getDownloadURL, uploadString } from "firebase/storage";
-import { v4 as uuidv4 } from 'uuid';
-
-
-export async function checkServiceability(pincode: string) {
-    try {
-        const response = await fetch('http://localhost:3000/api/pincodes');
-        const pinjson = await response.json();
-        return pinjson.includes(pincode);
-    } catch (error) {
-        console.error(error);
-        return false;
-    }
-}
 
 export const handleSubmitBannerImage = async (image: string) => {
     const storageRef = ref(storage, `BannerImages/${Timestamp.now().seconds}/${Math.random().toString(36).substring(7)}`);
@@ -31,7 +18,7 @@ export const handleSubmitBannerImage = async (image: string) => {
     });
 };
 
-export const handelSubmitForm = async (data: TProduct) => {
+export const handelSubmitProductForm = async (data: TProduct) => {
     const { productName, slug, productDescription, productImages, price, category, sizes, stockAvailable } = data;
     const newData: TProduct = {
         productName: productName.trim(),
@@ -50,7 +37,7 @@ export const handelSubmitForm = async (data: TProduct) => {
     console.log(newData)
 }
 
-export const addToCart = async (
+export const handelAddToCart = async (
     cartData: TCartData,
     userData: User
 ) => {
@@ -104,7 +91,7 @@ export const addToCart = async (
     }
 };
 
-export const incrementQty = async (userData: User, id: string) => {
+export const handelIncrementQty = async (userData: User, id: string) => {
     const cartRef = doc(db, `users/${userData?.uid}/cart/${id}`);
     const cartSnapshot = await getDoc(cartRef);
     if (cartSnapshot.exists()) {
@@ -114,7 +101,7 @@ export const incrementQty = async (userData: User, id: string) => {
     }
 }
 
-export const decrementQty = async (userData: User, id: string) => {
+export const handelDecrementQty = async (userData: User, id: string) => {
     const cartRef = doc(db, `users/${userData?.uid}/cart/${id}`);
     const cartSnapshot = await getDoc(cartRef);
     if (cartSnapshot.exists()) {
@@ -129,7 +116,7 @@ export const decrementQty = async (userData: User, id: string) => {
     }
 }
 
-export const submitCreateFormImages = async (data: TProduct) => {
+export const handelSubmitProductFormImgs = async (data: TProduct) => {
     const storageRef = ref(storage, `images/${Timestamp.now().seconds}/`);
     const downloadURLs: string[] = [];
 
@@ -143,7 +130,7 @@ export const submitCreateFormImages = async (data: TProduct) => {
     return downloadURLs;
 };
 
-export const submitUpdateFormImages = async (data: TUpdateProduct) => {
+export const handelUpdateFormImgs = async (data: TUpdateProduct) => {
     const storageRef = ref(storage, `images/${Timestamp.now().seconds}/`);
     const downloadURLs: string[] = [];
 
@@ -157,7 +144,7 @@ export const submitUpdateFormImages = async (data: TUpdateProduct) => {
     return downloadURLs;
 };
 
-export async function performSearch(searchQuery: string) {
+export async function handelSearch(searchQuery: string) {
     if (searchQuery) {
         const cleanedSearchQuery = searchQuery.trim().replace(/\s+/g, ' ');
         const lowerCaseSearchQuery = cleanedSearchQuery.toLowerCase();

@@ -6,7 +6,7 @@ import { auth, db } from "@/firebase/firebaseConfig";
 import { query, collection, orderBy, deleteDoc, doc } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { decrementQty, incrementQty } from "@/app/actions";
+import { handelDecrementQty, handelIncrementQty } from "@/app/actions";
 import { fetchUserData } from "@/repositories/userRepository/clientsideFunctions";
 import { User } from "firebase/auth";
 import { createCheckout } from "@/lib";
@@ -28,7 +28,7 @@ const Cart = ({ cartOpen, setCartOpen }: TCart) => {
   const cartData = cartDataFromQuery as TCartData[]
 
 
-  const handelRemoveFromCart = async (id: string) => {
+  const removeFromCart = async (id: string) => {
     if (!user) {
       alert("Login first");
       return;
@@ -36,15 +36,15 @@ const Cart = ({ cartOpen, setCartOpen }: TCart) => {
     await deleteDoc(doc(db, `users/${user?.uid}/cart/${id}`));
   };
 
-  const handelIncrementQty = async (id: string) => {
+  const incrementQty = async (id: string) => {
     if (userData) {
-      await incrementQty(userData, id);
+      await handelIncrementQty(userData, id);
     }
   };
 
-  const handelDecrementQty = async (id: string) => {
+  const decrementQty = async (id: string) => {
     if (userData) {
-      await decrementQty(userData, id);
+      await handelDecrementQty(userData, id);
     }
   };
 
@@ -146,7 +146,7 @@ const Cart = ({ cartOpen, setCartOpen }: TCart) => {
                                       <div className="flex items-center">
                                         <form
                                           action={() =>
-                                            handelDecrementQty(product.id!)
+                                            decrementQty(product.id!)
                                           }
                                         >
                                           <button
@@ -176,7 +176,7 @@ const Cart = ({ cartOpen, setCartOpen }: TCart) => {
 
                                         <form
                                           action={() =>
-                                            handelIncrementQty(product.id!)
+                                            incrementQty(product.id!)
                                           }
                                         >
                                           <button
@@ -204,7 +204,7 @@ const Cart = ({ cartOpen, setCartOpen }: TCart) => {
                                       <div className="flex">
                                         <button
                                           onClick={() =>
-                                            handelRemoveFromCart(product.id!)
+                                            removeFromCart(product.id!)
                                           }
                                           type="button"
                                           className="font-medium text-indigo-600 hover:text-indigo-500"

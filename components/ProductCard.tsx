@@ -8,7 +8,7 @@ const ProductCard = ({product}:{product:TProduct}) => {
             <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg shadow-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
                 <div className="group">
                     <img
-                        src={String(productImages[0])}
+                        src={productImages[0]}
                         alt={productName}
                         className="h-full w-full object-cover object-center group-hover:opacity-75 group-hover:scale-110 transform transition-transform duration-300"
                     />

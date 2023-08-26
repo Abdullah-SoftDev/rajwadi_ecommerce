@@ -4,7 +4,7 @@ import { Switch } from '@headlessui/react'
 import { TProduct, TUpdateProduct } from '@/types/typescript.types';
 import { handleInputChange, handleSizeToggle, handleStockAvailableChange, handleImageClick, handleImageUpload } from '@/repositories/productRepository/clientsideFunctions';
 import Link from 'next/link';
-import { submitUpdateFormImages } from '@/app/actions';
+import { handelUpdateFormImgs } from '@/app/actions';
 import { db } from '@/firebase/firebaseConfig';
 import { doc, updateDoc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
@@ -43,7 +43,7 @@ const UpdateForm = ({ product }: { product: TProduct }) => {
             return;
         }
         setIsImgUpLoading(true);
-        const downloadURLs = await submitUpdateFormImages(data)
+        const downloadURLs = await handelUpdateFormImgs(data)
         setData((prevData: TUpdateProduct) => ({
             ...prevData,
             productImages: downloadURLs,
