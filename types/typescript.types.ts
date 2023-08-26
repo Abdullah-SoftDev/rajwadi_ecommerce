@@ -1,4 +1,6 @@
+import { User } from "firebase/auth";
 import { Timestamp } from "firebase/firestore";
+import { Dispatch, SetStateAction } from "react";
 
 export type TCart = {
   cartOpen: boolean;
@@ -109,3 +111,17 @@ export type TCartData = {
   quantity: number;
   selectedSize: string;
 }
+
+export type TCheckoutData = {
+  checkoutForm: TCheckoutForm;
+  pincode: string;
+  city: string;
+  state: string;
+  totalSum: number;
+  cartData:TCartData[];
+  cartSnapshots:any;
+  setCheckoutForm:  Dispatch<SetStateAction<TCheckoutForm>>;
+  setPincode: Dispatch<SetStateAction<string>>;
+  setCity: Dispatch<SetStateAction<string>>;
+  setState:  Dispatch<SetStateAction<string>>;
+};

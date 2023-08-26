@@ -2,8 +2,7 @@ import type Stripe from "stripe";
 import { stripe } from "@/lib/stripe";
 import { headers } from 'next/headers';
 import { db } from "@/firebase/firebaseConfig";
-import { addDoc, collection, deleteDoc, serverTimestamp } from "firebase/firestore";
-import { useCollection } from "react-firebase-hooks/firestore";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
 export async function POST(req: Request) {
     const body = await req.text();

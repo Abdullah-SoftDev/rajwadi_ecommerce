@@ -1,10 +1,11 @@
 'use server'
 
 import { db, storage } from "@/firebase/firebaseConfig";
-import { TCartData, TProduct, TUpdateProduct } from "@/types/typescript.types";
+import { TCartData, TCheckoutData, TProduct, TUpdateProduct } from "@/types/typescript.types";
 import { User } from "firebase/auth";
-import { serverTimestamp, Timestamp, setDoc, doc, deleteDoc, collection, getDocs, getDoc, updateDoc, increment, query, where } from "firebase/firestore";
+import { serverTimestamp, Timestamp, setDoc, doc, deleteDoc, collection, getDocs, getDoc, updateDoc, increment, query, where, writeBatch } from "firebase/firestore";
 import { ref, getDownloadURL, uploadString } from "firebase/storage";
+import { v4 as uuidv4 } from 'uuid';
 
 export const handleSubmitBannerImage = async (image: string) => {
     const storageRef = ref(storage, `BannerImages/${Timestamp.now().seconds}/${Math.random().toString(36).substring(7)}`);
@@ -155,3 +156,4 @@ export async function handelSearch(searchQuery: string) {
         return results;
     }
 }
+

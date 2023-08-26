@@ -1,14 +1,13 @@
 'use client'
 
 import { auth, db } from "@/firebase/firebaseConfig";
-import { TCheckoutForm } from "@/types/typescript.types";
-import { collection, doc, orderBy, query, serverTimestamp, writeBatch } from "firebase/firestore";
+import { handelCheckoutSubmit, handelPincodeInfo } from "@/repositories/productRepository/clientsideFunctions";
+import { TCartData, TCheckoutData, TCheckoutForm } from "@/types/typescript.types";
+import { collection, orderBy, query } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react"
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollection, useCollectionData } from "react-firebase-hooks/firestore";
-import { v4 as uuidv4 } from 'uuid';
-
 
 export default function Page() {
     const [checkoutForm, setCheckoutForm] = useState<TCheckoutForm>({
@@ -18,17 +17,18 @@ export default function Page() {
         address: "",
     })
 
-    const [pincode, setPincode] = useState('');
-    const [city, setCity] = useState('');
-    const [state, setState] = useState('');
+    const [pincode, setPincode] = useState<string>('');
+    const [city, setCity] = useState<string>('');
+    const [state, setState] = useState<string>('');
     const [user] = useAuthState(auth);
     const router = useRouter()
 
     const cartQuery = query(collection(db, `users/${user?.uid}/cart`), orderBy("createdAt"));
-    const [cartData, loading] = useCollectionData(cartQuery);
+    const [cartDataFromQuery] = useCollectionData(cartQuery);
+    const cartData = cartDataFromQuery as TCartData[]
 
     const cartsRef = collection(db, `users/${user?.uid}/cart`);
-    const [cartSnapshots, loading2] = useCollection(cartsRef);
+    const [cartSnapshots] = useCollection(cartsRef);
 
     const totalSum = cartData?.reduce((accumulator, item) => {
         return accumulator + item.price * item.quantity;
@@ -39,65 +39,33 @@ export default function Page() {
         setCheckoutForm({ ...checkoutForm, [name]: value });
     }
 
-    const handlePincodeChange = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const pincodeInfo = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
+        await handelPincodeInfo(pincode, setCity, setState)
+    };
 
-        if (pincode.length === 6) {
-            const response = await fetch(`https://api.postalpincode.in/pincode/${pincode}`);
-            const data = await response.json();
-            const res = data[0]?.PostOffice[0];
-            setCity(res.Name);
-            setState(res.State);
-        } else {
-            setCity('');
-            setState('');
-        }
-    }
-
-    const handelCheckoutSubmit = async () => {
-        const batch = writeBatch(db);
-        const orderData = {
-            email: checkoutForm.email,
-            name: checkoutForm.name,
-            phonenumber: checkoutForm.phonenumber,
-            address: checkoutForm.address,
+    const checkoutSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const checkoutData: TCheckoutData = {
+            checkoutForm,
             pincode,
             city,
             state,
-            userId: user?.uid,
-            orderId: uuidv4(),
-            amount: totalSum,
-            createdAt: serverTimestamp(),
-            orderItems: cartData,
+            totalSum: Number(totalSum),
+            cartData,
+            cartSnapshots,
+            setCheckoutForm,
+            setPincode,
+            setCity,
+            setState
         };
-    
-    
-        const newOrderDocRef = doc(collection(db, 'offlineOrders'));
-        batch.set(newOrderDocRef, orderData);
-    
-        if (cartSnapshots && user) {
-            cartSnapshots.docs.forEach((docSnapshot:any) => {
-                const cartDocRef = doc(db, `users/${user.uid}/cart`, docSnapshot.id);
-                batch.delete(cartDocRef);
-            });
-        }
-    
-        await batch.commit();
+        await handelCheckoutSubmit(checkoutData, user!);
         router.push('/success');
-        setCheckoutForm({
-            email: '',
-            name: '',
-            phonenumber: '',
-            address: '',
-        });
-        setPincode('');
-        setCity('');
-        setState('');
     };
 
     return (
         <div className="max-w-4xl mx-auto pt-16 pb-24 px-4 sm:px-6 lg:px-8">
-            <form action={handelCheckoutSubmit} className="lg:grid lg:grid-cols-1 lg:gap-x-12 xl:gap-x-16">
+            <form onSubmit={checkoutSubmit} className="lg:grid lg:grid-cols-1 lg:gap-x-12 xl:gap-x-16">
                 <div>
                     <div>
                         <h2 className="text-lg font-medium text-gray-900">Contact information</h2>
@@ -172,7 +140,7 @@ export default function Page() {
                             <div>
                                 <label className="text-sm font-medium text-gray-700 flex space-x-3">
                                     <p>Pincode</p>
-                                    <button onClick={handlePincodeChange}>Autofill State and City</button>
+                                    <button onClick={pincodeInfo}>Autofill State and City</button>
                                 </label>
                                 <div className="mt-1">
                                     <input

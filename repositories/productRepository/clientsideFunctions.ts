@@ -1,5 +1,9 @@
-import { TProduct } from "@/types/typescript.types";
-import { ChangeEvent } from "react";
+import { db } from "@/firebase/firebaseConfig";
+import { TCheckoutData, TProduct } from "@/types/typescript.types";
+import { User } from "firebase/auth";
+import { writeBatch, serverTimestamp, doc, collection } from "firebase/firestore";
+import { ChangeEvent, Dispatch, SetStateAction } from "react";
+import { v4 as uuidv4 } from 'uuid';
 
 export const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>, setData: Function) => {
     const { name, value } = e.target;
@@ -92,4 +96,82 @@ export const handelCancelForm = (setData: Function) => {
         sizes: [],
         stockAvailable: false,
     });
+}
+
+export const handelCheckoutSubmit = async (checkoutData: TCheckoutData, user: User) => {
+    const {
+        checkoutForm,
+        pincode,
+        city,
+        state,
+        totalSum,
+        cartData,
+        cartSnapshots,
+        setCheckoutForm,
+        setPincode,
+        setCity,
+        setState
+    } = checkoutData;
+
+    const batch = writeBatch(db);
+    const orderData = {
+        email: checkoutForm.email,
+        name: checkoutForm.name,
+        phonenumber: checkoutForm.phonenumber,
+        address: checkoutForm.address,
+        pincode,
+        city,
+        state,
+        userId: user?.uid,
+        orderId: uuidv4(),
+        amount: totalSum,
+        createdAt: serverTimestamp(),
+        orderItems: cartData,
+    };
+
+    const newOrderDocRef = doc(collection(db, 'offlineOrders'));
+    batch.set(newOrderDocRef, orderData);
+
+    if (cartSnapshots && user) {
+        cartSnapshots.docs.forEach((docSnapshot: any) => {
+            const cartDocRef = doc(db, `users/${user.uid}/cart`, docSnapshot.id);
+            batch.delete(cartDocRef);
+        });
+    }
+
+    await batch.commit();
+    setCheckoutForm({
+        email: '',
+        name: '',
+        phonenumber: '',
+        address: '',
+    });
+    setPincode('');
+    setCity('');
+    setState('');
+};
+
+export const handelPincodeInfo = async (pincode: string, setCity: Dispatch<SetStateAction<string>>, setState: Dispatch<SetStateAction<string>>) => {
+    if (pincode.length === 6) {
+        try {
+            const response = await fetch(`https://api.postalpincode.in/pincode/${pincode}`);
+
+            if (!response.ok) {
+                alert('Failed to fetch pincode information');
+                return;
+            }
+
+            const data = await response.json();
+            const res = data[0]?.PostOffice[0];
+            setCity(res.Name);
+            setState(res.State);
+        } catch (error) {
+            console.error('Error fetching pincode information:', error);
+            alert('An error occurred while fetching pincode information');
+        }
+    } else {
+        alert('Use proper pincode');
+        setCity('');
+        setState('');
+    }
 }
