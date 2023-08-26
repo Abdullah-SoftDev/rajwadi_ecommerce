@@ -1,5 +1,6 @@
 import { db } from "@/firebase/firebaseConfig";
 import { TBannerImage, TOfflineOrder, TOnlineOrder, TProduct } from "@/types/typescript.types";
+import { User } from "firebase/auth";
 import { collection, doc, getDoc, getDocs, orderBy, query, where } from "firebase/firestore";
 
 export const getProducts = async (category: string) => {
@@ -81,4 +82,15 @@ export const viewAllProducts = async () => {
         doc.data() as TProduct
     );
     return products;
+};
+
+export const getAllUsers = async () => {
+    const productsRef = collection(db, 'users');
+    const querySnapshot = await getDocs(query(productsRef,
+        orderBy('createdAt'),
+    ));
+    const users: User[] = querySnapshot.docs.map((doc) =>
+        doc.data() as User
+    );
+    return users;
 };

@@ -5,6 +5,7 @@ const names = [
     { name: "RecentOrders", path: "/recentOrders" },
     { name: "VeiwAllProducts", path: "/viewAllProducts" },
     { name: "BannerImages", path: "/addBannerImages" },
+    { name: "Our Customers", path: "/ourCustomers" },
 ];
 
 const Menubar = () => {

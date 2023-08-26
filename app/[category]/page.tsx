@@ -2,7 +2,6 @@ import { db } from "@/firebase/firebaseConfig";
 import { TProduct } from "@/types/typescript.types";
 import { collection, getDocs, query, where, orderBy, limit } from "firebase/firestore";
 import InfiniteScrollTesting from "./components/InfiniteScrollTesting";
-import { Suspense } from "react";
 
 const Page = async ({ params }: { params: { category: string } }) => {
   const { category } = params;
