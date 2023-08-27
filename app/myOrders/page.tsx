@@ -27,7 +27,7 @@ const Page = async ({ searchParams }: Props) => {
     
 
     return (
-        <div className="mx-auto max-w-5xl px-2 py-14 min-h-screen">
+        <div className="mx-auto max-w-5xl px-2 py-7 min-h-screen">
             <div className="max-w-xl">
                 <h1 className="text-2xl font-semibold tracking-tight text-gray-900 sm:text-3xl">Order history</h1>
                 <p className="mt-2 text-sm text-gray-500">

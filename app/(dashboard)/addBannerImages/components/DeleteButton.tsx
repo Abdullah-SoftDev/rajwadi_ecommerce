@@ -17,7 +17,7 @@ const DeleteButton = ({ id }: { id: string }) => {
     }
 
     return (
-        <button onClick={() => { handelDeleteImage(id) }} type="button" className={`mt-2 block bg-gray-900 w-full p-2 rounded-lg font-medium text-white hover:bg-gray-700 focus:outline-none ${loading ? "opacity-50 cursor-not-allowed disabled:opacity-50 disabled:cursor-not-allowed" : ""}`}>
+        <button onClick={() => { handelDeleteImage(id) }} type="button" className={`mt-2 block bg-gray-900 w-full p-2 rounded-full font-medium text-white hover:bg-gray-700 focus:outline-none ${loading ? "opacity-50 cursor-not-allowed disabled:opacity-50 disabled:cursor-not-allowed" : ""}`}>
             {loading ? "Deleting.." : "Delete"}
         </button>
     )

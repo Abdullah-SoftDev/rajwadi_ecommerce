@@ -80,7 +80,7 @@ const UploadInputImage = () => {
             <div className="max-w-xl mx-auto justify-center items-center">
                 <button
                     onClick={bannerImageUpload}
-                    className={`flex items-center justify-center w-full py-3 rounded-md bg-rose-500 px-3 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-rose-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600 ${loading ? "opacity-50 cursor-not-allowed disabled:opacity-50 disabled:cursor-not-allowed" : ""}`}
+                    className={`flex items-center justify-center w-full py-3 rounded-full bg-purple-500 px-3 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-purple-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600 ${loading ? "opacity-50 cursor-not-allowed disabled:opacity-50 disabled:cursor-not-allowed" : ""}`}
                     disabled={loading}
                 >
                     {loading ? "Uploading..." : "Upload Image"}
