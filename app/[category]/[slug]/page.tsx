@@ -10,7 +10,7 @@ export default async function Page({ params }: { params: { slug: string, categor
     const descArray = productDescription.split(',');
 
     return (
-        <div className="mx-auto max-w-6xl px-4 pt-6">
+        <div className="mx-auto max-w-6xl px-4">
             <div className="lg:grid lg:grid-cols-2 lg:space-x-8">
                 {/* Image gallery */}
                 <ImageGallery productImages={productImages} />

@@ -3,7 +3,7 @@ import NextTopLoader from 'nextjs-toploader';
 
 const TopLoaderBar = () => {
     return <>
-        <NextTopLoader color="#FF0000"
+        <NextTopLoader color="#D67BFF"
             initialPosition={0.08}
             crawlSpeed={200}
             height={3}

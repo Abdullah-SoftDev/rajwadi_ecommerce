@@ -37,7 +37,7 @@ const ImageGallery = ({productImages}:{productImages:(string | File)[]}) => {
         ))}
       </Tab.List>
     </div>
-    <div className="w-full h-full lg:w-3/4 pl-0 lg:pl-3">
+    <div className="w-full h-[60vh] lg:w-3/4 pl-0 lg:pl-3">
       <img
         src={String(selectedImage)}
         alt=""

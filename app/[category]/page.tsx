@@ -20,23 +20,11 @@ const Page = async ({ params }: { params: { category: string } }) => {
 
   const productsList = await getProducts(category);
 
-  const Skeleton = () => (
-    <div className="block mb-8">
-        <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg shadow-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
-            <div className="animate-pulse bg-gray-300 w-full h-full" />
-        </div>
-        <div className="mt-2">
-            <div className="animate-pulse h-4 bg-gray-300 mb-1 w-3/4" />
-            <div className="animate-pulse h-3 bg-gray-300 w-1/4" />
-        </div>
-    </div>
-);
-
   return (
-    <div className="mx-auto max-w-6xl px-4 py-6">
-      <div className="md:flex md:items-center md:justify-between py-5">
-        <h2 className="text-center text-3xl capitalize">
-          Explore Our {category} products
+    <div className="mx-auto max-w-6xl px-4">
+      <div className="md:flex">
+        <h2 className="text-center text-xl capitalize mb-8">
+          Buy Latest <span className="font-semibold text-[#ca7dee]">{category}</span>
         </h2>
       </div>
 
@@ -47,7 +35,7 @@ const Page = async ({ params }: { params: { category: string } }) => {
           </h2>
         </div>
       ) : (
-        <InfiniteScrollTesting productsList={productsList} category={category}/>
+        <InfiniteScrollTesting productsList={productsList} category={category} />
       )}
     </div>
   );

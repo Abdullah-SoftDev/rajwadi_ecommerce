@@ -22,16 +22,16 @@ const Searchbar = () => {
     };
 
     return (
-        <div className="flex-1 flex items-center justify-center px-2 py-4">
+        <div className="flex-1 flex items-center justify-center px-2 py-6">
             <div className="max-w-xl w-full">
                 <label htmlFor="search" className="sr-only">
                     Search
                 </label>
                 <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center cursor-pointer">
+                    <div className="absolute inset-y-0 right-6 pl-3 flex items-center cursor-pointer">
                         <MagnifyingGlassIcon
                             onClick={handelSearch}
-                            className="h-5 w-5 text-gray-400"
+                            className="h-5 w-5 text-[#111]"
                             aria-hidden="true"
                         />
                     </div>
@@ -40,7 +40,7 @@ const Searchbar = () => {
                         onChange={(e) => setsearch(e.target.value)}
                         onKeyDown={handleKeyDown}
                         name="search"
-                        className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
+                        className="block w-full pl-4 pr-3 py-2 border border-gray-300 rounded-full leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
                         placeholder="Search products..."
                     />
                     {search && (

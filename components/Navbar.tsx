@@ -27,15 +27,15 @@ const Navbar = () => {
   return (
     <div className="bg-white sticky top-0 left-0 right-0 z-20">
       <header className="relative bg-white">
-        <p className="flex h-10 items-center justify-center bg-indigo-600 px-4 text-sm font-medium text-white sm:px-6 lg:px-8">
+        <p className="flex h-10 items-center justify-center bg-[#111] px-4 text-sm font-medium text-white sm:px-6 lg:px-8">
           Order Online, Pick Up In-Store!
         </p>
         <nav className="mx-auto max-w-6xl px-4">
           <div className="border-b border-gray-200">
             <div className="flex h-16 items-center">
               {/* Logo */}
-              <Link className="text-black-900 text-lg italic" href="/">
-                Navkar Selection
+              <Link className="text-black-900 text-lg italic whitespace-nowrap" href="/">
+                Navkar
               </Link>
               {/* Navlinks menus */}
               <Popover.Group className="hidden lg:ml-8 lg:block lg:self-stretch">
@@ -48,9 +48,9 @@ const Navbar = () => {
                             href={category.href}
                             className={classNames(
                               open
-                                ? "border-indigo-600 text-indigo-600 outline-none"
+                                ? "border-indigo-600 text-indigo-600 outline-none whitespace-nowrap"
                                 : "border-transparent text-gray-700 hover:text-gray-800",
-                              "relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out outline-none"
+                              "relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out outline-none whitespace-nowrap"
                             )}
                           >
                             {category.name}
@@ -67,8 +67,8 @@ const Navbar = () => {
                           className={classNames(
                             open
                               ? "border-indigo-600 text-indigo-600 outline-none"
-                              : "border-transparent text-gray-700 hover:text-gray-800",
-                            "relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out outline-none"
+                              : "border-transparent text-gray-700 hover:text-gray-800 whitespace-nowrap",
+                            "relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out outline-none whitespace-nowrap"
                           )}
                         >
                           MY ORDERS

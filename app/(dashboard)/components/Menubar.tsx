@@ -1,11 +1,11 @@
 import Link from "next/link";
 import React from "react";
 const names = [
-    { name: "AddProduct", path: "/addProduct" },
-    { name: "RecentOrders", path: "/recentOrders" },
-    { name: "VeiwAllProducts", path: "/viewAllProducts" },
-    { name: "BannerImages", path: "/addBannerImages" },
-    { name: "Our Customers", path: "/ourCustomers" },
+    { name: "Add product", path: "/addProduct" },
+    { name: "Recent orders", path: "/recentOrders" },
+    { name: "Veiw all products", path: "/viewAllProducts" },
+    { name: "Banner images", path: "/addBannerImages" },
+    { name: "Our customers", path: "/ourCustomers" },
 ];
 
 const Menubar = () => {

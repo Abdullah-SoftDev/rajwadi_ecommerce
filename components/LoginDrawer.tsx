@@ -57,7 +57,7 @@ const LoginDrawer = () => {
         theme="light" />
       <Drawer.Root shouldScaleBackground>
         <Drawer.Trigger asChild>
-          <button className="sm:ml-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gray-900 hover:bg-gray-700 focus:outline-none">
+          <button className="sm:ml-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gray-900 hover:bg-gray-700 focus:outline-none whitespace-nowrap">
             Sign In
           </button>
         </Drawer.Trigger>

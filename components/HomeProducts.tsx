@@ -36,7 +36,10 @@ const collections = [
 const HomeProducts = () => {
   return (
     <div className="mx-auto max-w-6xl px-4 py-14">
-      <h2 className="text-center text-3xl pb-6">Top Collections</h2>
+      <hr />
+        <div className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium shadow-sm text-white bg-gray-900 mb-5">
+        Top Collections
+                </div>
       <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
         {collections.map((collection, index) => (
           <Link key={index} href={collection.href}>
@@ -54,11 +57,6 @@ const HomeProducts = () => {
             </div>
           </Link>
         ))}
-      </div>
-      <div className="text-center mt-8">
-        <Link href="/saree" className="sm:ml-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gray-900 hover:bg-gray-700 focus:outline-none">
-          Explore More Button
-        </Link>
       </div>
     </div>
   );

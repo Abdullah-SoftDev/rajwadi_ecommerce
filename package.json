@@ -10,8 +10,12 @@
     "stripe:listen": "stripe listen --forward-to localhost:3000/api/webhook"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@headlessui/react": "^1.7.16",
     "@heroicons/react": "^2.0.18",
+    "@mui/icons-material": "^5.14.6",
+    "@mui/material": "^5.14.6",
     "@stripe/stripe-js": "^2.1.0",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.4",

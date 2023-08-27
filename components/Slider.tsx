@@ -12,7 +12,7 @@ const Slider = ({ bannerImageList }: { bannerImageList: TBannerImage[] }) => {
             spaceBetween={30}
             centeredSlides={true}
             autoplay={{
-                delay: 1500,
+                delay: 3500,
                 disableOnInteraction: false,
             }}
             pagination={{
@@ -20,7 +20,7 @@ const Slider = ({ bannerImageList }: { bannerImageList: TBannerImage[] }) => {
             }}
             navigation={true}
             modules={[Autoplay, Pagination, Navigation]}
-            className="mySwiper h-60 sm:h-96"
+            className="mySwiper h-60 sm:h-[90vh]"
         >
             {bannerImageList.map((bannerImage, index) => (
                 <SwiperSlide key={index}>
