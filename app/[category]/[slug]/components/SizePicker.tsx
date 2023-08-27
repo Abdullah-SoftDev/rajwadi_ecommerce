@@ -14,8 +14,8 @@ export default function SizePicker({ sizes, product }: { sizes: string[], produc
 
     return (
         <>
-            <RadioGroup className="pt-4" value={selectedSize} onChange={setSelectedSize}>
-                <RadioGroup.Label className="block text-lg font-medium text-gray-700">Choose a size</RadioGroup.Label>
+            <RadioGroup className="pt-3" value={selectedSize} onChange={setSelectedSize}>
+                <RadioGroup.Label className="block text-xl font-medium text-gray-700">Choose a size</RadioGroup.Label>
                 <div className="mt-4 flex items-center space-x-3">
                     {sizes.map((size, index) => (
                         <RadioGroup.Option
@@ -23,14 +23,14 @@ export default function SizePicker({ sizes, product }: { sizes: string[], produc
                             value={size}
                             className={({ checked }) =>
                                 classNames(
-                                    checked ? 'bg-purple-500 text-white' : 'bg-gray-300 text-gray-700', '-m-0.5 relative p-2 rounded-full flex items-center justify-center cursor-pointer focus:outline-none h-8 w-8')}>
+                                    checked ? 'bg-[#bf86da]  text-white' : 'bg-gray-300 text-gray-700', '-m-0.5 relative p-2 rounded-full flex items-center justify-center cursor-pointer focus:outline-none h-8 w-8')}>
                             {size}
                         </RadioGroup.Option>
                     ))}
                 </div>
             </RadioGroup>
 
-            <div className="mt-8 space-x-5 flex sm:flex-col1 items-center">
+            <div className="pt-6 space-x-5 flex items-center">
                 <AddToCartButton product={product} selectedSize={selectedSize} />
                 <BuyNowButton product={product} selectedSize={selectedSize}/>
             </div>

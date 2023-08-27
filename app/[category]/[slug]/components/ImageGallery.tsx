@@ -2,7 +2,7 @@
 import { Tab } from "@headlessui/react";
 import { useState } from "react";
 
-const ImageGallery = ({productImages}:{productImages:(string | File)[]}) => {
+const ImageGallery = ({productImages}:{productImages:string[]}) => {
   const [selectedImage, setSelectedImage] = useState(productImages[0]);
 
   return (
@@ -13,14 +13,14 @@ const ImageGallery = ({productImages}:{productImages:(string | File)[]}) => {
           <Tab
             key={index}
             className={`relative h-24 bg-white rounded-md flex items-center justify-center text-sm font-medium uppercase text-gray-900 cursor-pointer hover:bg-gray-50 focus:outline-none focus:ring focus:ring-offset-4 focus:ring-opacity-50 ${
-              selectedImage === image ? "ring-indigo-500" : "ring-transparent"
+              selectedImage === image ? "ring-[#bf86da] " : "ring-transparent"
             }`}
             onClick={() => setSelectedImage(image)}
           >
             <span className="sr-only">{String(image)}</span>
             <span className="absolute inset-0 rounded-md overflow-hidden">
               <img
-                src={String(image)}
+                src={image}
                 alt=""
                 className="w-full h-full object-center object-cover"
               />
@@ -28,7 +28,7 @@ const ImageGallery = ({productImages}:{productImages:(string | File)[]}) => {
             <span
               className={`absolute inset-0 rounded-md ring-2 ring-offset-2 pointer-events-none ${
                 selectedImage === image
-                  ? "ring-indigo-500"
+                  ? "ring-[#bf86da] "
                   : "ring-transparent"
               }`}
               aria-hidden="true"

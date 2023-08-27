@@ -92,7 +92,7 @@ const UploadImage = ({ imguploaded, data, setData, setIsImgUploaded }: TUploadIm
             <button
               onClick={submitImage}
               type="button"
-              className={`flex items-center justify-center w-full py-3 rounded-md bg-rose-500 px-3 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-rose-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600 ${isImgUpLoading ? "opacity-50 cursor-not-allowed disabled:opacity-50 disabled:cursor-not-allowed" : ""}`}
+              className={`flex items-center justify-center w-full py-3 rounded-md bg-purple-500 px-3 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-purple-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600 ${isImgUpLoading ? "opacity-50 cursor-not-allowed disabled:opacity-50 disabled:cursor-not-allowed" : ""}`}
               disabled={isImgUpLoading}
             >
               {isImgUpLoading ? "Uploading..." : "Upload Image"}

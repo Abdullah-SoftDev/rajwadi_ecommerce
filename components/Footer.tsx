@@ -35,6 +35,7 @@ const Footer: React.FC = () => {
           <MenuCategory title="WOMENS" items={womensItems} />
           <MenuCategory title="MENS" items={mensItems} />
           <MenuCategory title="OTHERS" items={othersItems} />
+          <MenuCategory title="OTHERS" items={othersItems} />
         </div>
       </div>
         <div className="container mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row">

@@ -35,7 +35,7 @@ const Page = async ({ params }: { params: { category: string } }) => {
           </h2>
         </div>
       ) : (
-        <InfiniteScrollTesting productsList={productsList} category={category} />
+          <InfiniteScrollTesting productsList={productsList} category={category} />
       )}
     </div>
   );

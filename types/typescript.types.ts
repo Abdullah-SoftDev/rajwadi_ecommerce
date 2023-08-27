@@ -125,3 +125,9 @@ export type TCheckoutData = {
   setCity: Dispatch<SetStateAction<string>>;
   setState:  Dispatch<SetStateAction<string>>;
 };
+
+export type FeatureBoxData = {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+}
