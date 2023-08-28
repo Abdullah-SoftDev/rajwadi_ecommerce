@@ -65,14 +65,41 @@ export const getMyOfflineOrders = async (uid: string) => {
     return orders;
 };
 
-export const getRecentOrders = async () => {
-    const ordersRef = collection(db, 'orders');
-    const q = query(ordersRef, orderBy("createdAt", "desc"));
-    const querySnapshot = await getDocs(q);
-    const recentOrders = querySnapshot.docs.map((doc) =>
-        doc.data()
-    );
-    return recentOrders;
+// export const getRecentOrders = async () => {
+//     const ordersRef = collection(db, 'orders');
+//     const q = query(ordersRef, orderBy("createdAt", "desc"));
+//     const querySnapshot = await getDocs(q);
+//     const recentOrders = querySnapshot.docs.map((doc) => ({
+//         id: doc.id,
+//         ...doc.data() as any
+//     }));
+//     return recentOrders;
+// };
+
+export const getOnlineOrders = async () => {
+    const orderRef = collection(db, 'orders');
+    const querySnapshot = await getDocs(query(orderRef));
+
+    const orders: TOnlineOrder[] = querySnapshot.docs.map((doc) => ({
+        type: 'online',
+        id: doc.id,
+        ...(doc.data() as TOnlineOrder),
+    }));
+
+    return orders;
+};
+
+export const getOfflineOrders = async () => {
+    const orderRef = collection(db, 'offlineOrders');
+    const querySnapshot = await getDocs(query(orderRef));
+
+    const orders: TOfflineOrder[] = querySnapshot.docs.map((doc) => ({
+        type: 'offline',
+        id: doc.id,
+        ...(doc.data() as TOfflineOrder),
+    }));
+
+    return orders;
 };
 
 export const viewAllProducts = async () => {
