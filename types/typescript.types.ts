@@ -49,6 +49,8 @@ export type TOrderItem = {
 };
 
 export type TOnlineOrder = {
+  id?:string;
+  type: string;
   amount: number;
   createdAt?: Timestamp;
   email: string;
@@ -59,6 +61,8 @@ export type TOnlineOrder = {
 };
 
 export type TOfflineOrder = {
+  id?:string;
+  type: string;
   address: string;
   amount: number;
   city: string;
