@@ -1,9 +1,10 @@
 'use client'
+
 import { deliveredOrder } from "@/app/actions"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
-const DeliveredButton = async ({ id }: { id: string }) => {
+const DeliveredButton = ({ id }: { id: string }) => {
     const [loading, setloading] = useState(false)
     const router = useRouter()
 

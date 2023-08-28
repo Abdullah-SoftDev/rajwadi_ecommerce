@@ -46,8 +46,8 @@ export const getMyOnlineOrders = async (uid: string) => {
     const querySnapshot = await getDocs(query(orderRef, where('userId', '==', uid)));
 
     const orders: TOnlineOrder[] = querySnapshot.docs.map((doc) => ({
-        type: 'online',
-        ...(doc.data() as TOnlineOrder),
+        ...doc.data() as TOnlineOrder,
+        type: 'online', // Adding 'type' externally
     }));
 
     return orders;
@@ -58,32 +58,22 @@ export const getMyOfflineOrders = async (uid: string) => {
     const querySnapshot = await getDocs(query(orderRef, where('userId', '==', uid)));
 
     const orders: TOfflineOrder[] = querySnapshot.docs.map((doc) => ({
-        type: 'offline',
-        ...(doc.data() as TOfflineOrder),
+        ...doc.data() as TOfflineOrder,
+        type: 'offline', // Adding 'type' externally
     }));
 
     return orders;
 };
 
-// export const getRecentOrders = async () => {
-//     const ordersRef = collection(db, 'orders');
-//     const q = query(ordersRef, orderBy("createdAt", "desc"));
-//     const querySnapshot = await getDocs(q);
-//     const recentOrders = querySnapshot.docs.map((doc) => ({
-//         id: doc.id,
-//         ...doc.data() as any
-//     }));
-//     return recentOrders;
-// };
 
 export const getOnlineOrders = async () => {
     const orderRef = collection(db, 'orders');
     const querySnapshot = await getDocs(query(orderRef));
 
     const orders: TOnlineOrder[] = querySnapshot.docs.map((doc) => ({
-        type: 'online',
+        ...doc.data() as TOnlineOrder,
         id: doc.id,
-        ...(doc.data() as TOnlineOrder),
+        type: 'online', // Adding 'type' externally
     }));
 
     return orders;
@@ -94,13 +84,14 @@ export const getOfflineOrders = async () => {
     const querySnapshot = await getDocs(query(orderRef));
 
     const orders: TOfflineOrder[] = querySnapshot.docs.map((doc) => ({
-        type: 'offline',
+        ...doc.data() as TOfflineOrder,
         id: doc.id,
-        ...(doc.data() as TOfflineOrder),
+        type: 'offline', // Adding 'type' externally
     }));
 
     return orders;
 };
+
 
 export const viewAllProducts = async () => {
     const productsRef = collection(db, 'products');
