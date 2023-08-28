@@ -2,7 +2,7 @@ import { getBannerImages } from "@/repositories/productRepository/serversideFunc
 import ImageComponent from "./components/ImageComponent";
 import UploadInputImage from "./components/UploadInputImage";
 
-const page = async () => {
+const Page = async () => {
     const bannerImageList = await getBannerImages();
 
     return (
@@ -17,4 +17,4 @@ const page = async () => {
     )
 }
 
-export default page
+export default Page

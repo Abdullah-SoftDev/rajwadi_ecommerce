@@ -1,7 +1,7 @@
 import { getProduct } from "@/repositories/productRepository/serversideFunctions";
 import UpdateForm from "./components/UpdateForm";
 
-const page = async ({ params }: { params: { slug: string } }) => {
+const Page = async ({ params }: { params: { slug: string } }) => {
     const { slug } = params;
     const product = await getProduct(slug)
     return (
@@ -11,4 +11,4 @@ const page = async ({ params }: { params: { slug: string } }) => {
     )
 }
 
-export default page
+export default Page
