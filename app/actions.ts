@@ -157,4 +157,22 @@ export async function handelSearch(searchQuery: string) {
     }
 }
 
-
+export async function deliveredOrder(id: string) {
+    // Check if the document exists in 'offers' collection
+    const offersRef = doc(db, 'orders', id);
+    const offersDoc = await getDoc(offersRef);
+    
+    if (offersDoc.exists()) {
+        await deleteDoc(offersRef);
+        console.log('Document deleted from "offers" collection');
+    }
+   
+    // Check if the document exists in 'offlineOffers' collection
+    const offlineOffersRef = doc(db, 'offlineOrders', id);
+    const offlineOffersDoc = await getDoc(offlineOffersRef);
+   
+    if (offlineOffersDoc.exists()) {
+        await deleteDoc(offlineOffersRef);
+        console.log('Document deleted from "offlineOffers" collection');
+    }
+}
