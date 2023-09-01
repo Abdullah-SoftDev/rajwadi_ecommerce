@@ -109,7 +109,7 @@ export type TCartData = {
   productName: string;
   productDescription: string;
   price: number;
-  productImages: string[];
+  productImages: string | string[];
   slug: string;
   category: string;
   quantity: number;

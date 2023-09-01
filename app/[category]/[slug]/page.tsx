@@ -3,21 +3,19 @@ import ImageGallery from "./components/ImageGallery";
 import RecommendedProductSlider from "./components/RecommendedProductSlider";
 import SizePicker from "./components/SizePicker";
 
-export default async function Page({
-  params,
-}: {
+interface Props {
   params: { slug: string; category: string };
-}) {
+}
+
+export default async function Page({ params }: Props) {
   const { slug, category } = params;
   const product = await getProduct(slug);
-  const { productName, productDescription, price, productImages, sizes } =
-    product;
+  const { productName, productDescription, price, productImages, sizes } = product;
   const descArray = productDescription.split(",");
 
   return (
     <div className="mx-auto max-w-6xl px-4">
       <div className="lg:grid lg:grid-cols-2 lg:space-x-8">
-        {/* Image gallery */}
         <ImageGallery productImages={productImages} />
         {/* Product info */}
         <div>
@@ -36,7 +34,9 @@ export default async function Page({
             <div>
               <ul className="list-disc pl-6 text-base text-gray-700 space-y-1 h-[fit-content] max-h-[10.3rem] overflow-y-auto">
                 {descArray?.map((desc, index) => (
-                  <li key={index} className="text-[1rem]">{desc}</li>
+                  <li key={index} className="text-[1rem]">
+                    {desc}
+                  </li>
                 ))}
               </ul>
             </div>

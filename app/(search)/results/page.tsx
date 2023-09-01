@@ -2,7 +2,7 @@ import ProductCard from "@/components/ProductCard";
 import NotFound from "@/components/NotFound";
 import { handelSearch } from "@/app/actions";
 
-type Props = {
+interface Props {
   searchParams: { search_query: string };
 }
 
@@ -11,7 +11,7 @@ const Page = async ({ searchParams }: Props) => {
   const results = await handelSearch(searchQuery);
 
   if (!searchQuery) {
-    return <NotFound />
+    return <NotFound />;
   }
 
   return (
@@ -32,6 +32,6 @@ const Page = async ({ searchParams }: Props) => {
       )}
     </div>
   );
-}
+};
 
 export default Page;
