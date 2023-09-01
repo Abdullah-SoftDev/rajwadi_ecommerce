@@ -11,14 +11,13 @@ import {
 import { handelSubmitProductForm } from "@/app/actions";
 import UploadImage from "./UploadImage";
 import { availableSizes } from "@/constants";
-import { experimental_useFormStatus as useFormStatus } from "react-dom";
+import PublishButton from "./PublishButton";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
 const Page = () => {
-  const { pending } = useFormStatus();
   const [data, setData] = useState<TProduct>({
     productName: "",
     slug: "",
@@ -254,17 +253,7 @@ const Page = () => {
         >
           Cancel
         </button>
-        <button
-          type="submit"
-          className={`ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 ${
-            pending
-              ? "opacity-50 cursor-not-allowed disabled:opacity-50 disabled:cursor-not-allowed"
-              : ""
-          }`}
-          disabled={pending}
-        >
-          {pending ? "Publishing.." : "Publish"}
-        </button>
+       <PublishButton/>
       </div>
     </form>
   );

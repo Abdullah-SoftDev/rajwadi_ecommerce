@@ -2,10 +2,9 @@
 import { handleSubmitBannerImage } from "@/app/actions";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { experimental_useFormStatus as useFormStatus } from "react-dom";
+import Button from "../Button";
 
 const UploadInputImage = () => {
-  const { pending } = useFormStatus();
   const [image, setImage] = useState<string | null>(null);
   const router = useRouter();
 
@@ -84,18 +83,9 @@ const UploadInputImage = () => {
         )}
       </div>
       <div className="max-w-xl mx-auto justify-center items-center">
-        <button
-          onClick={bannerImageUpload}
-          type="button"
-          className={`flex items-center justify-center w-full py-3 rounded-full bg-purple-500 px-3 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-purple-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600 ${
-            pending
-              ? "opacity-50 cursor-not-allowed disabled:opacity-50 disabled:cursor-not-allowed"
-              : ""
-          }`}
-          disabled={pending}
-        >
-          {pending ? "Uploading..." : "Upload Image"}
-        </button>
+      <form action={bannerImageUpload}>
+        <Button/>
+      </form>
       </div>
     </div>
   );

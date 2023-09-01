@@ -4,7 +4,7 @@ import {
   handleImageUpload,
 } from "@/repositories/productRepository/clientsideFunctions";
 import { TProduct, TUploadImage } from "@/types/typescript.types";
-import { experimental_useFormStatus as useFormStatus } from "react-dom";
+import SubmitImageButton from "./SubmitImageButton";
 
 const UploadImage = ({
   imguploaded,
@@ -12,8 +12,6 @@ const UploadImage = ({
   setData,
   setIsImgUploaded,
 }: TUploadImage) => {
-
-  const { pending } = useFormStatus();
 
   const submitImage = async () => {
     if (data.productImages.length === 0) return;
@@ -99,18 +97,9 @@ const UploadImage = ({
           </div>
 
           <div className="sm:col-span-6">
-            <button
-              onClick={submitImage}
-              type="button"
-              className={`flex items-center justify-center w-full py-3 rounded-md bg-purple-500 px-3 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-purple-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600 ${
-                pending
-                  ? "opacity-50 cursor-not-allowed disabled:opacity-50 disabled:cursor-not-allowed"
-                  : ""
-              }`}
-              disabled={pending}
-            >
-              {pending ? "Uploading..." : "Upload Image"}
-            </button>
+          <form action={submitImage}>
+            <SubmitImageButton/>
+          </form>
           </div>
         </>
       )}
