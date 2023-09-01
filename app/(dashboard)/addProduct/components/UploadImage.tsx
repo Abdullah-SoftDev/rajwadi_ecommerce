@@ -1,27 +1,35 @@
 import { handelSubmitProductFormImgs } from "@/app/actions";
-import { handleImageClick, handleImageUpload } from "@/repositories/productRepository/clientsideFunctions";
-import {  TProduct, TUploadImage } from "@/types/typescript.types";
-import { useState } from "react";
+import {
+  handleImageClick,
+  handleImageUpload,
+} from "@/repositories/productRepository/clientsideFunctions";
+import { TProduct, TUploadImage } from "@/types/typescript.types";
+import { experimental_useFormStatus as useFormStatus } from "react-dom";
 
-const UploadImage = ({ imguploaded, data, setData, setIsImgUploaded }: TUploadImage) => {
-  const [isImgUpLoading, setIsImgUpLoading] = useState<boolean>(false);
+const UploadImage = ({
+  imguploaded,
+  data,
+  setData,
+  setIsImgUploaded,
+}: TUploadImage) => {
+
+  const { pending } = useFormStatus();
 
   const submitImage = async () => {
     if (data.productImages.length === 0) return;
-    setIsImgUpLoading(true);
-    const downloadURLs = await handelSubmitProductFormImgs(data)
+    const downloadURLs = await handelSubmitProductFormImgs(data);
     setData((prevData: TProduct) => ({
       ...prevData,
       productImages: downloadURLs,
     }));
     setIsImgUploaded(true);
-    setIsImgUpLoading(false);
   };
 
   return (
     <>
-      {imguploaded ? <p className="text-red-500 sm:col-span-6">Images gets uploaded.</p>
-        :
+      {imguploaded ? (
+        <p className="text-red-500 sm:col-span-6">Images gets uploaded.</p>
+      ) : (
         <>
           <div className="sm:col-span-6">
             <label
@@ -39,8 +47,11 @@ const UploadImage = ({ imguploaded, data, setData, setIsImgUploaded }: TUploadIm
                       key={index}
                       onClick={() => handleImageClick(index, setData)}
                     >
-
-                      <img src={image} alt={`Image ${index}`} className="w-full h-full object-cover" />
+                      <img
+                        src={image}
+                        alt={`Image ${index}`}
+                        className="w-full h-full object-cover"
+                      />
 
                       <div className="absolute inset-0 bg-black opacity-0 hover:opacity-70 transition-opacity duration-300">
                         <span className="text-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
@@ -50,7 +61,6 @@ const UploadImage = ({ imguploaded, data, setData, setIsImgUploaded }: TUploadIm
                     </div>
                   ))}
                 </div>
-
               ) : (
                 <div className="space-y-1 text-center">
                   <svg
@@ -92,16 +102,20 @@ const UploadImage = ({ imguploaded, data, setData, setIsImgUploaded }: TUploadIm
             <button
               onClick={submitImage}
               type="button"
-              className={`flex items-center justify-center w-full py-3 rounded-md bg-purple-500 px-3 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-purple-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600 ${isImgUpLoading ? "opacity-50 cursor-not-allowed disabled:opacity-50 disabled:cursor-not-allowed" : ""}`}
-              disabled={isImgUpLoading}
+              className={`flex items-center justify-center w-full py-3 rounded-md bg-purple-500 px-3 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-purple-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600 ${
+                pending
+                  ? "opacity-50 cursor-not-allowed disabled:opacity-50 disabled:cursor-not-allowed"
+                  : ""
+              }`}
+              disabled={pending}
             >
-              {isImgUpLoading ? "Uploading..." : "Upload Image"}
+              {pending ? "Uploading..." : "Upload Image"}
             </button>
           </div>
         </>
-      }
+      )}
     </>
-  )
-}
+  );
+};
 
-export default UploadImage
+export default UploadImage;

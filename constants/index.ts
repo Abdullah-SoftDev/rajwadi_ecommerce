@@ -24,3 +24,5 @@ export const navigation = [
     href: "/kids",
   },
 ];
+
+export const availableSizes = ["S", "M", "L", "XL"];
