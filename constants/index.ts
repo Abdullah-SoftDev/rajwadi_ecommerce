@@ -26,3 +26,11 @@ export const navigation = [
 ];
 
 export const availableSizes = ["S", "M", "L", "XL"];
+
+export const adminNavigation = [
+  { name: "Add product", path: "/addProduct"},
+  { name: "Recent orders", path: "/recentOrders"},
+  { name: "View all products", path: "/viewAllProducts"},
+  { name: "Banner images", path: "/addBannerImages"},
+  { name: "Our customers", path: "/ourCustomers"},
+];
