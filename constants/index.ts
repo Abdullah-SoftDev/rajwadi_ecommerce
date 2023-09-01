@@ -34,3 +34,5 @@ export const adminNavigation = [
   { name: "Banner images", path: "/addBannerImages"},
   { name: "Our customers", path: "/ourCustomers"},
 ];
+
+export const CustomerTabelHeader = ["Name", "Email"]
