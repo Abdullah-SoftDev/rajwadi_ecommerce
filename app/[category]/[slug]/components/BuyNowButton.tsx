@@ -26,7 +26,7 @@ const BuyNowButton = ({
       productName: product.productName,
       productDescription: product.productDescription,
       price: Number(product.price),
-      productImages: product.productImages[0],
+      productImages: [product.productImages[0]],
       slug: product.slug,
       quantity: Number(product.quantity),
       selectedSize: selectedSize,

@@ -57,9 +57,7 @@ const Cart = ({ cartOpen, setCartOpen }: TCart) => {
       alert("Login first")
       return
     }
-    createCheckout(user, {
-      cartData: cartData,
-    });
+    createCheckout(user, { cartData });
   }
 
   return (

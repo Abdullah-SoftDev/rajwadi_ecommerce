@@ -44,7 +44,7 @@ const AddToCartFormAction = ({
       productName: productName,
       productDescription: productDescription,
       price: Number(price),
-      productImages: productImages,
+      productImages: [productImages[0]],
       slug: slug,
       category: category,
       quantity: quantity!,
