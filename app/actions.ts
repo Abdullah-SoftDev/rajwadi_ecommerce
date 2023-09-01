@@ -175,3 +175,8 @@ export async function deliveredOrder(id: string) {
         console.log('Document deleted from "offlineOffers" collection');
     }
 }
+
+export const handleDeleteProduct = async (slug: string) => {
+        const productRef = doc(db, `products/${slug}`);
+        await deleteDoc(productRef);
+}

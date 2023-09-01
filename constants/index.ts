@@ -36,3 +36,5 @@ export const adminNavigation = [
 ];
 
 export const CustomerTabelHeader = ["Name", "Email"]
+
+export const viewAllProductsTabelHeader = ["Product Name", "Category", "Price", "Stock Available"];
