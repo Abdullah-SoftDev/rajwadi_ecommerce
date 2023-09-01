@@ -17,7 +17,7 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-const Page = () => {
+const CreateForm = () => {
   const [data, setData] = useState<TProduct>({
     productName: "",
     slug: "",
@@ -259,4 +259,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default CreateForm;
