@@ -62,7 +62,7 @@ const LoginDrawer = () => {
       />
       <Drawer.Root shouldScaleBackground>
         <Drawer.Trigger asChild>
-          <button className="sm:ml-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gray-900 hover:bg-gray-700 focus:outline-none whitespace-nowrap">
+          <button className="sm:ml-6 inline-flex items-center rounded-full py-2 px-5 border border-transparent text-sm font-medium shadow-sm text-white bg-gray-900 hover:bg-gray-700 focus:outline-none whitespace-nowrap">
             Sign In
           </button>
         </Drawer.Trigger>
@@ -71,11 +71,11 @@ const LoginDrawer = () => {
           <Drawer.Content className="flex flex-col rounded-t-[10px] h-[80%] fixed bottom-0 left-0 right-0 z-50 bg-white">
             {/* My content */}
             <div className="w-full max-w-xl px-4 m-auto">
-              <h3 className="text-lg leading-6 font-medium text-gray-900">
+              {/* <h3 className="text-lg leading-6 font-medium text-gray-900">
                 Login using Mobile Number
               </h3>
               <div className="mt-2 max-w-xl text-sm text-gray-500"></div>
-              {/* <form
+              <form
                 className="mt-3 sm:flex sm:items-center">
                 <div className="w-full sm:max-w-xl">
                   <input

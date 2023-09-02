@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
@@ -27,30 +27,34 @@ const Searchbar = () => {
         <label htmlFor="search" className="sr-only">
           Search
         </label>
-        <div className="relative">
-          <div className="absolute inset-y-0 right-6 pl-3 flex items-center cursor-pointer">
-            <MagnifyingGlassIcon
-              onClick={handelSearch}
-              className="h-5 w-5 text-[#111]"
-              aria-hidden="true"
-            />
-          </div>
+        <div className="relative flex items-center">
           <input
             value={search}
             onChange={(e) => setsearch(e.target.value)}
             onKeyDown={handleKeyDown}
             name="search"
-            className="block w-full pl-4 pr-3 py-2 border border-gray-300 rounded-full leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
+            className="block w-full pl-4 pr-10 py-2 border border-gray-300 rounded-full leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
             placeholder="Search products..."
           />
-          {search && (
+          <div className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer">
+            {search && (
+              <button
+                className="text-gray-400 hover:text-gray-600 focus:outline-none"
+                onClick={() => setsearch("")}
+              >
+                <XMarkIcon className="w-6 h-6" />
+              </button>
+            )}
             <button
-              className="absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
-              onClick={() => setsearch("")}
+              onClick={handelSearch}
+              className="text-[#111] hover:text-[#111] focus:outline-none"
             >
-              <XMarkIcon className="w-6 h-6" />
+              <MagnifyingGlassIcon
+                className="h-5 w-5"
+                aria-hidden="true"
+              />
             </button>
-          )}
+          </div>
         </div>
       </div>
     </div>

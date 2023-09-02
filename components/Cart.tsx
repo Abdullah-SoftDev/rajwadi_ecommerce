@@ -247,7 +247,7 @@ const Cart = ({ cartOpen, setCartOpen }: TCart) => {
                             type="button"
                             onClick={handleBuyNowClick}
                             disabled={isLoading}
-                            className={`flex items-center justify-center rounded-md border border-transparent bg-purple-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-purple-700 ${
+                            className={`flex items-center justify-center border border-transparent bg-purple-500 rounded-full py-3 px-8 text-base font-medium text-white shadow-sm hover:bg-purple-700 ${
                               isLoading ? "opacity-50 cursor-not-allowed" : ""
                             }`}
                           >
@@ -256,7 +256,7 @@ const Cart = ({ cartOpen, setCartOpen }: TCart) => {
                           <Link
                             href={"/checkout"}
                             onClick={() => setCartOpen(false)}
-                            className="flex items-center justify-center rounded-md border border-transparent bg-purple-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-purple-700"
+                            className="flex items-center justify-center border border-transparent bg-purple-500 rounded-full py-3 px-8 text-base font-medium text-white shadow-sm hover:bg-purple-700"
                           >
                             Cash on Delivery
                           </Link>
@@ -265,7 +265,7 @@ const Cart = ({ cartOpen, setCartOpen }: TCart) => {
                           <p>
                             <button
                               type="button"
-                              className="font-medium text-purple-600 hover:text-purple-500"
+                              className="font-medium text-purple-500 hover:text-purple-700"
                               onClick={() => setCartOpen(false)}
                             >
                               Continue Shopping
