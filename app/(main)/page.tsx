@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import HomeProducts from "../../components/HomeProducts"
 import Services from "../../components/Services"
 import Slider from "../../components/Slider"
@@ -8,7 +8,7 @@ const Home = async () => {
   const bannerImageList = await getBannerImages();
   return (
     <>
-      <Slider bannerImageList={bannerImageList}/>
+     <Slider bannerImageList={bannerImageList}/>
       <HomeProducts />
       <Services/>
     </>
