@@ -71,3 +71,5 @@ export const availableSizes = ["S", "M", "L", "XL"];
 export const CustomerTabelHeader = ["Name", "Email"]
 
 export const viewAllProductsTabelHeader = ["Product Name", "Category", "Price", "Stock Available"];
+
+export const recentOrderTabelHeader = ["Name", "Price", "Payment or Order ID", "Payment Type",];

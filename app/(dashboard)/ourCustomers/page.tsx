@@ -15,7 +15,7 @@ const Page = async () => {
           </p>
         </div>
       </div>
-      <div className="overflow-auto shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+      <div className="overflow-auto shadow ring-1 ring-black ring-opacity-5 rounded-lg">
         <Tabel users={users} />
       </div>
     </div>
