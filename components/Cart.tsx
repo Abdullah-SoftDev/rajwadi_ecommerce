@@ -15,6 +15,7 @@ import Link from "next/link";
 const Cart = ({ cartOpen, setCartOpen }: TCart) => {
   const [user] = useAuthState(auth);
   const [userData, setUserData] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -54,12 +55,22 @@ const Cart = ({ cartOpen, setCartOpen }: TCart) => {
     return accumulator + item.price * item.quantity;
   }, 0);
 
-  const handleBuyNowClick = () => {
+  const handleBuyNowClick = async () => {
     if (!user) {
       alert("Login first");
       return;
     }
-    createCheckout(user, { cartData });
+
+    setIsLoading(true);
+    try {
+      await createCheckout(user, {
+        cartData,
+      });
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error creating checkout:", error);
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -235,9 +246,12 @@ const Cart = ({ cartOpen, setCartOpen }: TCart) => {
                           <button
                             type="button"
                             onClick={handleBuyNowClick}
-                            className="flex items-center justify-center rounded-md border border-transparent bg-purple-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-purple-700"
+                            disabled={isLoading}
+                            className={`flex items-center justify-center rounded-md border border-transparent bg-purple-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-purple-700 ${
+                              isLoading ? "opacity-50 cursor-not-allowed" : ""
+                            }`}
                           >
-                            Checkout
+                            {isLoading ? "Loading..." : "Checkout"}
                           </button>
                           <Link
                             href={"/checkout"}
