@@ -1,23 +1,24 @@
-import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
-import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
-import WhatshotOutlinedIcon from '@mui/icons-material/WhatshotOutlined';
-import { FeatureBoxData } from '@/types/typescript.types';
+import LocalOfferOutlinedIcon from "@mui/icons-material/LocalOfferOutlined";
+import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
+import WhatshotOutlinedIcon from "@mui/icons-material/WhatshotOutlined";
+import { FeatureBoxData } from "@/types/typescript.types";
 
 const featureBoxData: FeatureBoxData[] = [
   {
     icon: <ShoppingBagOutlinedIcon className="w-6 h-6" />,
-    title: 'Order and Pick',
-    description: 'Order your items online and pick them up conveniently.',
+    title: "Order and Pick",
+    description: "Order your items online and pick them up conveniently.",
   },
   {
     icon: <LocalOfferOutlinedIcon className="w-6 h-6" />,
-    title: 'Exciting Offers',
-    description: 'Discover a wide range of exciting offers on our products.',
+    title: "Exciting Offers",
+    description: "Discover a wide range of exciting offers on our products.",
   },
   {
     icon: <WhatshotOutlinedIcon className="w-6 h-6" />,
-    title: 'Trending Stuff Available',
-    description: 'Explore the latest and trending items available in our store.',
+    title: "Trending Stuff Available",
+    description:
+      "Explore the latest and trending items available in our store.",
   },
 ];
 

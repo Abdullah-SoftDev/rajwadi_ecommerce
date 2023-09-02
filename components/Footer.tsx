@@ -9,7 +9,7 @@ const MenuCategory = ({ title, items }: { title: string, items: string[] }) => {
       <nav className="list-none mb-10">
         {items.map((item, index) => (
           <li key={index}>
-            <a className="text-gray-600 hover:text-gray-800 text-sm">{item}</a>
+            <Link href={"/"} className="text-gray-600 hover:text-gray-800 text-sm">{item}</Link>
           </li>
         ))}
       </nav>

@@ -22,11 +22,13 @@ const Cart = ({ cartOpen, setCartOpen }: TCart) => {
     }
   }, [user]);
 
-  const cartQuery = query(collection(db, `users/${user?.uid}/cart`), orderBy("createdAt"));
+  const cartQuery = query(
+    collection(db, `users/${user?.uid}/cart`),
+    orderBy("createdAt")
+  );
 
-  const [cartDataFromQuery, loading] = useCollectionData(cartQuery);
-  const cartData = cartDataFromQuery as TCartData[]
-
+  const [cartDataFromQuery] = useCollectionData(cartQuery);
+  const cartData = cartDataFromQuery as TCartData[];
 
   const removeFromCart = async (id: string) => {
     if (!user) {
@@ -54,11 +56,11 @@ const Cart = ({ cartOpen, setCartOpen }: TCart) => {
 
   const handleBuyNowClick = () => {
     if (!user) {
-      alert("Login first")
-      return
+      alert("Login first");
+      return;
     }
     createCheckout(user, { cartData });
-  }
+  };
 
   return (
     <Transition.Root show={cartOpen} as={Fragment}>
@@ -149,7 +151,7 @@ const Cart = ({ cartOpen, setCartOpen }: TCart) => {
                                         >
                                           <button
                                             type="submit"
-                                            className="p-1 border border-gray-300 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                            className="p-1 border border-gray-300 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500"
                                           >
                                             <svg
                                               xmlns="http://www.w3.org/2000/svg"
@@ -179,7 +181,7 @@ const Cart = ({ cartOpen, setCartOpen }: TCart) => {
                                         >
                                           <button
                                             type="submit"
-                                            className="p-1 border border-gray-300 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                            className="p-1 border border-gray-300 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500"
                                           >
                                             <svg
                                               xmlns="http://www.w3.org/2000/svg"
@@ -205,7 +207,7 @@ const Cart = ({ cartOpen, setCartOpen }: TCart) => {
                                             removeFromCart(product.id!)
                                           }
                                           type="button"
-                                          className="font-medium text-indigo-600 hover:text-indigo-500"
+                                          className="font-medium text-purple-600 hover:text-purple-500"
                                         >
                                           Remove
                                         </button>
@@ -233,13 +235,15 @@ const Cart = ({ cartOpen, setCartOpen }: TCart) => {
                           <button
                             type="button"
                             onClick={handleBuyNowClick}
-                            className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">
+                            className="flex items-center justify-center rounded-md border border-transparent bg-purple-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-purple-700"
+                          >
                             Checkout
                           </button>
                           <Link
                             href={"/checkout"}
                             onClick={() => setCartOpen(false)}
-                            className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">
+                            className="flex items-center justify-center rounded-md border border-transparent bg-purple-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-purple-700"
+                          >
                             Cash on Delivery
                           </Link>
                         </div>
@@ -247,7 +251,7 @@ const Cart = ({ cartOpen, setCartOpen }: TCart) => {
                           <p>
                             <button
                               type="button"
-                              className="font-medium text-indigo-600 hover:text-indigo-500"
+                              className="font-medium text-purple-600 hover:text-purple-500"
                               onClick={() => setCartOpen(false)}
                             >
                               Continue Shopping

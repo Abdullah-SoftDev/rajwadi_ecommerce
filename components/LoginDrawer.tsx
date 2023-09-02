@@ -1,6 +1,9 @@
-'use client'
+"use client";
 import { Drawer } from "vaul";
-import { useSignInWithFacebook, useSignInWithGoogle } from "react-firebase-hooks/auth";
+import {
+  useSignInWithFacebook,
+  useSignInWithGoogle,
+} from "react-firebase-hooks/auth";
 import { auth, db } from "@/firebase/firebaseConfig";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -8,9 +11,10 @@ import { doc, setDoc } from "firebase/firestore";
 import { SyntheticEvent } from "react";
 
 const LoginDrawer = () => {
-
-  const [signInWithGoogle, googleUser, loading1, googleError] = useSignInWithGoogle(auth);
-  const [signInWithFacebook, facebookUser, loading2, facebookError] = useSignInWithFacebook(auth);
+  const [signInWithGoogle, googleUser, loading1, googleError] =
+    useSignInWithGoogle(auth);
+  const [signInWithFacebook, facebookUser, loading2, facebookError] =
+    useSignInWithFacebook(auth);
 
   // Create user document in Firestore on google authentication
   const handleGoogleSignIn = async (event: SyntheticEvent) => {
@@ -39,7 +43,7 @@ const LoginDrawer = () => {
   };
 
   if (googleError || facebookError) {
-    toast.error((googleError || facebookError)?.message)
+    toast.error((googleError || facebookError)?.message);
   }
 
   return (
@@ -54,7 +58,8 @@ const LoginDrawer = () => {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="light" />
+        theme="light"
+      />
       <Drawer.Root shouldScaleBackground>
         <Drawer.Trigger asChild>
           <button className="sm:ml-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gray-900 hover:bg-gray-700 focus:outline-none whitespace-nowrap">
@@ -70,7 +75,7 @@ const LoginDrawer = () => {
                 Login using Mobile Number
               </h3>
               <div className="mt-2 max-w-xl text-sm text-gray-500"></div>
-              <form
+              {/* <form
                 className="mt-3 sm:flex sm:items-center">
                 <div className="w-full sm:max-w-xl">
                   <input
@@ -84,45 +89,55 @@ const LoginDrawer = () => {
                 >
                   GET OTP
                 </button>
-              </form>
+              </form> */}
               <button
                 type="button"
                 onClick={handleGoogleSignIn}
-                className={`w-full text-center py-3 my-3 border flex space-x-2 items-center justify-center border-slate-200 rounded-lg text-slate-700 hover:border-slate-400 hover:text-slate-900 hover:shadow transition duration-150 ${loading1 ? "opacity-50 cursor-not-allowed" : ""}`}
+                className={`w-full text-center py-3 my-3 border flex space-x-2 items-center justify-center border-slate-200 rounded-lg text-slate-700 hover:border-slate-400 hover:text-slate-900 hover:shadow transition duration-150 ${
+                  loading1 ? "opacity-50 cursor-not-allowed" : ""
+                }`}
                 disabled={loading1}
               >
-                {!loading1 ? <>
-                  <img
-                    src="https://www.svgrepo.com/show/355037/google.svg"
-                    className="w-6 h-6"
-                    alt="" />
-                  <span>Login with Google</span>
-                </>
-                  :
+                {!loading1 ? (
+                  <>
+                    <img
+                      src="https://www.svgrepo.com/show/355037/google.svg"
+                      className="w-6 h-6"
+                      alt=""
+                    />
+                    <span>Login with Google</span>
+                  </>
+                ) : (
                   <img
                     src="https://www.svgrepo.com/show/347118/loader-4.svg"
                     className="w-6 h-6 animate-spin"
-                    alt="" />
-                }
+                    alt=""
+                  />
+                )}
               </button>
               <button
                 onClick={handleFacebookSignIn}
-                className={`w-full max-w-xl text-center py-3 my-3 border flex space-x-2 items-center justify-center border-slate-200 rounded-lg text-slate-700 hover:border-slate-400 hover:text-slate-900 hover:shadow transition duration-150 ${loading2 ? "opacity-50 cursor-not-allowed" : ""}`}
+                className={`w-full max-w-xl text-center py-3 my-3 border flex space-x-2 items-center justify-center border-slate-200 rounded-lg text-slate-700 hover:border-slate-400 hover:text-slate-900 hover:shadow transition duration-150 ${
+                  loading2 ? "opacity-50 cursor-not-allowed" : ""
+                }`}
                 disabled={loading2}
               >
-                {!loading2 ? <>
-                  <img
-                    src="https://www.svgrepo.com/show/448224/facebook.svg"
-                    className="w-6 h-6"
-                    alt="" />
-                  <span>Login with Facebook</span>
-                </>
-                  :
+                {!loading2 ? (
+                  <>
+                    <img
+                      src="https://www.svgrepo.com/show/448224/facebook.svg"
+                      className="w-6 h-6"
+                      alt=""
+                    />
+                    <span>Login with Facebook</span>
+                  </>
+                ) : (
                   <img
                     src="https://www.svgrepo.com/show/347118/loader-4.svg"
                     className="w-6 h-6 animate-spin"
-                    alt="" />
-                }
+                    alt=""
+                  />
+                )}
               </button>
             </div>
           </Drawer.Content>

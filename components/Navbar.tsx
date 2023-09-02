@@ -34,7 +34,10 @@ const Navbar = () => {
           <div className="border-b border-gray-200">
             <div className="flex h-16 items-center">
               {/* Logo */}
-              <Link className="text-black-900 text-lg italic whitespace-nowrap" href="/">
+              <Link
+                className="text-black-900 text-lg italic whitespace-nowrap"
+                href="/"
+              >
                 Navkar
               </Link>
               {/* Navlinks menus */}

@@ -17,7 +17,7 @@ const ProfileDropdown = () => {
   const [user] = useAuthState(auth);
   const userRef = doc(db, `users/${user?.uid}`);
   const [userData] = useDocumentData(userRef);
-  const isAdmin = userData?.role === 'admin';
+  const isAdmin = userData?.role === "admin";
   const router = useRouter();
   const [signOut] = useSignOut(auth);
 
@@ -45,26 +45,49 @@ const ProfileDropdown = () => {
               {navigation.map((item, index) => (
                 <Menu.Item key={index}>
                   {({ active }) => (
-                    <Link href={item.href} className={classNames(active ? "bg-gray-100" : "", "px-4 py-2 text-sm text-gray-700 lg:hidden inline-flex w-full")}>
+                    <Link
+                      href={item.href}
+                      className={classNames(
+                        active ? "bg-gray-100" : "",
+                        "px-4 py-2 text-sm text-gray-700 lg:hidden inline-flex w-full"
+                      )}
+                    >
                       {item.name}
                     </Link>
                   )}
                 </Menu.Item>
               ))}
               <Menu.Item>
-                  {({ active }) => (
-                    <Link                           href={`/myOrders?uid=${user?.uid}`}
-                    className={classNames(active ? "bg-gray-100" : "", "px-4 py-2 text-sm text-gray-700 lg:hidden inline-flex w-full")}>
-                      MY ORDERS
-                    </Link>
-                  )}
-                </Menu.Item>
-              <Menu.Button onClick={async () => {await signOut()}} className="px-4 py-2 text-sm text-gray-700 inline-flex w-full hover:bg-gray-100">
-                    Sign Out
+                {({ active }) => (
+                  <Link
+                    href={`/myOrders?uid=${user?.uid}`}
+                    className={classNames(
+                      active ? "bg-gray-100" : "",
+                      "px-4 py-2 text-sm text-gray-700 lg:hidden inline-flex w-full"
+                    )}
+                  >
+                    MY ORDERS
+                  </Link>
+                )}
+              </Menu.Item>
+              <Menu.Button
+                onClick={async () => {
+                  await signOut();
+                }}
+                className="px-4 py-2 text-sm text-gray-700 inline-flex w-full hover:bg-gray-100"
+              >
+                Sign Out
               </Menu.Button>
-            {isAdmin && <Menu.Button onClick={() => {router.push("/recentOrders")}}  className="px-4 py-2 text-sm text-gray-700 inline-flex w-full hover:bg-gray-100">
-                    DashBoard
-              </Menu.Button>}
+              {isAdmin && (
+                <Menu.Button
+                  onClick={() => {
+                    router.push("/recentOrders");
+                  }}
+                  className="px-4 py-2 text-sm text-gray-700 inline-flex w-full hover:bg-gray-100"
+                >
+                  DashBoard
+                </Menu.Button>
+              )}
             </Menu.Items>
           </Transition>
         </Menu>

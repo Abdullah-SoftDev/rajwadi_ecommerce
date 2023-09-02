@@ -4,10 +4,6 @@ import { toast } from "react-toastify";
 
 // Function that handel checkout functionality in our application
 export const createCheckout = async (user: User, requestData: { cartData: TCartData[] }) => {
-  if (!user) {
-    alert('Please login first.');
-    return;
-  }
 
   const data = await fetch(`/api/checkout`, {
     method: "POST",
