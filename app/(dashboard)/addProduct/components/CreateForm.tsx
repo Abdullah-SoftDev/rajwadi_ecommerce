@@ -9,9 +9,9 @@ import {
   handelCancelForm,
 } from "@/repositories/productRepository/clientsideFunctions";
 import { handelSubmitProductForm } from "@/app/actions";
-import UploadImage from "./UploadImage";
 import { availableSizes } from "@/constants";
 import PublishButton from "./PublishButton";
+import UploadImage from "./UploadImage";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -253,7 +253,7 @@ const CreateForm = () => {
         >
           Cancel
         </button>
-       <PublishButton/>
+        <PublishButton />
       </div>
     </form>
   );

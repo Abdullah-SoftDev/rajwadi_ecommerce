@@ -10,11 +10,11 @@ import {
   handleImageUpload,
 } from "@/repositories/productRepository/clientsideFunctions";
 import Link from "next/link";
-import { handelUpdateFormImgs } from "@/app/actions";
 import { db } from "@/firebase/firebaseConfig";
 import { doc, updateDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { availableSizes } from "@/constants";
+import { handelUpdateFormImgs } from "@/app/actions";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -55,6 +55,7 @@ const UpdateForm = ({ product }: { product: TProduct }) => {
       alert("Please upload new images before submitting.");
       return;
     }
+
     setIsImgUpLoading(true);
     const downloadURLs = await handelUpdateFormImgs(data);
     setData((prevData: TUpdateProduct) => ({
@@ -81,6 +82,11 @@ const UpdateForm = ({ product }: { product: TProduct }) => {
 
     if (data.productImages.length === 0) {
       alert("Please add Image field.");
+      return;
+    }
+
+    if (!imguploaded) {
+      alert("Please upload images before submitting.");
       return;
     }
 
@@ -142,7 +148,7 @@ const UpdateForm = ({ product }: { product: TProduct }) => {
               value={data.productName}
               type="text"
               name="productName"
-              className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+              className="shadow-sm focus:ring-purple-500 focus:border-purple-500 block w-full sm:text-sm border-gray-300 rounded-md"
             />
           </div>
         </div>
@@ -159,7 +165,7 @@ const UpdateForm = ({ product }: { product: TProduct }) => {
             value={data.productDescription}
             name="productDescription"
             rows={3}
-            className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md"
+            className="shadow-sm focus:ring-purple-500 focus:border-purple-500 block w-full sm:text-sm border border-gray-300 rounded-md"
           />
         </div>
 
@@ -216,7 +222,7 @@ const UpdateForm = ({ product }: { product: TProduct }) => {
                     <div className="flex text-sm text-gray-600">
                       <label
                         htmlFor="fileUpload"
-                        className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
+                        className="relative cursor-pointer bg-white rounded-md font-medium text-purple-600 hover:text-purple-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-purple-500"
                       >
                         <span>Upload a file</span>
                         <input
@@ -265,7 +271,7 @@ const UpdateForm = ({ product }: { product: TProduct }) => {
               type="number"
               name="price"
               autoComplete="family-name"
-              className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+              className="shadow-sm focus:ring-purple-500 focus:border-purple-500 block w-full sm:text-sm border-gray-300 rounded-md"
             />
           </div>
         </div>
@@ -282,7 +288,7 @@ const UpdateForm = ({ product }: { product: TProduct }) => {
               onChange={(e) => handleInputChange(e, setData)}
               value={data.category}
               name="category"
-              className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+              className="shadow-sm focus:ring-purple-500 focus:border-purple-500 block w-full sm:text-sm border-gray-300 rounded-md"
             >
               <option value="bride-and-groom">Bride and Groom</option>
               <option value="saree">Saree</option>
@@ -308,7 +314,7 @@ const UpdateForm = ({ product }: { product: TProduct }) => {
                 type="button"
                 className={`inline-flex items-center justify-center h-8 w-8 rounded-full border ${
                   data?.sizes?.includes(size)
-                    ? "bg-indigo-600 text-white"
+                    ? "bg-purple-600 text-white"
                     : "bg-gray-200 text-gray-600"
                 }`}
                 onClick={() => handleSizeToggle(size, setData)}
@@ -327,8 +333,8 @@ const UpdateForm = ({ product }: { product: TProduct }) => {
             checked={data.stockAvailable}
             onChange={(checked) => handleStockAvailableChange(checked, setData)}
             className={classNames(
-              data.stockAvailable ? "bg-indigo-600" : "bg-gray-200",
-              "flex w-8 flex-none cursor-pointer rounded-full p-px ring-1 ring-inset ring-gray-900/5 transition-colors duration-200 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              data.stockAvailable ? "bg-purple-600" : "bg-gray-200",
+              "flex w-8 flex-none cursor-pointer rounded-full p-px ring-1 ring-inset ring-gray-900/5 transition-colors duration-200 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600"
             )}
           >
             <span className="sr-only">Agree to policies</span>
@@ -351,13 +357,13 @@ const UpdateForm = ({ product }: { product: TProduct }) => {
         <Link
           href="/viewAllProducts"
           type="button"
-          className="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          className="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
         >
           Cancel
         </Link>
         <button
           type="submit"
-          className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
         >
           Update
         </button>

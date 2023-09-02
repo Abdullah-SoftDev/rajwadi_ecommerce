@@ -25,8 +25,6 @@ export const navigation = [
   },
 ];
 
-export const availableSizes = ["S", "M", "L", "XL"];
-
 export const adminNavigation = [
   { name: "Add product", path: "/addProduct"},
   { name: "Recent orders", path: "/recentOrders"},
@@ -34,6 +32,8 @@ export const adminNavigation = [
   { name: "Banner images", path: "/addBannerImages"},
   { name: "Our customers", path: "/ourCustomers"},
 ];
+
+export const availableSizes = ["S", "M", "L", "XL"];
 
 export const CustomerTabelHeader = ["Name", "Email"]
 

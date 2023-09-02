@@ -12,7 +12,6 @@ const UploadImage = ({
   setData,
   setIsImgUploaded,
 }: TUploadImage) => {
-
   const submitImage = async () => {
     if (data.productImages.length === 0) return;
     const downloadURLs = await handelSubmitProductFormImgs(data);
@@ -78,7 +77,7 @@ const UploadImage = ({
                   <div className="flex text-sm text-gray-600">
                     <label
                       htmlFor="fileUpload"
-                      className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
+                      className="relative cursor-pointer bg-white rounded-md font-medium text-purple-600 hover:text-purple-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-purple-500"
                     >
                       <span>Upload a file</span>
                       <input
@@ -97,9 +96,9 @@ const UploadImage = ({
           </div>
 
           <div className="sm:col-span-6">
-          <form action={submitImage}>
-            <SubmitImageButton/>
-          </form>
+            <form action={submitImage}>
+              <SubmitImageButton />
+            </form>
           </div>
         </>
       )}
